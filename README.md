@@ -1,1 +1,41 @@
-# KLTN_GioiThieuViecLamCNTT_Frontend
+# Ứng dụng giới thiệu việc làm CNTT (kltn-gioithieuvieclamcntt-frontend)
+
+Application created by Tran Anh Khoa. Developed by Tran Anh Khoa and Pham Huy for graduation thesis.
+
+## Install the dependencies
+```bash
+yarn
+# or
+npm install
+```
+
+### Start the app in development mode (hot-code reloading, error reporting, etc.)
+```bash
+quasar dev
+```
+
+
+### Lint the files
+```bash
+yarn lint
+# or
+npm run lint
+```
+
+
+### Format the files
+```bash
+yarn format
+# or
+npm run format
+```
+
+
+
+### Build the app for production
+```bash
+quasar build
+```
+
+### Customize the configuration
+See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).
