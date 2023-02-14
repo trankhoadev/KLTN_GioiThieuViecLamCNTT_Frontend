@@ -1,6 +1,6 @@
 <template>
   <div>
-    Setup file
+    Welcome to my app
   </div>
 </template>
 
