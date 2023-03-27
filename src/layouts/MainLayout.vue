@@ -1,10 +1,40 @@
 <script setup>
 import iconSet from "quasar/icon-set/ionicons-v4";
 import "@quasar/extras/ionicons-v4/ionicons-v4.css";
+import { onMounted, ref } from "vue";
+
+onMounted(() => {
+  window.onscroll = function () {
+    scrollFunction();
+  }
+})
+
+/* Back to Top */
+const scrollFunction = () => {
+  let btnBackToTop = document.getElementById('back-to-top');
+  if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+    btnBackToTop.style.display = 'flex';
+  }
+  else {
+    btnBackToTop.style.display = 'none';
+  }
+}
+
+const clickToTop = () => {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
+
 </script>
 
 <template>
   <q-layout view="hhh lpR fff">
+
+    <!-- Back to Top Start-->
+    <div @click="clickToTop()" ref="backToTop" id="back-to-top">
+      <q-icon name="expand_less"></q-icon>
+    </div>
+    <!-- Back to Top End-->
 
     <q-header elevated class="bg-white text-white header" height-hint="98">
       <div class="row header-row flex-center">
@@ -186,8 +216,7 @@ import "@quasar/extras/ionicons-v4/ionicons-v4.css";
       </div>
 
       <span class="flex flex-center q-pa-md text-white no-wrap footer-copyright">
-        Freelancer ® is a registered Trademark of Freelancer Technology Pty Limited (ACN 142 189 759)
-        Copyright © 2023 Freelancer Technology Pty Limited (ACN 142 189 759)
+        Copyright © 2023 Freelancer Technology Pty Limited
       </span>
     </q-footer>
 
