@@ -1,4 +1,6 @@
 <script setup>
+import iconSet from "quasar/icon-set/ionicons-v4";
+import "@quasar/extras/ionicons-v4/ionicons-v4.css";
 </script>
 
 <template>
@@ -59,15 +61,134 @@
       <router-view />
     </q-page-container>
 
-    <q-footer elevated class="bg-grey-8 text-white">
-      <q-toolbar>
-        <q-toolbar-title>
-          <q-avatar>
-            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
-          </q-avatar>
-          <div>Title</div>
-        </q-toolbar-title>
-      </q-toolbar>
+    <q-footer elevated class="footer text-white">
+      <div class="row footer-row flex-center q-pa-lg">
+
+        <div class="col-md-3 col-12 col-footer footer-center" height="100vh">
+          <img src="src/assets/authentication/image-white.png" alt="">
+          <div class="flex-row">
+            <q-btn class="icon-help" icon="help" />
+            <a href="#">
+              <span>Giúp đỡ & Hỗ trợ</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-12 col-footer column no-wrap flex-center">
+          <h4>Giới thiệu</h4>
+          <ul>
+            <li>
+              <a href="#">
+                <span>Về chúng tôi</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="#">
+                <span>Cách thức hoạt động</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="#">
+                <span>Công việc</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="#">
+                <span>Bảo mật<table></table></span>
+              </a>
+            </li>
+
+            <li>
+              <a href="#">
+                <span>Nhà đầu tư</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="#">
+                <span>Tin tức</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="#">
+                <span>Công việc</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="col-md-3 col-12 col-footer">
+          <h4>Điều khoản</h4>
+          <ul>
+            <li>
+              <a href="#">
+                <span>Chính sách bảo mật</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="#">
+                <span>Điều khoản và điều kiện</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="#">
+                <span>Chính sách bản quyền</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="#">
+                <span>Quy tắc ứng xử<table></table></span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-3 col-12 col-footer">
+          <h4>Kết nối</h4>
+          <ul>
+            <li>
+              <a href="#">
+                <span>Email:</span> <a href="mailto:company@gmail.com">company@gmail.com</a>
+              </a>
+            </li>
+
+            <li>
+              <a href="#">
+                <span>Phone Number: </span> <a href="tel:+84111222333">+84111222333</a>
+              </a>
+            </li>
+
+            <li>
+              <router-link to="/">
+                <q-btn icon="facebook" />
+              </router-link>
+
+              <router-link to="/">
+                <q-btn icon="ion-logo-twitter" />
+              </router-link>
+
+              <router-link to="/">
+                <q-btn icon="ion-logo-youtube" />
+              </router-link>
+
+              <router-link to="/">
+                <q-btn icon="ion-logo-instagram" />
+              </router-link>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <span class="flex flex-center q-pa-md text-white no-wrap footer-copyright">
+        Freelancer ® is a registered Trademark of Freelancer Technology Pty Limited (ACN 142 189 759)
+        Copyright © 2023 Freelancer Technology Pty Limited (ACN 142 189 759)
+      </span>
     </q-footer>
 
   </q-layout>
@@ -80,46 +201,56 @@
   }
 }
 
-.header {
-  .header-row {
-  box-shadow: 0 0 4px #4d525b14, 0 2px 4px #4d525b1f;
-  background-color: #fff;
-  white-space: nowrap;
-  padding: 0 10%;
-
-  img {
-    width: 100px;
-  }
-
-  a {
-    background: none;
-    border: 0;
-    color: inherit;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: inherit;
-    font-weight: inherit;
-    text-align: left;
-    color: #111;
-    font-size: 1.2em;
-
-    &:hover {
-      color: #007fed;
-      cursor: pointer;
-      position: relative;
-      transition: color .1s ease-out;
-    }
-  }
-
-  button {
-    background-color: #f20091;
-    padding: 8px 20px;
-    border-radius: 3px;
-    cursor: pointer;
+@mixin hIpad {
+  @media screen and (max-width: 1080px) {
+    @content;
   }
 }
 
-.header-tabs {
+.header {
+  .header-row {
+    box-shadow: 0 0 4px #4d525b14, 0 2px 4px #4d525b1f;
+    background-color: #fff;
+    white-space: nowrap;
+    padding: 0 10%;
+
+    @include hIpad() {
+      width: 100%;
+    }
+
+    img {
+      width: 100px;
+    }
+
+    a {
+      background: none;
+      border: 0;
+      color: inherit;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: inherit;
+      font-weight: inherit;
+      text-align: left;
+      color: #111;
+      font-size: 1.2em;
+
+      &:hover {
+        color: #007fed;
+        cursor: pointer;
+        position: relative;
+        transition: color .1s ease-out;
+      }
+    }
+
+    button {
+      background-color: #f20091;
+      padding: 8px 20px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+  }
+
+  .header-tabs {
     overflow: hidden;
     background-color: #0e1724;
     height: 100%;
@@ -127,6 +258,86 @@
     user-select: none;
     z-index: 2;
     padding: 0 10%;
+  }
+}
+
+.footer {
+  background-color: #161e2c;
+  padding: 0 10%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  // align-items: flex-start;
+
+  .q-btn {
+    text-decoration: none;
+
+    &::before {
+      box-shadow: none !important;
+    }
+  }
+
+  .col-footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    height: 100%;
+
+    .q-btn {
+      &::before {
+        box-shadow: none !important;
+      }
+    }
+
+    h4 {
+      padding: .4em 0;
+      font-size: 1.6em;
+    }
+
+    ul {
+      li {
+        padding: 0.5em 0;
+      }
+    }
+
+    a:not(.q-btn) {
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    &.footer-center {
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+      flex-direction: column;
+      height: 100%;
+
+      img {
+        width: 150px;
+        padding: 0;
+      }
+
+      .icon-help {
+        pointer-events: none;
+        outline: 0;
+        box-shadow: 0 !important;
+
+        &:hover {
+          transition: none;
+        }
+      }
+    }
+  }
+
+
+  .footer-copyright {
+    border-top: 1px solid #2b3340;
+    padding-top: 24px;
+
   }
 }
 </style>
