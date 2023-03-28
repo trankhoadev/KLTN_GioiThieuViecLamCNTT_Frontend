@@ -1,6 +1,7 @@
 import { boot } from "quasar/wrappers";
 import axios from "axios";
 import { useStoreAuthentication } from "src/stores/storeAuthentication";
+import { Dialog } from "quasar";
 // Be careful when using SSR for cross-request state pollution
 // due to creating a Singleton instance here;
 // If any client changes this (global) instance, it might be a
@@ -18,26 +19,54 @@ export default boot(({ app }) => {
   api.defaults.headers["token_bombom"] = useStoreAuthentication().accessToken;
 
   api.interceptors.request.use((request) => {
+    api.defaults.headers["token_bombom"] = localStorage.getItem("accessToken");
     return request;
   });
 
   api.interceptors.response.use(async (response) => {
-    // if (response.data.code === 401) {
-    //   return await api
-    //     .post("/auth/refreshToken")
-    //     .then((re) => {
-    //       if (re.data === 1) {
-    //         return router.push("/");
-    //       } else {
-    //         return router.push("/");
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       return router.push("/asl");
-    //     });
-    // }
+    async (response) => {
+      return response;
+    },
+      async (error) => {
+        let originalRequest = error.config;
+        if (error.response.status === 401 && !originalRequest._retry) {
+          let url = "/auth/create-token";
+          return api
+            .post(url, { reToken: localStorage.getItem("refreshToken") })
+            .then(async (re) => {
+              if (re.status === 200) {
+                originalRequest._retry = true;
+                localStorage.setItem("accessToken", re.data.data.accessToken);
+                api.defaults.headers["token_bombom"] =
+                  localStorage.getItem("accessToken");
+                originalRequest.headers["token_bombom"] =
+                  localStorage.getItem("accessToken");
+                return api(originalRequest);
+              }
 
-    return response;
+              useStoreAuthentication.$reset();
+              localStorage.clear();
+              Dialog.create({
+                title: "Thông báo",
+                message: "Bạn đã hết phiên đăng nhập, Vui lòng đăng nhập lại!",
+                persistent: true,
+              }).onOk(() => {
+                return window.location.reload();
+              });
+            })
+            .catch((err) => {
+              useStoreAuthentication.$reset();
+              localStorage.clear();
+              Dialog.create({
+                title: "Thông báo",
+                message: "Bạn đã hết phiên đăng nhập, Vui lòng đăng nhập lại!",
+                persistent: true,
+              }).onOk(() => {
+                return window.location.reload();
+              });
+            });
+        }
+      };
   });
 
   app.config.globalProperties.$api = api;
