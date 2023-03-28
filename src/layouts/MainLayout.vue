@@ -64,11 +64,17 @@ const clickToTop = () => {
         <div class="col-6 col-md-6">
           <div class="row">
             <div class="col-md-4 col-6">
-              <a href="#">Đăng nhập</a>
+              <!-- <a href="#">Đăng nhập</a> -->
+              <router-link to="/dang-nhap">
+                Đăng nhập
+              </router-link>
             </div>
 
             <div class="col-md-4 col-6">
-              <a href="#">Đăng ký</a>
+              <!-- <a href="#">Đăng ký</a> -->
+              <router-link to="/dang-ky">
+                Đăng ký
+              </router-link>
             </div>
 
             <div class="sm-none col-md-4 text-white text-weight-bold">

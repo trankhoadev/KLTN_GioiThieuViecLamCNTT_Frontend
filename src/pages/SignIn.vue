@@ -20,10 +20,10 @@
           </div>
         </q-card-section>
         <q-card-section>
-          <q-form class="q-gutter-md" @submit.prevent="submitForm">
-            <q-input label="Username" v-model="login.username">
+          <q-form class="q-gutter-md">
+            <q-input label="Username" v-model="storeAuthen.userName">
             </q-input>
-            <q-input label="Password" type="password" v-model="login.password">
+            <q-input label="Password" type="password" v-model="storeAuthen.password">
             </q-input>
             <div>
               <q-btn class="full-width" color="primary" label="Login" type="submit" rounded></q-btn>
@@ -39,28 +39,16 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { useQuasar } from 'quasar'
+import { onMounted } from 'vue';
+import { useStoreAuthentication } from 'src/stores/storeAuthentication';
 
-let $q
+const storeAuthen = useStoreAuthentication();
 
-export default {
-  name: 'SignIn',
-  data() {
-    return {
-      login: {
-        username: 'yonnon',
-        password: '123456Aa'
-      }
-    }
-  },
-  methods: {
-
-  },
-  mounted() {
-    $q = useQuasar()
-  }
-}
+onMounted(() => {
+  const $q = useQuasar();
+})
 </script>
 
 <style scoped>
