@@ -1,17 +1,17 @@
 import MainLayout from "layouts/MainLayout.vue";
 import IndexPage from "pages/IndexPage.vue";
 import SignIn from "pages/SignIn.vue";
+import SignUp from "pages/SignUp.vue";
 
 const router = [
-  // {
-  //   path: "/",
-  //   component: MainLayout,
-  //   children: [{ path: "/dang-nhap", component: SignIn }],
-  // },
   {
     path: "/",
     component: MainLayout,
-    children: [{ path: "/dang-nhap", component: SignIn }],
+    children: [
+      { path: "/", component: IndexPage },
+      { path: "/dang-nhap", component: SignIn },
+      { path: "/dang-ky", component: SignUp },
+    ],
   },
   {
     path: "/:catchAll(.*)*",

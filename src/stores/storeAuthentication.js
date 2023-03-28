@@ -6,7 +6,6 @@ export const useStoreAuthentication = defineStore("storeAuthentication", {
     return {
       isPwd: true,
       isAdmin: false,
-      fullName: "",
       email: "",
       userName: "yonnon",
       password: "123456",
@@ -22,6 +21,11 @@ export const useStoreAuthentication = defineStore("storeAuthentication", {
   },
   getters: {},
   actions: {
+    _init() {
+      this.email = "";
+      this.userName = "";
+      this.password = "";
+    },
     async login(user, pass) {
       try {
         this.isLoadingLogin = true;

@@ -86,9 +86,9 @@ const clickToTop = () => {
 
       <div class="header-tabs">
         <q-tabs align="left">
-          <q-route-tab to="/dang-nhap" label="Tìm Việc" class="text-white" />
-          <q-route-tab to="/page2" label="Tuyển Dụng" class="text-white" />
-          <q-route-tab to="/page3" label="About" class="text-white" />
+          <q-route-tab to="/" label="Tìm Việc" class="text-white" />
+          <q-route-tab to="/" label="Tuyển Dụng" class="text-white" />
+          <q-route-tab to="/" label="About" class="text-white" />
         </q-tabs>
       </div>
     </q-header>

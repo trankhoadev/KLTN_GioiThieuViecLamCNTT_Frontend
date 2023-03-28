@@ -28,8 +28,8 @@
             <div>
               <q-btn class="full-width" color="primary" label="Login" type="submit" rounded></q-btn>
               <div class="text-center q-mt-sm q-gutter-lg">
-                <router-link class="text-black" to="/">Quên mật khẩu ?</router-link>
-                <router-link class="text-black" to="/">Tạo tài khoản</router-link>
+                <router-link class="text-black" to="/quen-mat-khau">Quên mật khẩu ?</router-link>
+                <router-link class="text-black" to="/dang-ky">Tạo tài khoản</router-link>
               </div>
             </div>
           </q-form>
@@ -48,6 +48,8 @@ const storeAuthen = useStoreAuthentication();
 
 onMounted(() => {
   const $q = useQuasar();
+  storeAuthen.userName = 'yonnon'
+  storeAuthen.password = '123455'
 })
 </script>
 
