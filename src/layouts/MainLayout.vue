@@ -2,12 +2,17 @@
 import iconSet from "quasar/icon-set/ionicons-v4";
 import "@quasar/extras/ionicons-v4/ionicons-v4.css";
 import { onMounted, ref } from "vue";
+import { useStoreAuthentication } from "src/stores/storeAuthentication";
+import { useQuasar } from "quasar";
+const $q = useQuasar();
 
 onMounted(() => {
   window.onscroll = function () {
     scrollFunction();
   }
 })
+
+const storeAuthen = useStoreAuthentication();
 
 /* Back to Top */
 const scrollFunction = () => {
@@ -20,6 +25,12 @@ const scrollFunction = () => {
   }
 }
 
+/* Dark mode button */
+const toggleDarkMode = () => {
+  $q.dark.toggle();
+}
+
+/* Back to Top */
 const clickToTop = () => {
   document.body.scrollTop = 0;
   document.documentElement.scrollTop = 0;
@@ -84,11 +95,16 @@ const clickToTop = () => {
         </div>
       </div>
 
-      <div class="header-tabs">
+      <div class="header-tabs flex justify-between">
         <q-tabs align="left">
           <q-route-tab to="/" label="Tìm Việc" class="text-white" />
           <q-route-tab to="/" label="Tuyển Dụng" class="text-white" />
           <q-route-tab to="/" label="About" class="text-white" />
+        </q-tabs>
+
+        <q-tabs align="right">
+          <q-toggle v-model="storeAuthen.isDark" dark checked-icon="dark_mode" color="green"
+            unchecked-icon="panorama_fish_eye" @click="toggleDarkMode" />
         </q-tabs>
       </div>
     </q-header>
@@ -240,6 +256,15 @@ const clickToTop = () => {
   @media screen and (max-width: 1080px) {
     @content;
   }
+}
+
+/* Dark mode custom Css */
+body.body--dark {
+  background: #080E1A;
+}
+
+body.body--light {
+  background: #ffffff;
 }
 
 .header {
