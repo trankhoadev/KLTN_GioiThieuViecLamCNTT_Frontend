@@ -1,70 +1,177 @@
 <template>
-  <div id="wrap">
-    <div class="search-header">
-      <div class="search-landing-header-container">
-        <div class="search-image-container">
+  <q-layout>
+    <q-page-container>
+      <q-page>
+        <div id="wrap">
+          <div class="search-header">
+            <div class="search-landing-header-container">
+              <div class="search-image-container">
 
-          <picture class="container-picture ">
-            <source type="image/png" sizes="(max-width: 860px) 400px, 620px"
-              srcset="https://cdn.dribbble.com/assets/searches/search-header-400-a40f5b2d953007882ea557c30f11e58eb50e49a2fdb7476ab747cb03d06d0dbb.png 400w, https://cdn.dribbble.com/assets/searches/search-header-800-1f49142870a5c1428edf0f570465ce9114ca4dc76f9d645bcf5c786a18dc697f.png 800w, https://cdn.dribbble.com/assets/searches/search-header-620-ef14484efe06f8675ea0b3b90642e4aa9afdda6c2ec2352346a6a718dbea191f.png 620w, https://cdn.dribbble.com/assets/searches/search-header-1220-4fe74e874cdf583bbac4386ec4522183210907de406153c0f68e2a124b14b79c.png 1240w">
-            <img width="400" height="236" alt="Find designers and inspiration on Dribbble" class="search-image "
-              src="https://cdn.dribbble.com/assets/searches/search-header-800-1f49142870a5c1428edf0f570465ce9114ca4dc76f9d645bcf5c786a18dc697f.png" />
-          </picture>
+                <picture class="container-picture ">
+                  <source type="image/png" sizes="(max-width: 860px) 400px, 620px"
+                    srcset="https://cdn.dribbble.com/assets/searches/search-header-400-a40f5b2d953007882ea557c30f11e58eb50e49a2fdb7476ab747cb03d06d0dbb.png 400w, https://cdn.dribbble.com/assets/searches/search-header-800-1f49142870a5c1428edf0f570465ce9114ca4dc76f9d645bcf5c786a18dc697f.png 800w, https://cdn.dribbble.com/assets/searches/search-header-620-ef14484efe06f8675ea0b3b90642e4aa9afdda6c2ec2352346a6a718dbea191f.png 620w, https://cdn.dribbble.com/assets/searches/search-header-1220-4fe74e874cdf583bbac4386ec4522183210907de406153c0f68e2a124b14b79c.png 1240w">
+                  <img width="400" height="236" alt="Find designers and inspiration on Dribbble" class="search-image "
+                    src="https://cdn.dribbble.com/assets/searches/search-header-800-1f49142870a5c1428edf0f570465ce9114ca4dc76f9d645bcf5c786a18dc697f.png" />
+                </picture>
 
-        </div>
-        <div class="search-landing-image-text">
-          <h1 class="search-landing-heading">Tìm kiếm công việc tại đây</h1>
-          <p class="search-landing-heading-text">
-            Có rất nhiều công việc đang chờ bạn khám phá!
-          </p>
-        </div>
-      </div>
-
-      <div class="search-results-details">
-        <div class="search-input-container">
-          <div class="search-input-with-dropdown">
-            <div class="left-side-wrapper">
-              <q-form @submit="() => { }" class="js-search-input-form search-input-form">
-                <input id="search" type="search" placeholder="Search..." value="" class="search-input js-search-input text-black" />
-              </q-form>
+              </div>
+              <div class="search-landing-image-text">
+                <h1 class="search-landing-heading">Tìm kiếm công việc tại đây</h1>
+                <p class="search-landing-heading-text">
+                  Có rất nhiều công việc đang chờ bạn khám phá!
+                </p>
+              </div>
             </div>
 
-            <div class="vertical-divider"></div>
+            <div class="search-results-details">
+              <div class="search-input-container">
+                <div class="search-input-with-dropdown">
+                  <div class="left-side-wrapper">
+                    <q-form @submit="() => { }" class="js-search-input-form search-input-form">
+                      <input id="search" type="search" placeholder="Search..." value=""
+                        class="search-input js-search-input text-black" />
+                    </q-form>
+                  </div>
 
-            <span class="btn-search">
-              <q-btn icon="search" />
-            </span>
+                  <div class="vertical-divider"></div>
+
+                  <span class="btn-search">
+                    <q-btn icon="search" />
+                  </span>
+                </div>
+              </div>
+
+
+              <ul class="search-results-suggestions">
+                <li class="search-results-suggestion search-results-suggestion-heading">Suggested:</li>
+                <li class="search-results-suggestion">
+                  <a href="/search/landing%20page">Java</a>
+                </li>
+                <li class="search-results-suggestion">
+                  <a href="/search/ios">ReactJS</a>
+                </li>
+                <li class="search-results-suggestion">
+                  <a href="/search/food">VueJS</a>
+                </li>
+                <li class="search-results-suggestion">
+                  <a href="/search/landingpage">PHP</a>
+                </li>
+                <li class="search-results-suggestion">
+                  <a href="/search/uxdesign">NodeJS</a>
+                </li>
+                <li class="search-results-suggestion">
+                  <a href="/search/app%20design">JavaScript</a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
 
 
-        <ul class="search-results-suggestions">
-          <li class="search-results-suggestion search-results-suggestion-heading">Suggested:</li>
-          <li class="search-results-suggestion">
-            <a href="/search/landing%20page">Java</a>
-          </li>
-          <li class="search-results-suggestion">
-            <a href="/search/ios">ReactJS</a>
-          </li>
-          <li class="search-results-suggestion">
-            <a href="/search/food">VueJS</a>
-          </li>
-          <li class="search-results-suggestion">
-            <a href="/search/landingpage">PHP</a>
-          </li>
-          <li class="search-results-suggestion">
-            <a href="/search/uxdesign">NodeJS</a>
-          </li>
-          <li class="search-results-suggestion">
-            <a href="/search/app%20design">JavaScript</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
+        <div class="q-gutter-sm q-px-lg">
+          <div class="flex justify-start la-align-center no-wrap q-px-lg hotjob-title" style="align-items: center;">
+            <q-icon name="star" size="lg" />
+            <h6 class="text-bold text-uppercase">Các công việc được tìm kiếm hàng đầu</h6>
+          </div>
+
+          <!-- Render Item List Hot Job -->
+          <div class="q-px-lg hotjob-content">
+            <div class="row">
+              <q-card class="col-12 col-md-4 q-my-md bg-grey-2 text-dark" style="min-height: 200px;"
+                v-for="item in storeJob.listRecruiter" :key="item.id">
+                <q-card-section>
+                  <div class="row">
+                    <div class="col-3 col-md-3 col-lg-3">
+                      <img class="" style="max-width: 100px; max-height: 100px;" :src=item.picture alt="">
+                    </div>
+
+                    <div class="col-7 col-lg-7 col-md-12 column">
+                      <p class="text-bold text-uppercase q-py-sm q-my-none">
+                        {{ item.title }}
+                      </p>
+                      <span style="color: #333;">
+                        {{ item.companyName }}
+                      </span>
+                      <div class="q-py-sm">
+                        <div class="row flex justify-between">
+                          <div class="col-6">
+                            <q-icon name="monetization_on" size="sm" />
+                            <span class="text-red-10 q-pl-md q-py-sm text-bold">{{ item.salary }}</span>
+                          </div>
+
+                          <div class="col-6 flex justify-end">
+                            {{ item.address }}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row salary-date">
+                        <div class="col-8 col-lg-8 col-md-12 col-sm-8">
+                          <div class="flex justify-start">
+                            <div v-for="(itemTag) in item.tag" :key="itemTag">
+                              <span class="tag">{{ itemTag }}</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-4 col-lg-4 col-md-12 col-sm-4 flex justify-end">
+                          {{ item.datePost }}
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- <div class="col-2 col-ld-2 col-md-12 flex column justify-between">
+                      <q-icon name="star" size="sm" />
+                    </div> -->
+                  </div>
+                </q-card-section>
+              </q-card>
+            </div>
+          </div>
+        </div>
+
+        <div class="q-gutter-sm q-px-lg q-pt-lg" style="padding: 2em 0;">
+          <div class="flex justify-start la-align-center no-wrap q-px-lg hotjob-title" style="align-items: center;">
+            <q-icon name="star" size="lg" />
+            <h6 class="text-bold text-uppercase">Các ngôn ngữ lập trình đang có cơ hội làm việc hot</h6>
+          </div>
+
+          <div class="q-px-lg hotlanguage-content" style="height: 100%;">
+            <div class="row" style="height: 100%;">
+              <q-card class="col-12 col-md-3 q-my-md bg-white" style="min-height: 150px;"
+                v-for="item in storeJob.listLanguage" :key="item.id">
+                <q-card-section>
+                  <div class="row flex flex-center justify-between column" style="flex-direction: column;">
+                    <div class="col-12 flex flex-center" style="min-height: 100px;">
+                      <img :src=item.picture style="max-width: 25%;" alt="">
+                    </div>
+
+                    <div class="col-12 flex flex-center q-py-lg">
+                      <h4 class="text-dark">
+                        {{ item.name }}
+                      </h4>
+                    </div>
+                  </div>
+                </q-card-section>
+              </q-card>
+            </div>
+          </div>
+        </div>
+      </q-page>
+    </q-page-container>
+  </q-layout>
 </template>
 
 <script setup>
+import { useStoreJob } from 'src/stores/storeJob';
+import { Dark, useQuasar } from 'quasar'
+import { watch } from 'vue';
+
+const $q = useQuasar();
+
+watch(() => $q.dark.isActive, val => {
+  console.log(val)
+})
+const storeJob = useStoreJob();
 
 </script>
 
@@ -78,10 +185,10 @@
 #wrap {
   -ms-flex: 1 0 auto;
   flex: 1 0 auto;
-  min-height: 60vh;
+  min-height: 55vh;
 
   @include sm() {
-    min-height: 50vh;
+    min-height: 0;
   }
 }
 
@@ -446,10 +553,23 @@ body {
   }
 }
 
-.search-landing-shots {
-  margin-top: 64px;
+.hotjob-content {
+  .tag {
+    margin: 2em 0 0 1em;
+    padding: .1em .5em;
+    border: 1px solid #d2d3d3;
+    color: #575656;
+    transition: all .2s ease;
+    cursor: pointer;
+
+    &:hover {
+      color: #fd507e;
+      transition: all ease .3s;
+    }
+  }
 }
 
+/* Responsive */
 @media (min-width: 768px) {
   .search-header {
     padding: 0;

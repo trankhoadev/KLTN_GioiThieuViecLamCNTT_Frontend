@@ -4,7 +4,15 @@ import "@quasar/extras/ionicons-v4/ionicons-v4.css";
 import { onMounted, ref } from "vue";
 import { useStoreAuthentication } from "src/stores/storeAuthentication";
 import { useQuasar } from "quasar";
+import { watch } from 'vue';
 const $q = useQuasar();
+
+// watch(() => $q.dark.isActive, val => {
+//   if (val) {
+//     let header = document.getElementById('header');
+//     header.style.backgroundColor = '#111';
+//   }
+// })
 
 onMounted(() => {
   window.onscroll = function () {
@@ -47,8 +55,8 @@ const clickToTop = () => {
     </div>
     <!-- Back to Top End-->
 
-    <q-header elevated class="bg-white text-white header" height-hint="98">
-      <div class="row header-row flex-center">
+    <q-header elevated class="text-white header" ref="header" height-hint="98">
+      <div class="row header-row flex-center" id="header">
 
         <div class="col-6 col-md-6">
           <div class="row">
