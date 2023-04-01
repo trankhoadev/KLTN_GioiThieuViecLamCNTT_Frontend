@@ -136,7 +136,7 @@
           </div>
 
           <div class="q-px-lg hotlanguage-content" style="height: 100%;">
-            <div class="row" style="height: 100%;">
+            <div class="row q-gutter-lg justify-evenly" style="height: 100%;">
               <q-card class="col-12 col-md-3 q-my-md bg-white" style="min-height: 150px;"
                 v-for="item in storeJob.listLanguage" :key="item.id">
                 <q-card-section>

@@ -1,9 +1,29 @@
 import { defineStore } from "pinia";
 import { api } from "src/boot/axios";
+import { ref } from "vue";
 
 export const useStoreJob = defineStore("storeJob", {
   state: () => {
     return {
+      searchInput: "",
+      selectLevel: ref(null),
+      selectSalary: ref(null),
+      selectExperiment: ref(null),
+      selectWorkType: ref(null),
+      optionLevel: ["Fresher", "Junior", "Senior", "Manager"],
+      optionSalary: [
+        "≥ 5 triệu đồng",
+        "≥ 15 triệu đồng",
+        "≥ 25 triệu đồng",
+        "≥ 40 triệu đồng",
+      ],
+      optionExperiment: [
+        "Chưa có kinh nghiệm",
+        "≥ 1 năm",
+        "≥ 2 năm",
+        "≥ 4 năm",
+      ],
+      optionWorkType: ["Làm việc tại văn phòng", "Làm việc từ xa", "Linh hoạt"],
       listRecruiter: [
         {
           id: "1",
