@@ -26,7 +26,7 @@
             <q-input label="Password" type="password" v-model="storeAuthen.password">
             </q-input>
             <div>
-              <q-btn class="full-width" color="primary" label="Login" type="submit" rounded></q-btn>
+              <router-link to="/"><q-btn class="full-width" color="primary" label="Login" type="submit" rounded></q-btn></router-link>
               <div class="text-center q-mt-sm q-gutter-lg">
                 <router-link to="/quen-mat-khau">Quên mật khẩu ?</router-link>
                 <router-link to="/dang-ky">Tạo tài khoản</router-link>
