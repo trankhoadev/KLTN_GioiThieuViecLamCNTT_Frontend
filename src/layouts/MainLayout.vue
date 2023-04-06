@@ -138,15 +138,11 @@ const clickToTop = () => {
           <h4>Giới thiệu</h4>
           <ul>
             <li>
-              <a href="#">
-                <span>Về chúng tôi</span>
-              </a>
+              <router-link to="/ve-chung-toi">Về chúng tôi</router-link>
             </li>
 
             <li>
-              <a href="#">
-                <span>Cách thức hoạt động</span>
-              </a>
+              <router-link to="/cach-thuc-hoat-dong">Cách thức hoạt động</router-link>
             </li>
 
             <li>
@@ -168,16 +164,9 @@ const clickToTop = () => {
             </li>
 
             <li>
-              <a href="#">
-                <span>Tin tức</span>
-              </a>
+              <router-link to="/lien-he">Liên hệ</router-link>
             </li>
 
-            <li>
-              <a href="#">
-                <span>Công việc</span>
-              </a>
-            </li>
           </ul>
         </div>
 
@@ -185,9 +174,7 @@ const clickToTop = () => {
           <h4>Điều khoản</h4>
           <ul>
             <li>
-              <a href="#">
-                <span>Chính sách bảo mật</span>
-              </a>
+              <router-link to="/chinh-sach-bao-mat">Chính sách bảo mật</router-link>
             </li>
 
             <li>
