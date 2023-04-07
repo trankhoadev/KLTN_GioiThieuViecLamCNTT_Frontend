@@ -1,26 +1,24 @@
 <script setup>
-import iconSet from "quasar/icon-set/ionicons-v4";
 import "@quasar/extras/ionicons-v4/ionicons-v4.css";
-import { onMounted, ref } from "vue";
+import { onMounted } from "vue";
 import { useStoreAuthentication } from "src/stores/storeAuthentication";
+import { useStoreMainLayout } from "src/stores/storeMainLayout"
 import { useQuasar } from "quasar";
-import { watch } from 'vue';
-const $q = useQuasar();
 
-// watch(() => $q.dark.isActive, val => {
-//   if (val) {
-//     let header = document.getElementById('header');
-//     header.style.backgroundColor = '#111';
-//   }
-// })
+const $q = useQuasar();
+const storeAuthen = useStoreAuthentication();
+const storeMainLayout = useStoreMainLayout();
 
 onMounted(() => {
   window.onscroll = function () {
     scrollFunction();
   }
+  localStorage.setItem('userName', "User Test");
+  const userName = localStorage.getItem('userName');
+  if (userName) {
+    storeAuthen.isDataUserAvailable = true;
+  }
 })
-
-const storeAuthen = useStoreAuthentication();
 
 /* Back to Top */
 const scrollFunction = () => {
@@ -80,7 +78,48 @@ const clickToTop = () => {
           </div>
         </div>
 
-        <div class="col-6 col-md-6">
+        <div v-if="storeAuthen.isDataUserAvailable" class="col-6 col-md-6 text-black">
+          <div class="row flex justify-end">
+
+            <div class="flex flex-center justify-center cursor-pointer">
+              <q-btn color="black" flat @mouseover="storeMainLayout.isShowDropdown = true" icon-right="arrow_drop_down"
+                :label=storeAuthen.userName>
+                <q-menu v-model="storeMainLayout.isShowDropdown" @mouseleave="storeMainLayout.isShowDropdown = false" fit>
+                  <q-list style="min-width: 200px">
+                    <q-item clickable class="flex flex-center justify-center">
+                      <q-icon size="sm" name="account_circle" />
+                      &nbsp;
+                      <q-item-section>Hồ sơ và CV</q-item-section>
+                    </q-item>
+                    <q-item clickable class="flex flex-center justify-center">
+                      <q-icon size="sm" name="work_outline" />
+                      &nbsp;
+                      <q-item-section>Việc làm của tôi</q-item-section>
+                    </q-item>
+                    <q-item clickable class="flex flex-center justify-center">
+                      <q-icon size="sm" name="settings" />
+                      &nbsp;
+                      <q-item-section>Cài đặt</q-item-section>
+                    </q-item>
+                    <q-item clickable class="flex flex-center justify-center">
+                      <q-icon size="sm" name="power_settings_new" />
+                      &nbsp;
+                      <q-item-section @click="storeAuthen.logOut">Đăng xuất</q-item-section>
+                    </q-item>
+                  </q-list>
+                </q-menu>
+              </q-btn>
+            </div>
+
+            <q-avatar font-size="20px" size="28px" color="yellow-2" text-color="orange"
+              class="text-weight-bold flex flex-center justify-center" style="align-items: center
+              ; flex-direction: column;" v-show="storeAuthen.userName"><img
+                src="https://media.allure.com/photos/62b333877389827cf6e080f9/16:9/pass/Is%20it%20ever%20ok%20to%20dye%20your%20dog's%20fur"
+                alt=""></q-avatar>
+          </div>
+        </div>
+
+        <div v-else class="col-6 col-md-6">
           <div class="row">
             <div class="col-md-4 col-6">
               <!-- <a href="#">Đăng nhập</a> -->
@@ -97,7 +136,7 @@ const clickToTop = () => {
             </div>
 
             <div class="sm-none col-md-4 text-white text-weight-bold">
-              <button>Đăng dự án</button>
+              <button class="post">Đăng dự án</button>
             </div>
           </div>
         </div>
@@ -297,7 +336,7 @@ body.body--light {
       }
     }
 
-    button {
+    button.post {
       background-color: #f20091;
       padding: 8px 20px;
       border-radius: 3px;
