@@ -3,7 +3,7 @@ import "@quasar/extras/ionicons-v4/ionicons-v4.css";
 import { onMounted } from "vue";
 import { useStoreAuthentication } from "src/stores/storeAuthentication";
 import { useStoreMainLayout } from "src/stores/storeMainLayout"
-import { useQuasar } from "quasar";
+import { Dark, useQuasar } from "quasar";
 
 const $q = useQuasar();
 const storeAuthen = useStoreAuthentication();
@@ -33,6 +33,10 @@ const scrollFunction = () => {
 
 /* Dark mode button */
 const toggleDarkMode = () => {
+  let theme = localStorage.getItem('isDark');
+  if (theme === null) {
+    localStorage.setItem('isDark', true);
+  }
   $q.dark.toggle();
 }
 
@@ -86,10 +90,12 @@ const clickToTop = () => {
                 :label=storeAuthen.userName>
                 <q-menu v-model="storeMainLayout.isShowDropdown" @mouseleave="storeMainLayout.isShowDropdown = false" fit>
                   <q-list style="min-width: 200px">
-                    <q-item clickable class="flex flex-center justify-center">
-                      <q-icon size="sm" name="account_circle" />
-                      &nbsp;
-                      <q-item-section>Hồ sơ và CV</q-item-section>
+                    <q-item clickable>
+                      <router-link class="flex flex-center justify-center" to="/ho-so-cv">
+                        <q-icon size="sm" name="account_circle" />
+                        &nbsp;
+                        <q-item-section>Hồ sơ và CV</q-item-section>
+                      </router-link>
                     </q-item>
                     <q-item clickable class="flex flex-center justify-center">
                       <q-icon size="sm" name="work_outline" />
@@ -113,7 +119,7 @@ const clickToTop = () => {
 
             <q-avatar font-size="20px" size="28px" color="yellow-2" text-color="orange"
               class="text-weight-bold flex flex-center justify-center" style="align-items: center
-              ; flex-direction: column;" v-show="storeAuthen.userName"><img
+                ; flex-direction: column;" v-show="storeAuthen.userName"><img
                 src="https://media.allure.com/photos/62b333877389827cf6e080f9/16:9/pass/Is%20it%20ever%20ok%20to%20dye%20your%20dog's%20fur"
                 alt=""></q-avatar>
           </div>
