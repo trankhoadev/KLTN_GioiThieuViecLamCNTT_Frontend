@@ -1,3 +1,18 @@
+<script setup>
+/* storage */
+// import { useStoreAuthentication } from "src/stores/storeAuthentication";
+// const storeAuthen = useStoreAuthentication();
+
+/*
+  role:
+    0: Employee
+    1: Recruiter
+    2: Admin
+*/
+const role = localStorage.getItem('role');
+
+</script>
+
 <template>
   <div class="fullscreen bg-blue text-white text-center q-pa-md flex flex-center">
     <div>
@@ -9,23 +24,14 @@
         Oops. Nothing here...
       </div>
 
-      <q-btn
-        class="q-mt-xl"
-        color="white"
-        text-color="blue"
-        unelevated
-        to="/"
-        label="Go Home"
-        no-caps
-      />
+      <q-btn class="q-mt-xl" color="white" text-color="blue" unelevated to="/admin" label="Go Home" no-caps
+        v-if="role == 2" />
+
+      <q-btn class="q-mt-xl" color="white" text-color="blue" unelevated to="/recruiter" label="Go Home" no-caps
+        v-else-if="role == 1" />
+
+      <q-btn class="q-mt-xl" color="white" text-color="blue" unelevated to="/" label="Go Home" no-caps v-else />
     </div>
   </div>
 </template>
 
-<script>
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-  name: 'ErrorNotFound'
-})
-</script>

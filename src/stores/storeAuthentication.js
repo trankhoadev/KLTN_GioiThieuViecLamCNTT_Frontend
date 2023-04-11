@@ -5,7 +5,7 @@ export const useStoreAuthentication = defineStore("storeAuthentication", {
   state: () => {
     return {
       isPwd: true,
-      isAdmin: false,
+      isAdmin: true,
       email: "",
       userName: "yonnon",
       password: "123456",

@@ -1,3 +1,18 @@
+<script setup>
+import { useQuasar } from 'quasar'
+import { onMounted } from 'vue';
+import { useStoreAuthentication } from 'src/stores/storeAuthentication';
+
+const storeAuthen = useStoreAuthentication();
+
+onMounted(() => {
+  const $q = useQuasar();
+  storeAuthen.userName = 'yonnon'
+  storeAuthen.password = '123455'
+})
+</script>
+
+
 <template>
   <img src="src/assets/wave.png" class="wave" alt="login-wave">
   <div class="row" style="height: 90vh">
@@ -38,20 +53,6 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import { useQuasar } from 'quasar'
-import { onMounted } from 'vue';
-import { useStoreAuthentication } from 'src/stores/storeAuthentication';
-
-const storeAuthen = useStoreAuthentication();
-
-onMounted(() => {
-  const $q = useQuasar();
-  storeAuthen.userName = 'yonnon'
-  storeAuthen.password = '123455'
-})
-</script>
 
 <style scoped>
 .wave {

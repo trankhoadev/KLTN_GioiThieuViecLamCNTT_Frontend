@@ -36,7 +36,6 @@ const router = [
     /* admin */
     path: "/admin",
     component: AdminLayout,
-    // children: [{ path: "/", component: IndexPage }],
     children: [
       { path: "/account/recruiter", component: RecruiterAccount },
       { path: "/account/employee", component: EmployeAccount },
