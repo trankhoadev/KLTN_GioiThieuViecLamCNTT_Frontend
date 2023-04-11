@@ -15,21 +15,59 @@ import HoSoCV from "pages/employee/HoSoCV.vue";
 /* admin page */
 import RecruiterAccount from "pages/admin/account/RecruiterAccount.vue";
 import EmployeAccount from "pages/admin/account/EmployeAccount.vue";
+import ManagePost from "pages/admin/ManagePost.vue";
+
+const requireAuth = () => {};
 
 const router = [
   {
     path: "/",
     component: MainLayout,
     children: [
-      { path: "/", component: IndexPage },
-      { path: "/dang-nhap", component: SignIn },
-      { path: "/dang-ky", component: SignUp },
-      { path: "/search", component: SearchJob },
-      { path: "/ho-so-cv", component: HoSoCV },
-      { path: "/ve-chung-toi", component: AboutUs },
-      { path: "/cach-thuc-hoat-dong", component: CachThucHoatDong },
-      { path: "/chinh-sach-bao-mat", component: ChinhSachBaoMat },
-      { path: "/lien-he", component: LienHe },
+      {
+        path: "/",
+        component: IndexPage,
+      },
+      {
+        path: "/dang-nhap",
+        component: SignIn,
+      },
+      {
+        path: "/dang-ky",
+        component: SignUp,
+      },
+      {
+        path: "/search",
+        component: SearchJob,
+      },
+      {
+        path: "/ho-so-cv",
+        component: HoSoCV,
+        beforeEnter: requireAuth,
+        meta: {
+          permission: "employee",
+        },
+      },
+      {
+        path: "/ve-chung-toi",
+        component: AboutUs,
+        beforeEnter: requireAuth,
+        meta: {
+          permission: "employee",
+        },
+      },
+      {
+        path: "/cach-thuc-hoat-dong",
+        component: CachThucHoatDong,
+      },
+      {
+        path: "/chinh-sach-bao-mat",
+        component: ChinhSachBaoMat,
+      },
+      {
+        path: "/lien-he",
+        component: LienHe,
+      },
     ],
   },
   {
@@ -37,8 +75,30 @@ const router = [
     path: "/admin",
     component: AdminLayout,
     children: [
-      { path: "/account/recruiter", component: RecruiterAccount },
-      { path: "/account/employee", component: EmployeAccount },
+      {
+        path: "/manage-post",
+        component: ManagePost,
+        beforeEnter: requireAuth,
+        meta: {
+          permission: "admin",
+        },
+      },
+      {
+        path: "/account/recruiter",
+        component: RecruiterAccount,
+        beforeEnter: requireAuth,
+        meta: {
+          permission: "admin",
+        },
+      },
+      {
+        path: "/account/employee",
+        component: EmployeAccount,
+        beforeEnter: requireAuth,
+        meta: {
+          permission: "admin",
+        },
+      },
     ],
   },
   {

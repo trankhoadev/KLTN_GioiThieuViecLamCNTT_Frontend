@@ -71,7 +71,7 @@ export default defineComponent({
           </q-item-section>
         </q-item>
 
-        <q-item to="/admin" active-class="q-item-no-link-highlighting">
+        <q-item to="/manage-post" active-class="q-item-no-link-highlighting">
           <q-item-section avatar>
             <q-icon name="support_agent" />
           </q-item-section>
