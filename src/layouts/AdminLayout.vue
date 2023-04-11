@@ -62,7 +62,7 @@ export default defineComponent({
 
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered class="bg-deep-purple text-white">
       <q-list>
-        <q-item to="/admin" active-class="q-item-no-link-highlighting">
+        <q-item to="/admin/welcome" active-class="q-item-no-link-highlighting">
           <q-item-section avatar>
             <q-icon name="dashboard" />
           </q-item-section>

@@ -24,7 +24,7 @@ const role = localStorage.getItem('role');
         Oops. Nothing here...
       </div>
 
-      <q-btn class="q-mt-xl" color="white" text-color="blue" unelevated to="/admin" label="Go Home" no-caps
+      <q-btn class="q-mt-xl" color="white" text-color="blue" unelevated to="/admin/welcome" label="Go Home" no-caps
         v-if="role == 2" />
 
       <q-btn class="q-mt-xl" color="white" text-color="blue" unelevated to="/recruiter" label="Go Home" no-caps

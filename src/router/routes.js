@@ -16,6 +16,7 @@ import HoSoCV from "pages/employee/HoSoCV.vue";
 import RecruiterAccount from "pages/admin/account/RecruiterAccount.vue";
 import EmployeAccount from "pages/admin/account/EmployeAccount.vue";
 import ManagePost from "pages/admin/ManagePost.vue";
+import AdminPage from "src/pages/admin/AdminPage.vue";
 
 const requireAuth = () => {};
 
@@ -75,6 +76,14 @@ const router = [
     path: "/admin",
     component: AdminLayout,
     children: [
+      {
+        path: "/admin/welcome",
+        component: AdminPage,
+        beforeEnter: requireAuth,
+        meta: {
+          permission: "admin",
+        },
+      },
       {
         path: "/manage-post",
         component: ManagePost,
