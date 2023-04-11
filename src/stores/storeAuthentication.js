@@ -13,6 +13,7 @@ export const useStoreAuthentication = defineStore("storeAuthentication", {
       accessToken: null,
       isLoadingLogin: false,
       isDark: false,
+      isDataUserAvailable: false,
     };
   },
   // lưu lại các state sau, có load lại cũng không bị mất

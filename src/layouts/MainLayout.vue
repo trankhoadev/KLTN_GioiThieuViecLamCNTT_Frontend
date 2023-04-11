@@ -1,18 +1,24 @@
 <script setup>
-import iconSet from "quasar/icon-set/ionicons-v4";
 import "@quasar/extras/ionicons-v4/ionicons-v4.css";
-import { onMounted, ref } from "vue";
+import { onMounted } from "vue";
 import { useStoreAuthentication } from "src/stores/storeAuthentication";
-import { useQuasar } from "quasar";
+import { useStoreMainLayout } from "src/stores/storeMainLayout"
+import { Dark, useQuasar } from "quasar";
+
 const $q = useQuasar();
+const storeAuthen = useStoreAuthentication();
+const storeMainLayout = useStoreMainLayout();
 
 onMounted(() => {
   window.onscroll = function () {
     scrollFunction();
   }
+  localStorage.setItem('userName', "User Test");
+  const userName = localStorage.getItem('userName');
+  if (userName) {
+    storeAuthen.isDataUserAvailable = true;
+  }
 })
-
-const storeAuthen = useStoreAuthentication();
 
 /* Back to Top */
 const scrollFunction = () => {
@@ -27,6 +33,10 @@ const scrollFunction = () => {
 
 /* Dark mode button */
 const toggleDarkMode = () => {
+  let theme = localStorage.getItem('isDark');
+  if (theme === null) {
+    localStorage.setItem('isDark', true);
+  }
   $q.dark.toggle();
 }
 
@@ -47,8 +57,8 @@ const clickToTop = () => {
     </div>
     <!-- Back to Top End-->
 
-    <q-header elevated class="bg-white text-white header" height-hint="98">
-      <div class="row header-row flex-center">
+    <q-header elevated class="text-white header" ref="header" height-hint="98">
+      <div class="row header-row flex-center" id="header">
 
         <div class="col-6 col-md-6">
           <div class="row">
@@ -72,7 +82,50 @@ const clickToTop = () => {
           </div>
         </div>
 
-        <div class="col-6 col-md-6">
+        <div v-if="storeAuthen.isDataUserAvailable" class="col-6 col-md-6 text-black">
+          <div class="row flex justify-end">
+
+            <div class="flex flex-center justify-center cursor-pointer">
+              <q-btn color="black" flat @mouseover="storeMainLayout.isShowDropdown = true" icon-right="arrow_drop_down"
+                :label=storeAuthen.userName>
+                <q-menu v-model="storeMainLayout.isShowDropdown" @mouseleave="storeMainLayout.isShowDropdown = false" fit>
+                  <q-list style="min-width: 200px">
+                    <q-item clickable>
+                      <router-link class="flex flex-center justify-center" to="/ho-so-cv">
+                        <q-icon size="sm" name="account_circle" />
+                        &nbsp;
+                        <q-item-section>Hồ sơ và CV</q-item-section>
+                      </router-link>
+                    </q-item>
+                    <q-item clickable class="flex flex-center justify-center">
+                      <q-icon size="sm" name="work_outline" />
+                      &nbsp;
+                      <q-item-section>Việc làm của tôi</q-item-section>
+                    </q-item>
+                    <q-item clickable class="flex flex-center justify-center">
+                      <q-icon size="sm" name="settings" />
+                      &nbsp;
+                      <q-item-section>Cài đặt</q-item-section>
+                    </q-item>
+                    <q-item clickable class="flex flex-center justify-center">
+                      <q-icon size="sm" name="power_settings_new" />
+                      &nbsp;
+                      <q-item-section @click="storeAuthen.logOut">Đăng xuất</q-item-section>
+                    </q-item>
+                  </q-list>
+                </q-menu>
+              </q-btn>
+            </div>
+
+            <q-avatar font-size="20px" size="28px" color="yellow-2" text-color="orange"
+              class="text-weight-bold flex flex-center justify-center" style="align-items: center
+                ; flex-direction: column;" v-show="storeAuthen.userName"><img
+                src="https://media.allure.com/photos/62b333877389827cf6e080f9/16:9/pass/Is%20it%20ever%20ok%20to%20dye%20your%20dog's%20fur"
+                alt=""></q-avatar>
+          </div>
+        </div>
+
+        <div v-else class="col-6 col-md-6">
           <div class="row">
             <div class="col-md-4 col-6">
               <!-- <a href="#">Đăng nhập</a> -->
@@ -89,7 +142,7 @@ const clickToTop = () => {
             </div>
 
             <div class="sm-none col-md-4 text-white text-weight-bold">
-              <button>Đăng dự án</button>
+              <button class="post">Đăng dự án</button>
             </div>
           </div>
         </div>
@@ -130,15 +183,11 @@ const clickToTop = () => {
           <h4>Giới thiệu</h4>
           <ul>
             <li>
-              <a href="#">
-                <span>Về chúng tôi</span>
-              </a>
+              <router-link to="/ve-chung-toi">Về chúng tôi</router-link>
             </li>
 
             <li>
-              <a href="#">
-                <span>Cách thức hoạt động</span>
-              </a>
+              <router-link to="/cach-thuc-hoat-dong">Cách thức hoạt động</router-link>
             </li>
 
             <li>
@@ -160,16 +209,9 @@ const clickToTop = () => {
             </li>
 
             <li>
-              <a href="#">
-                <span>Tin tức</span>
-              </a>
+              <router-link to="/lien-he">Liên hệ</router-link>
             </li>
 
-            <li>
-              <a href="#">
-                <span>Công việc</span>
-              </a>
-            </li>
           </ul>
         </div>
 
@@ -177,9 +219,7 @@ const clickToTop = () => {
           <h4>Điều khoản</h4>
           <ul>
             <li>
-              <a href="#">
-                <span>Chính sách bảo mật</span>
-              </a>
+              <router-link to="/chinh-sach-bao-mat">Chính sách bảo mật</router-link>
             </li>
 
             <li>
@@ -302,7 +342,7 @@ body.body--light {
       }
     }
 
-    button {
+    button.post {
       background-color: #f20091;
       padding: 8px 20px;
       border-radius: 3px;
