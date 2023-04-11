@@ -4,19 +4,25 @@ import CachThucHoatDong from "pages/about/CachThucHoatDong.vue";
 import ChinhSachBaoMat from "pages/about/ChinhSachBaoMat.vue";
 import LienHe from "pages/about/LienHe.vue";
 
-import MainLayout from "layouts/MainLayout.vue";
-import AdminLayout from "layouts/AdminLayout.vue";
 import IndexPage from "pages/IndexPage.vue";
 import SignIn from "pages/SignIn.vue";
 import SignUp from "pages/SignUp.vue";
 import SearchJob from "pages/job/SearchJob.vue";
 import HoSoCV from "pages/employee/HoSoCV.vue";
 
+/* layout */
+import MainLayout from "layouts/MainLayout.vue";
+import AdminLayout from "layouts/AdminLayout.vue";
+import RecruiterLayout from "layouts/RecruiterLayout.vue";
+
 /* admin page */
 import RecruiterAccount from "pages/admin/account/RecruiterAccount.vue";
 import EmployeAccount from "pages/admin/account/EmployeAccount.vue";
 import ManagePost from "pages/admin/ManagePost.vue";
 import AdminPage from "src/pages/admin/AdminPage.vue";
+
+/* recruiter page */
+import RecruiterPage from "pages/recruiter/RecruiterPage.vue";
 
 const requireAuth = () => {};
 
@@ -68,6 +74,21 @@ const router = [
       {
         path: "/lien-he",
         component: LienHe,
+      },
+    ],
+  },
+  {
+    /* recruiter */
+    path: "/recruiter",
+    component: RecruiterLayout,
+    children: [
+      {
+        path: "/recruiter/welcome",
+        component: RecruiterPage,
+        beforeEnter: requireAuth,
+        meta: {
+          permission: "admin",
+        },
       },
     ],
   },

@@ -17,7 +17,7 @@
       </g>
     </svg>
     <div class="message-box">
-      <h1 style="white-space: nowrap;">Admin Page</h1>
+      <h1 style="white-space: nowrap;">Recruiter Page</h1>
       <p>Tiến hành quản lý dữ liệu của bạn với các công cụ bên dưới của chúng tôi.</p>
       <div class="buttons-con">
         <div class="action-link-wrap">
