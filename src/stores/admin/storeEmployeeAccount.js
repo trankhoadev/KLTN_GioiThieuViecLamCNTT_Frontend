@@ -3,15 +3,15 @@ import { api } from "src/boot/axios";
 import { ref, reactive } from "vue";
 import { Loading, Notify } from "quasar";
 
-export const useStoreRecruiterAccount = defineStore("storeRecruiterAccount", {
+export const useStoreEmployeeAccount = defineStore("storeEmployeeAccount", {
   state: () => {
     return {
       filter: "",
-      listSelectRecruiterAccount: ref(),
-      taiKhoanNtd: 0,
-      taiKhoanNtdDangCho: 0,
-      taiKhoanNtdDaDuyet: 0,
-      taiKhoanNtdTuChoi: 0,
+      listSelectEmployeeAccount: ref(),
+      taiKhoanUtv: 0,
+      taiKhoanUtvDangCho: 0,
+      taiKhoanUtvDaDuyet: 0,
+      taiKhoanUtvTuChoi: 0,
       dialogDenyOne: ref(false),
       confirmDenyOne: ref(false),
       dialogDenyAll: ref(false),
@@ -24,7 +24,7 @@ export const useStoreRecruiterAccount = defineStore("storeRecruiterAccount", {
         denyOne: false,
         denyAll: false,
       }),
-      columnRecruiterAccount: [
+      columnEmployeeAccount: [
         {
           name: "stt",
           required: true,
@@ -38,7 +38,7 @@ export const useStoreRecruiterAccount = defineStore("storeRecruiterAccount", {
         {
           name: "name",
           required: true,
-          label: "Tên nhà tuyển dụng",
+          label: "Tên ứng tuyển viên",
           field: "name",
           align: "left",
           sortable: true,
@@ -91,7 +91,7 @@ export const useStoreRecruiterAccount = defineStore("storeRecruiterAccount", {
           2: đang chờ
         }
       */
-      rowDataRecruiterAccount: [
+      rowDataEmployeeAccount: [
         {
           name: "yonnon1",
           email: "ayonnon@gmail.com",
@@ -178,7 +178,35 @@ export const useStoreRecruiterAccount = defineStore("storeRecruiterAccount", {
     _init() {},
 
     logOut() {},
-    /* For recruiter User */
+    /* For Employee User */
+    checkDenyOne(name, email) {
+      this.dialogDenyOne = true;
+      this.oneAccountSelectName = name;
+      this.oneAccountSelectEmail = email;
+    },
+
+    checkDenyAll() {
+      if (
+        !this.listSelectEmployeeAccount ||
+        this.listSelectEmployeeAccount.length === 0
+      ) {
+        Notify.create({
+          message:
+            "Vui lòng chọn đối tượng ở bảng bên dưới để thực hiện thao tác.",
+          color: "primary",
+          actions: [
+            {
+              label: "OK",
+              color: "white",
+              handler: () => {},
+            },
+          ],
+        });
+      } else {
+        this.dialogDenyAll = true;
+      }
+    },
+
     acceptOne(inputData) {
       let data = inputData;
       Loading.show({
@@ -218,8 +246,8 @@ export const useStoreRecruiterAccount = defineStore("storeRecruiterAccount", {
 
     acceptAll() {
       if (
-        !this.listSelectRecruiterAccount ||
-        this.listSelectRecruiterAccount.length === 0
+        !this.listSelectEmployeeAccount ||
+        this.listSelectEmployeeAccount.length === 0
       ) {
         Notify.create({
           message:
@@ -267,34 +295,6 @@ export const useStoreRecruiterAccount = defineStore("storeRecruiterAccount", {
             }
           }, 1000);
         }
-      }
-    },
-
-    checkDenyOne(name, email) {
-      this.dialogDenyOne = true;
-      this.oneAccountSelectName = name;
-      this.oneAccountSelectEmail = email;
-    },
-
-    checkDenyAll() {
-      if (
-        !this.listSelectRecruiterAccount ||
-        this.listSelectRecruiterAccount.length === 0
-      ) {
-        Notify.create({
-          message:
-            "Vui lòng chọn đối tượng ở bảng bên dưới để thực hiện thao tác.",
-          color: "primary",
-          actions: [
-            {
-              label: "OK",
-              color: "white",
-              handler: () => {},
-            },
-          ],
-        });
-      } else {
-        this.dialogDenyAll = true;
       }
     },
 

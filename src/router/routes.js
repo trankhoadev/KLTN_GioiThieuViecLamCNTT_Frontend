@@ -14,6 +14,7 @@ import HoSoCV from "pages/employee/HoSoCV.vue";
 
 /* admin page */
 import RecruiterAccount from "pages/admin/account/RecruiterAccount.vue";
+import EmployeAccount from "pages/admin/account/EmployeAccount.vue";
 
 const router = [
   {
@@ -36,7 +37,10 @@ const router = [
     path: "/admin",
     component: AdminLayout,
     // children: [{ path: "/", component: IndexPage }],
-    children: [{ path: "/account/recruiter", component: RecruiterAccount }],
+    children: [
+      { path: "/account/recruiter", component: RecruiterAccount },
+      { path: "/account/employee", component: EmployeAccount },
+    ],
   },
   {
     path: "/:catchAll(.*)*",

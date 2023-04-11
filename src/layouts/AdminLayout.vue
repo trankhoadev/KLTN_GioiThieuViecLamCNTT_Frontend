@@ -100,7 +100,7 @@ export default defineComponent({
                 <q-item-label>Tài khoản nhà tuyển dụng</q-item-label>
               </q-item-section>
             </q-item>
-            <q-item to="/admin" active-class="q-item-no-link-highlighting">
+            <q-item to="/account/employee" active-class="q-item-no-link-highlighting">
               <q-item-section avatar>
                 <q-icon name="person" />
               </q-item-section>

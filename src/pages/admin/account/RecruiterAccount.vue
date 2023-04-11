@@ -89,9 +89,10 @@ const storeRecruiterAccount = useStoreRecruiterAccount();
 
           <td class="text-left" key="action" :props="props">
             <div v-if="props.row.state === 'đang chờ'">
-              <q-btn color="light-green" icon="check" label="Duyệt" @click="storeRecruiterAccount.acceptOne(props.row.email)" />
+              <q-btn color="light-green" icon="check" label="Duyệt"
+                @click="storeRecruiterAccount.acceptOne(props.row.email)" />
               <q-btn class="q-ml-lg" color="pink" icon="cancel" label="Từ chối"
-                @click="storeRecruiterAccount.checkDenyOne(props.row.email)" />
+                @click="storeRecruiterAccount.checkDenyOne(props.row.name, props.row.email)" />
             </div>
           </td>
         </tr>
@@ -102,7 +103,9 @@ const storeRecruiterAccount = useStoreRecruiterAccount();
       <q-card>
         <q-card-section class="row items-center">
           <q-avatar icon="warning" color="primary" text-color="white" />
-          <span class="q-ml-sm">Bạn có thực sự muốn từ chối {{ storeRecruiterAccount.oneAccountSelect }} ?</span>
+          <span style="max-width: 400px;" class="q-ml-sm">Bạn có thực sự muốn từ chối người dùng "{{
+            storeRecruiterAccount.oneAccountSelectName }}" với email đăng ký là: "{{
+    storeRecruiterAccount.oneAccountSelectEmail }}" ?</span>
         </q-card-section>
 
         <q-card-actions align="right">
