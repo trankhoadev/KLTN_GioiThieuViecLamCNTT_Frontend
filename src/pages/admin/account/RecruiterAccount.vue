@@ -1,7 +1,8 @@
 <script setup>
+import { useQuasar } from 'quasar'
 import { useStoreRecruiterAccount } from 'src/stores/admin/storeRecruiterAccount.js';
 const storeRecruiterAccount = useStoreRecruiterAccount();
-
+const $q = useQuasar();
 </script>
 
 <template>
@@ -18,20 +19,28 @@ const storeRecruiterAccount = useStoreRecruiterAccount();
         </div>
 
         <div class="row">
-          <div class="header-tabs flex justify-between">
+          <div class="header-tabs flex justify-between" style="width: 90%;">
             <q-tabs align="center" class="text-teal" dense>
               <q-tab class="text-cyan" icon="select_all"
                 :label="'Tất cả ' + '(' + storeRecruiterAccount.taiKhoanNtd + ')'"
-                @click="storeRecruiterAccount.filter = ''" />
+                @click="storeRecruiterAccount.filter = ''"
+                v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }"
+                />
               <q-tab class="text-orange" icon="reply_all"
                 :label="'Đang chờ ' + '(' + storeRecruiterAccount.taiKhoanNtdDangCho + ')'"
-                @click="storeRecruiterAccount.filter = 'đang chờ'" />
+                @click="storeRecruiterAccount.filter = 'đang chờ'"
+                v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }"
+                />
               <q-tab class="text-teal" icon="done"
                 :label="'Đã duyệt ' + '(' + storeRecruiterAccount.taiKhoanNtdDaDuyet + ')'"
-                @click="storeRecruiterAccount.filter = 'đã duyệt'" />
+                @click="storeRecruiterAccount.filter = 'đã duyệt'"
+                v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }"
+                />
               <q-tab class="text-red" icon="close"
                 :label="'Từ chối ' + '(' + storeRecruiterAccount.taiKhoanNtdTuChoi + ')'"
-                @click="storeRecruiterAccount.filter = 'đã hủy'" />
+                @click="storeRecruiterAccount.filter = 'đã hủy'"
+                v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }"
+                />
             </q-tabs>
           </div>
         </div>
@@ -39,8 +48,13 @@ const storeRecruiterAccount = useStoreRecruiterAccount();
 
       <template v-slot:top-right>
         <div class="q-gutter-lg">
-          <q-input rounded outlined dense debounce="1000" style="width: 20vw;" v-model="storeRecruiterAccount.filter"
-            placeholder="Search">
+          <q-input rounded outlined dense debounce="1000"
+          style="width: 20vw;"
+          v-model="storeRecruiterAccount.filter"
+          placeholder="Search"
+          v-bind:style="$q.screen.lt.md ? { 'width': '80vw' } : { 'width': '20vw' }"
+          v-bind:class="{ 'q-mt-lg q-pt-lg': $q.screen.md || $q.screen.sm || $q.screen.xs }"
+          >
             <template v-slot:append>
               <q-btn flat round color="primary" icon="search" />
             </template>

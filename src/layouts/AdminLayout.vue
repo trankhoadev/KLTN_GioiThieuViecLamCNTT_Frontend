@@ -68,26 +68,16 @@ export default defineComponent({
           </q-item-section>
         </q-item>
 
-        <q-expansion-item icon="feed" label="Quản lý tin đăng tuyển">
-          <q-list class="q-pl-lg">
-            <q-item to="/admin" active-class="q-item-no-link-highlighting">
-              <q-item-section avatar>
-                <q-icon name="support_agent" />
-              </q-item-section>
-              <q-item-section>
-                <q-item-label>Từ nhà tuyển dụng</q-item-label>
-              </q-item-section>
-            </q-item>
-            <q-item to="/admin" active-class="q-item-no-link-highlighting">
-              <q-item-section avatar>
-                <q-icon name="person" />
-              </q-item-section>
-              <q-item-section>
-                <q-item-label>Từ ứng cử viên</q-item-label>
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </q-expansion-item>
+        <q-item to="/admin" active-class="q-item-no-link-highlighting">
+          <q-item-section avatar>
+            <q-icon name="support_agent" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Quản lý tin đăng tuyển</q-item-label>
+          </q-item-section>
+        </q-item>
+
+
 
         <q-expansion-item icon="manage_accounts" label="Quản lý tài khoản">
           <q-list class="q-pl-lg">
@@ -135,7 +125,7 @@ export default defineComponent({
 
         <q-item to="/admin" active-class="q-item-no-link-highlighting">
           <q-item-section avatar>
-            <q-icon name="settings"/>
+            <q-icon name="settings" />
           </q-item-section>
           <q-item-section>
             <q-item-label>Cài đặt</q-item-label>
