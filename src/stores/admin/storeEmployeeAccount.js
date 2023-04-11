@@ -93,8 +93,9 @@ export const useStoreEmployeeAccount = defineStore("storeEmployeeAccount", {
       */
       rowDataEmployeeAccount: [
         {
-          name: "yonnon1",
-          email: "ayonnon@gmail.com",
+          name: "yonnon1 ayonnon@gmail.com ayonnon@gmail.com ayonnon@gmail.com ayonnon@gmail.com",
+          email:
+            "ayonnon@gmail.com ayonnon@gmail.com ayonnon@gmail.com ayonnon@gmail.com",
           date: "22-10-2001",
           state: "đang chờ",
         },

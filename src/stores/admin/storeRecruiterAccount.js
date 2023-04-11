@@ -93,8 +93,9 @@ export const useStoreRecruiterAccount = defineStore("storeRecruiterAccount", {
       */
       rowDataRecruiterAccount: [
         {
-          name: "yonnon1",
-          email: "ayonnon@gmail.com",
+          name: "yonnon1 Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio quae eaque voluptatum at tempora explicabo cupiditate voluptate illo odio suscipit delectus provident sequi eligendi aliquid voluptates fugit repudiandae, similique dolor?",
+          email:
+            "ayonnon@gmail.com Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio quae eaque voluptatum at tempora explicabo cupiditate voluptate illo odio suscipit delectus provident sequi eligendi aliquid voluptates fugit repudiandae, similique dolor?",
           date: "22-10-2001",
           state: "đang chờ",
         },

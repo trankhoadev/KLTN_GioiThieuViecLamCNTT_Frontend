@@ -22,24 +22,19 @@ const $q = useQuasar();
           <div class="header-tabs flex justify-between">
             <q-tabs align="center" class="text-teal" dense>
               <q-tab class="text-cyan" icon="select_all" :label="'Tất cả ' + '(' + storeEmployeeAccount.taiKhoanUtv + ')'"
-                @click="storeEmployeeAccount.filter = ''"
-                v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }"
-                />
+                @click="storeEmployeeAccount.filter = ''" v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
               <q-tab class="text-orange" icon="reply_all"
                 :label="'Đang chờ ' + '(' + storeEmployeeAccount.taiKhoanUtvDangCho + ')'"
                 @click="storeEmployeeAccount.filter = 'đang chờ'"
-                v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }"
-                />
+                v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
               <q-tab class="text-teal" icon="done"
                 :label="'Đã duyệt ' + '(' + storeEmployeeAccount.taiKhoanUtvDaDuyet + ')'"
                 @click="storeEmployeeAccount.filter = 'đã duyệt'"
-                v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }"
-                />
+                v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
               <q-tab class="text-red" icon="close"
                 :label="'Từ chối ' + '(' + storeEmployeeAccount.taiKhoanUtvTuChoi + ')'"
                 @click="storeEmployeeAccount.filter = 'đã hủy'"
-                v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }"
-                />
+                v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
             </q-tabs>
           </div>
         </div>
@@ -47,12 +42,9 @@ const $q = useQuasar();
 
       <template v-slot:top-right>
         <div class="q-gutter-lg">
-          <q-input rounded outlined dense debounce="1000"
-          v-model="storeEmployeeAccount.filter"
-          placeholder="Search"
-          v-bind:style="$q.screen.lt.md ? { 'width': '80vw' } : { 'width': '20vw' }"
-          v-bind:class="{ 'q-mt-lg q-pt-lg': $q.screen.md || $q.screen.sm || $q.screen.xs }"
-            >
+          <q-input rounded outlined dense debounce="1000" v-model="storeEmployeeAccount.filter" placeholder="Search"
+            v-bind:style="$q.screen.lt.md ? { 'width': '80vw' } : { 'width': '20vw' }"
+            v-bind:class="{ 'q-mt-lg q-pt-lg': $q.screen.md || $q.screen.sm || $q.screen.xs }">
             <template v-slot:append>
               <q-btn flat round color="primary" icon="search" />
             </template>
@@ -80,15 +72,15 @@ const $q = useQuasar();
           <td>
             <q-checkbox v-model="props.selected" color="primary" />
           </td>
-          <td class="text-left" key="stt" :props="props">
+          <td class="text-left" key="stt" :props="props" style="width: 5%;">
             {{ props.rowIndex }}
           </td>
-          <td class="text-left" key="name" :props="props">
-            {{ props.row.name }}
+          <td class="text-left" key="name" :props="props" style="width: 25%;">
+            <span style="white-space: pre-wrap;">{{ props.row.name }}</span>
           </td>
 
-          <td class="text-left" key="email" :props="props">
-            {{ props.row.email }}
+          <td class="text-left" key="email" :props="props" style="width: 20%;">
+            <span style="white-space: pre-wrap;">{{ props.row.email }}</span>
           </td>
 
           <td class="text-left" key="date" :props="props">
