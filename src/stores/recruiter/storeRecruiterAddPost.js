@@ -138,6 +138,7 @@ export const useStoreRecruiterAddPost = defineStore("storeRecruiterAddPost", {
     },
 
     confirmForm() {
+      this.router.push("/recruiter");
       Loading.show({
         message: "Đang xử lí...",
         boxClass: "bg-grey-2 text-grey-9",
@@ -145,15 +146,18 @@ export const useStoreRecruiterAddPost = defineStore("storeRecruiterAddPost", {
       });
       setTimeout(() => {
         Loading.hide();
-        this.router.push("/recruiter");
-        Notify.create({
-          message: "Thao tác thành công",
-          position: "bottom",
-          timeout: 2000,
-          color: "green",
-          icon: "mood",
-        });
       }, 1500);
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+
+      Notify.create({
+        message: "Thao tác thành công",
+        position: "bottom",
+        timeout: 2000,
+        color: "green",
+        icon: "mood",
+      });
     },
   },
 });
