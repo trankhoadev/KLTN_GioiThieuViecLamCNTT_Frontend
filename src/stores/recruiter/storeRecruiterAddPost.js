@@ -136,5 +136,24 @@ export const useStoreRecruiterAddPost = defineStore("storeRecruiterAddPost", {
         }, 1500);
       }
     },
+
+    confirmForm() {
+      Loading.show({
+        message: "Đang xử lí...",
+        boxClass: "bg-grey-2 text-grey-9",
+        spinnerColor: "primary",
+      });
+      setTimeout(() => {
+        Loading.hide();
+        this.router.push("/recruiter");
+        Notify.create({
+          message: "Thao tác thành công",
+          position: "bottom",
+          timeout: 2000,
+          color: "green",
+          icon: "mood",
+        });
+      }, 1500);
+    },
   },
 });
