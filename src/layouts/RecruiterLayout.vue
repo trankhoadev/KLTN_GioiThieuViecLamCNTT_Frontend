@@ -80,7 +80,7 @@ export default defineComponent({
                 <q-item-label>Thêm mới tin đăng tuyển</q-item-label>
               </q-item-section>
             </q-item>
-            <q-item to="/recruiter/employee" active-class="q-item-no-link-highlighting">
+            <q-item to="/recruiter/my-post" active-class="q-item-no-link-highlighting">
               <q-item-section avatar>
                 <q-icon name="person" />
               </q-item-section>
