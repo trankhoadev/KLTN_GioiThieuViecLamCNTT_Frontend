@@ -23,6 +23,8 @@ import AdminPage from "src/pages/admin/AdminPage.vue";
 
 /* recruiter page */
 import RecruiterPage from "pages/recruiter/RecruiterPage.vue";
+import RecruiterAddPost from "pages/recruiter/RecruiterAddPost.vue";
+import RecruiterPreviewPost from "pages/recruiter/RecruiterPreviewPost.vue";
 
 const requireAuth = () => {};
 
@@ -87,7 +89,34 @@ const router = [
         component: RecruiterPage,
         beforeEnter: requireAuth,
         meta: {
-          permission: "admin",
+          permission: "recruiter",
+        },
+      },
+
+      {
+        path: "/recruiter/my-post",
+        component: RecruiterPage,
+        beforeEnter: requireAuth,
+        meta: {
+          permission: "recruiter",
+        },
+      },
+
+      {
+        path: "/recruiter/add-post",
+        component: RecruiterAddPost,
+        beforeEnter: requireAuth,
+        meta: {
+          permission: "recruiter",
+        },
+      },
+
+      {
+        path: "/recruiter/preview-post",
+        component: RecruiterPreviewPost,
+        beforeEnter: requireAuth,
+        meta: {
+          permission: "recruiter",
         },
       },
     ],

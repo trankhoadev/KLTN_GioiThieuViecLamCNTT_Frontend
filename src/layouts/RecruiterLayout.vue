@@ -70,15 +70,27 @@ export default defineComponent({
             <q-item-label>Dashboard</q-item-label>
           </q-item-section>
         </q-item>
+        <q-expansion-item icon="feed" label="Tin tuyển dụng">
+          <q-list class="q-pl-lg">
+            <q-item to="/recruiter/add-post" active-class="q-item-no-link-highlighting">
+              <q-item-section avatar>
+                <q-icon name="add" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Thêm mới tin đăng tuyển</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item to="/recruiter/employee" active-class="q-item-no-link-highlighting">
+              <q-item-section avatar>
+                <q-icon name="person" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Quản lý tin của bạn</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-expansion-item>
 
-        <q-item to="/recruiter/welcome" active-class="q-item-no-link-highlighting">
-          <q-item-section avatar>
-            <q-icon name="support_agent" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Tin đăng tuyển của bạn</q-item-label>
-          </q-item-section>
-        </q-item>
 
 
         <q-item to="/recruiter/welcome" active-class="q-item-no-link-highlighting">
@@ -86,16 +98,7 @@ export default defineComponent({
             <q-icon name="person_add" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Ứng tuyển viên</q-item-label>
-          </q-item-section>
-        </q-item>
-
-        <q-item to="/recruiter/welcome" active-class="q-item-no-link-highlighting">
-          <q-item-section avatar>
-            <q-icon name="manage_accounts" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Hồ sơ của bạn</q-item-label>
+            <q-item-label>Hồ sơ ứng tuyển</q-item-label>
           </q-item-section>
         </q-item>
 
