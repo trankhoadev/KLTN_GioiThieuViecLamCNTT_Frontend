@@ -93,7 +93,7 @@ export default defineComponent({
 
 
 
-        <q-item to="/recruiter/welcome" active-class="q-item-no-link-highlighting">
+        <q-item to="/recruiter/apply-job" active-class="q-item-no-link-highlighting">
           <q-item-section avatar>
             <q-icon name="person_add" />
           </q-item-section>

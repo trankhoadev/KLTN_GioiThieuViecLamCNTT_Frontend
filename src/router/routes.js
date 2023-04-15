@@ -129,6 +129,15 @@ const router = [
           permission: "recruiter",
         },
       },
+
+      {
+        path: "/recruiter/apply-job",
+        component: RecruiterPreviewPost,
+        beforeEnter: requireAuth,
+        meta: {
+          permission: "recruiter",
+        },
+      },
     ],
   },
   {
