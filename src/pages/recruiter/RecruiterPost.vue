@@ -10,7 +10,7 @@ const $q = useQuasar();
     <q-table title="DUYỆT TÀI KHOẢN NHÀ TUYỂN DỤNG" virtual-scroll :columns="storeRecruiterPost.columnRecruiterAccount"
       :rows="storeRecruiterPost.rowDataRecruiterAccount" style="height: 90vh" row-key="email" :rows-per-page-options="[0]"
       class="q-my-lg q-mx-md" rows-per-page-label="Số dòng mỗi trang"
-      v-model:selected="storeRecruiterPost.listSelectRecruiterAccount" selection="multiple"
+      v-model:selected="storeRecruiterPost.listSelectRecruiter" selection="multiple"
       :filter="storeRecruiterPost.filter">
 
       <template v-slot:top-left>
@@ -21,21 +21,21 @@ const $q = useQuasar();
         <div class="row">
           <div class="header-tabs flex justify-between" style="width: 90%;">
             <q-tabs align="center" class="text-teal" dense>
-              <q-tab class="text-cyan" icon="select_all" :label="'Tất cả ' + '(' + storeRecruiterPost.taiKhoanNtd + ')'"
+              <q-tab class="text-cyan" icon="select_all" :label="'Tất cả ' + '(' + storeRecruiterPost.tinTuyenDung + ')'"
                 @click="storeRecruiterPost.filter = ''" v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
               <q-tab class="text-orange" icon="reply_all"
-                :label="'Đang chờ ' + '(' + storeRecruiterPost.taiKhoanNtdDangCho + ')'"
+                :label="'Đang chờ ' + '(' + storeRecruiterPost.tinTuyenDungDangCho + ')'"
                 @click="storeRecruiterPost.filter = 'đang chờ'"
                 v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
               <q-tab class="text-teal" icon="directions_run"
-                :label="'Đang tuyển ' + '(' + storeRecruiterPost.taiKhoanNtdDaDuyet + ')'"
+                :label="'Đang tuyển ' + '(' + storeRecruiterPost.tinTuyenDungDaDuyet + ')'"
                 @click="storeRecruiterPost.filter = 'đang tuyển'"
                 v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
               <q-tab class="text-blue-10" icon="done"
-                :label="'Dừng tuyển ' + '(' + storeRecruiterPost.taiKhoanNtdDaDuyet + ')'"
+                :label="'Dừng tuyển ' + '(' + storeRecruiterPost.tinTuyenDungDaDuyet + ')'"
                 @click="storeRecruiterPost.filter = 'dừng tuyển'"
                 v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
-              <q-tab class="text-red" icon="delete" :label="'Đã xóa ' + '(' + storeRecruiterPost.taiKhoanNtdTuChoi + ')'"
+              <q-tab class="text-red" icon="delete" :label="'Đã xóa ' + '(' + storeRecruiterPost.tinTuyenDungTuChoi + ')'"
                 @click="storeRecruiterPost.filter = 'đã xóa'"
                 v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
             </q-tabs>
@@ -52,20 +52,6 @@ const $q = useQuasar();
               <q-btn flat round color="primary" icon="search" />
             </template>
           </q-input>
-
-          <q-dialog v-model="storeRecruiterPost.dialogDenyAll" persistent>
-            <q-card>
-              <q-card-section class="row items-center">
-                <q-avatar icon="warning" color="primary" text-color="white" />
-                <span class="q-ml-sm">Bạn có thực sự muốn từ chối các dòng đã chọn không ?</span>
-              </q-card-section>
-
-              <q-card-actions align="right">
-                <q-btn flat label="Đồng ý" color="primary" v-close-popup @click="storeRecruiterPost.denyAll" />
-                <q-btn flat label="Hủy" color="primary" v-close-popup />
-              </q-card-actions>
-            </q-card>
-          </q-dialog>
         </div>
       </template>
       <template v-slot:body="props">
@@ -109,22 +95,6 @@ const $q = useQuasar();
         </tr>
       </template>
     </q-table>
-
-    <q-dialog v-model="storeRecruiterPost.dialogDenyOne" persistent>
-      <q-card>
-        <q-card-section class="row items-center">
-          <q-avatar icon="warning" color="primary" text-color="white" />
-          <span style="max-width: 400px;" class="q-ml-sm">Bạn có thực sự muốn từ chối người dùng "{{
-            storeRecruiterPost.oneAccountSelectName }}" với email đăng ký là: "{{
-    storeRecruiterPost.oneAccountSelectEmail }}" ?</span>
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn flat label="Đồng ý" color="primary" v-close-popup @click="storeRecruiterPost.denyOne" />
-          <q-btn flat label="Hủy" color="primary" v-close-popup />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
   </div>
 </template>
 

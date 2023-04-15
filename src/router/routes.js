@@ -26,6 +26,7 @@ import RecruiterPage from "pages/recruiter/RecruiterPage.vue";
 import RecruiterAddPost from "pages/recruiter/RecruiterAddPost.vue";
 import RecruiterPreviewPost from "pages/recruiter/RecruiterPreviewPost.vue";
 import RecruiterPost from "pages/recruiter/RecruiterPost.vue";
+import RecruiterApplyJob from "pages/recruiter/RecruiterApplyJob.vue";
 
 const requireAuth = () => {};
 
@@ -132,7 +133,7 @@ const router = [
 
       {
         path: "/recruiter/apply-job",
-        component: RecruiterPreviewPost,
+        component: RecruiterApplyJob,
         beforeEnter: requireAuth,
         meta: {
           permission: "recruiter",

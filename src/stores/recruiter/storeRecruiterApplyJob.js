@@ -3,7 +3,7 @@ import { api } from "src/boot/axios";
 import { ref, reactive } from "vue";
 import { Loading, Notify } from "quasar";
 
-export const useStoreRecruiterPost = defineStore("storeRecruiterPost", {
+export const useStoreRecruiterApplyJob = defineStore("storeRecruiterApplyJob", {
   state: () => {
     return {
       filter: "",
@@ -24,20 +24,20 @@ export const useStoreRecruiterPost = defineStore("storeRecruiterPost", {
         },
 
         {
-          name: "name",
+          name: "info",
           required: true,
-          label: "Tin tuyển dụng",
-          field: "name",
+          label: "Thông tin ứng viên",
+          field: "info",
           align: "left",
           sortable: true,
           headerStyle: "font-size: 1.1em; font-weight: bold",
         },
 
         {
-          name: "profile",
+          name: "post",
           required: true,
-          label: "Hồ sơ",
-          field: "profile",
+          label: "Tin tuyển dụng",
+          field: "post",
           align: "left",
           sortable: true,
           headerStyle: "font-size: 1.1em; font-weight: bold",
@@ -71,6 +71,10 @@ export const useStoreRecruiterPost = defineStore("storeRecruiterPost", {
       */
       rowDataRecruiterAccount: [
         {
+          contactName: "Tran Anh Khoa",
+          contactPhone: "0495364898",
+          contactEmail: "yonnon@gmail.com",
+          dateSend: "05-06-2012",
           name: "Nhân viên thực tập nodejs",
           address: "tỉnh Hà nội, huyện Ba Vì",
           profile: "/",
@@ -79,6 +83,10 @@ export const useStoreRecruiterPost = defineStore("storeRecruiterPost", {
           state: "đang chờ",
         },
         {
+          contactName: "Tran Anh Khoa",
+          contactPhone: "0495364898",
+          contactEmail: "yonnon@gmail.com",
+          dateSend: "05-06-2012",
           name: "Nhân viên thực tập nodejs",
           address: "tỉnh Hà nội, huyện Ba Vì",
           profile: "/",
@@ -87,6 +95,10 @@ export const useStoreRecruiterPost = defineStore("storeRecruiterPost", {
           state: "đang chờ",
         },
         {
+          contactName: "Tran Anh Khoa",
+          contactPhone: "0495364898",
+          contactEmail: "yonnon@gmail.com",
+          dateSend: "05-06-2012",
           name: "Nhân viên thực tập nodejs",
           address: "tỉnh Hà nội, huyện Ba Vì",
           profile: "/",
@@ -95,6 +107,10 @@ export const useStoreRecruiterPost = defineStore("storeRecruiterPost", {
           state: "đang tuyển",
         },
         {
+          contactName: "Tran Anh Khoa",
+          contactPhone: "0495364898",
+          contactEmail: "yonnon@gmail.com",
+          dateSend: "05-06-2012",
           name: "Nhân viên thực tập nodejs",
           address: "tỉnh Hà nội, huyện Ba Vì",
           profile: "/",
@@ -103,6 +119,10 @@ export const useStoreRecruiterPost = defineStore("storeRecruiterPost", {
           state: "dừng tuyển",
         },
         {
+          contactName: "Tran Anh Khoa",
+          contactPhone: "0495364898",
+          contactEmail: "yonnon@gmail.com",
+          dateSend: "05-06-2012",
           name: "Nhân viên thực tập nodejs",
           address: "tỉnh Hà nội, huyện Ba Vì",
           profile: "/",
@@ -111,6 +131,10 @@ export const useStoreRecruiterPost = defineStore("storeRecruiterPost", {
           state: "đang chờ",
         },
         {
+          contactName: "Tran Anh Khoa",
+          contactPhone: "0495364898",
+          contactEmail: "yonnon@gmail.com",
+          dateSend: "05-06-2012",
           name: "Nhân viên thực tập nodejs",
           address: "tỉnh Hà nội, huyện Ba Vì",
           profile: "/",
@@ -119,6 +143,10 @@ export const useStoreRecruiterPost = defineStore("storeRecruiterPost", {
           state: "đang tuyển",
         },
         {
+          contactName: "Tran Anh Khoa",
+          contactPhone: "0495364898",
+          contactEmail: "yonnon@gmail.com",
+          dateSend: "05-06-2012",
           name: "Nhân viên thực tập nodejs",
           address: "tỉnh Hà nội, huyện Ba Vì",
           profile: "/",
@@ -127,6 +155,10 @@ export const useStoreRecruiterPost = defineStore("storeRecruiterPost", {
           state: "đang chờ",
         },
         {
+          contactName: "Tran Anh Khoa",
+          contactPhone: "0495364898",
+          contactEmail: "yonnon@gmail.com",
+          dateSend: "05-06-2012",
           name: "Nhân viên thực tập nodejs",
           address: "tỉnh Hà nội, huyện Ba Vì",
           profile: "/",
@@ -135,6 +167,10 @@ export const useStoreRecruiterPost = defineStore("storeRecruiterPost", {
           state: "dừng tuyển",
         },
         {
+          contactName: "Tran Anh Khoa",
+          contactPhone: "0495364898",
+          contactEmail: "yonnon@gmail.com",
+          dateSend: "05-06-2012",
           name: "Nhân viên thực tập nodejs",
           address: "tỉnh Hà nội, huyện Ba Vì",
           profile: "/",
@@ -143,6 +179,10 @@ export const useStoreRecruiterPost = defineStore("storeRecruiterPost", {
           state: "đang tuyển",
         },
         {
+          contactName: "Tran Anh Khoa",
+          contactPhone: "0495364898",
+          contactEmail: "yonnon@gmail.com",
+          dateSend: "05-06-2012",
           name: "Nhân viên thực tập nodejs",
           address: "tỉnh Hà nội, huyện Ba Vì",
           profile: "/",
@@ -151,6 +191,10 @@ export const useStoreRecruiterPost = defineStore("storeRecruiterPost", {
           state: "đang chờ",
         },
         {
+          contactName: "Tran Anh Khoa",
+          contactPhone: "0495364898",
+          contactEmail: "yonnon@gmail.com",
+          dateSend: "05-06-2012",
           name: "Nhân viên thực tập nodejs",
           address: "tỉnh Hà nội, huyện Ba Vì",
           profile: "/",
@@ -159,6 +203,10 @@ export const useStoreRecruiterPost = defineStore("storeRecruiterPost", {
           state: "dừng tuyển",
         },
         {
+          contactName: "Tran Anh Khoa",
+          contactPhone: "0495364898",
+          contactEmail: "yonnon@gmail.com",
+          dateSend: "05-06-2012",
           name: "Nhân viên thực tập nodejs",
           address: "tỉnh Hà nội, huyện Ba Vì",
           profile: "/",
@@ -167,6 +215,10 @@ export const useStoreRecruiterPost = defineStore("storeRecruiterPost", {
           state: "đang chờ",
         },
         {
+          contactName: "Tran Anh Khoa",
+          contactPhone: "0495364898",
+          contactEmail: "yonnon@gmail.com",
+          dateSend: "05-06-2012",
           name: "Nhân viên thực tập nodejs",
           address: "tỉnh Hà nội, huyện Ba Vì",
           profile: "/",
@@ -176,6 +228,10 @@ export const useStoreRecruiterPost = defineStore("storeRecruiterPost", {
         },
 
         {
+          contactName: "Tran Anh Khoa",
+          contactPhone: "0495364898",
+          contactEmail: "yonnon@gmail.com",
+          dateSend: "05-06-2012",
           name: "Nhân viên thực tập nodejs",
           address: "tỉnh Hà nội, huyện Ba Vì",
           profile: "/",
