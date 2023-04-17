@@ -1,15 +1,17 @@
 import { defineStore } from "pinia";
 import { api } from "src/boot/axios";
+import { Notify } from "quasar";
 
 export const useStoreAuthentication = defineStore("storeAuthentication", {
   state: () => {
     return {
-      isPwd: true,
-      isAdmin: true,
+      isPwd: false,
+      isAdmin: false,
       email: "",
-      userName: "yonnon",
-      password: "123456",
+      userName: "",
+      password: "",
       rePassword: "",
+      picture: "",
       accessToken: null,
       isLoadingLogin: false,
       isDark: false,
@@ -24,34 +26,44 @@ export const useStoreAuthentication = defineStore("storeAuthentication", {
   getters: {},
   actions: {
     _init() {
-      this.email = "";
       this.userName = "";
       this.password = "";
     },
-    async login(user, pass) {
+    async login(email, pass) {
       try {
         this.isLoadingLogin = true;
         await api
-          .post("auth/login", { userName: user, password: pass })
-          .then((response) => {
-            if (response.data.status == 200) {
-              let data = response.data.data;
-              api.defaults.headers["token_bombom"] = data.accessToken; //set token_bombom cho headers
-              this.accessToken = data.accessToken;
-              this.isAdmin = data.userData.accessData.accessDataStaff.isAdmin;
+          .post("api/user/login", { email: email, password: pass })
+          .then((res) => {
+            if (res.status == 200) {
+              api.defaults.headers["Bearer"] = res.data.token; //set Bearer cho headers
+              this.accessToken = res.data.token;
+              localStorage.setItem("id", res.data._id);
+              localStorage.setItem("userName", res.data.username);
+              localStorage.setItem("email", res.data.email);
+              localStorage.setItem("loaiTaiKhoan", res.data.loaitaikhoan);
               localStorage.setItem("isLoggedIn", true);
-              localStorage.setItem("token", data.accessToken);
+              localStorage.setItem("picture", res.data.pic);
+              localStorage.setItem("accessToken", res.data.token);
               this.router.push("/");
+              this.userName = res.data.username;
               this.password = "";
               this.isLoadingLogin = false;
+              Notify.create({
+                message: "Đăng nhập thành công",
+                position: "bottom",
+                timeout: 2000,
+                color: "green",
+                icon: "mood",
+              });
             } else {
               this.isLoadingLogin = false;
               Notify.create({
-                message: response.data.message,
+                message: "Đăng nhập thất bại",
                 timeout: 2000,
-                icon: "mood_bad",
+                position: "bottom",
                 color: "negative",
-                position: "top",
+                icon: "mood_bad",
               });
             }
           });
@@ -59,9 +71,9 @@ export const useStoreAuthentication = defineStore("storeAuthentication", {
         if (err) throw err;
         this.isLoadingLogin = false;
         Notify.create({
-          message: err,
+          message: "Đăng nhập thất bại",
           timeout: 2000,
-          position: "top",
+          position: "bottom",
           color: "negative",
           icon: "mood_bad",
         });
@@ -69,11 +81,11 @@ export const useStoreAuthentication = defineStore("storeAuthentication", {
     },
 
     logOut() {
-      if (api.defaults.headers.token_bombom) {
+      if (api.defaults.headers.Bearer) {
         localStorage.clear();
         api.post("auth/logout").then((result) => {
           if (result.data) {
-            api.defaults.headers.token_bombom = null;
+            api.defaults.headers.Bearer = null;
             // localStorage.clear();
             sessionStorage.clear();
             this.router.push("/");
@@ -84,5 +96,15 @@ export const useStoreAuthentication = defineStore("storeAuthentication", {
         this.router.push("/");
       }
     },
+
+    // getData() {
+    //   const url = 'api/user/:email'
+    //   api.get(url, {email: 'yonnon2210@gmail.com'})
+    //     .then(data => {
+    //       if(data) {
+    //         console.log(data);
+    //       }
+    //     })
+    // }
   },
 });

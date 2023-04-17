@@ -7,8 +7,8 @@ const storeAuthen = useStoreAuthentication();
 
 onMounted(() => {
   const $q = useQuasar();
-  storeAuthen.userName = 'yonnon'
-  storeAuthen.password = '123455'
+  storeAuthen.userName = 'yonnon2210@gmail.com'
+  storeAuthen.password = '123456789'
 })
 </script>
 
@@ -41,7 +41,7 @@ onMounted(() => {
             <q-input label="Password" type="password" v-model="storeAuthen.password">
             </q-input>
             <div>
-              <router-link to="/"><q-btn class="full-width" color="primary" label="Login" type="submit" rounded></q-btn></router-link>
+              <q-btn class="full-width" color="primary" label="Login" @click="storeAuthen.login(storeAuthen.userName, storeAuthen.password)" rounded></q-btn>
               <div class="text-center q-mt-sm q-gutter-lg">
                 <router-link to="/quen-mat-khau">Quên mật khẩu ?</router-link>
                 <router-link to="/dang-ky">Tạo tài khoản</router-link>

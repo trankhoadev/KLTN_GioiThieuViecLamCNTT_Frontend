@@ -3,20 +3,37 @@ import "@quasar/extras/ionicons-v4/ionicons-v4.css";
 import { onMounted } from "vue";
 import { useStoreAuthentication } from "src/stores/storeAuthentication";
 import { useStoreMainLayout } from "src/stores/storeMainLayout"
-import { Dark, useQuasar } from "quasar";
+import { Notify, useQuasar } from "quasar";
+import router from "src/router";
 
 const $q = useQuasar();
 const storeAuthen = useStoreAuthentication();
 const storeMainLayout = useStoreMainLayout();
+const picture = localStorage.getItem('picture');
+const userName = localStorage.getItem('userName');
+const role = localStorage.getItem('loaiTaiKhoan');
 
 onMounted(() => {
-  window.onscroll = function () {
-    scrollFunction();
+  if (role === 'ser') {
+    window.onscroll = function () {
+      scrollFunction();
+    }
+    if (userName) {
+      storeAuthen.isDataUserAvailable = true;
+    }
   }
-  localStorage.setItem('userName', "User Test");
-  const userName = localStorage.getItem('userName');
-  if (userName) {
-    storeAuthen.isDataUserAvailable = true;
+  else {
+    // localStorage.clear();
+    // this.$router.push('/dang-nhap');
+    router().push({ path: "/dang-nhap" });
+    // return window.location.reload();
+    // Notify.create({
+    //   message: "Bạn không có quyền truy cập",
+    //   timeout: 2000,
+    //   position: "bottom",
+    //   color: "negative",
+    //   icon: "mood_bad",
+    // });
   }
 })
 
@@ -87,7 +104,7 @@ const clickToTop = () => {
 
             <div class="flex flex-center justify-center cursor-pointer">
               <q-btn color="black" flat @mouseover="storeMainLayout.isShowDropdown = true" icon-right="arrow_drop_down"
-                :label=storeAuthen.userName>
+                :label=userName>
                 <q-menu v-model="storeMainLayout.isShowDropdown" @mouseleave="storeMainLayout.isShowDropdown = false" fit>
                   <q-list style="min-width: 200px">
                     <q-item clickable>
@@ -119,8 +136,7 @@ const clickToTop = () => {
 
             <q-avatar font-size="20px" size="28px" color="yellow-2" text-color="orange"
               class="text-weight-bold flex flex-center justify-center" style="align-items: center
-                ; flex-direction: column;" v-show="storeAuthen.userName"><img
-                src="https://media.allure.com/photos/62b333877389827cf6e080f9/16:9/pass/Is%20it%20ever%20ok%20to%20dye%20your%20dog's%20fur"
+                                  ; flex-direction: column;" v-show="storeAuthen.userName"><img :src=picture
                 alt=""></q-avatar>
           </div>
         </div>
