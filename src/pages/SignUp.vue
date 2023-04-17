@@ -1,3 +1,27 @@
+<script setup>
+import { useQuasar } from 'quasar'
+import { onMounted, ref } from 'vue';
+import { useStoreAuthentication } from 'src/stores/storeAuthentication';
+import { useStoreRegex } from 'stores/middleware/storeRegex'
+const storeRegex = useStoreRegex();
+
+const storeAuthen = useStoreAuthentication();
+const isPwd = ref(true);
+onMounted(() => {
+  const $q = useQuasar();
+  storeAuthen._init();
+})
+
+const autoDecreaseNumber = () => {
+  storeAuthen.count = 60;
+  setInterval(() => {
+    if (storeAuthen.count !== 0) {
+      storeAuthen.count--;
+    }
+  }, 1000);
+}
+</script >
+
 <template>
   <img src="src/assets/wave.png" class="wave" alt="login-wave">
   <div class="row" style="height: 90vh">
@@ -20,23 +44,31 @@
           </div>
         </q-card-section>
         <q-card-section>
-          <q-form class="q-gutter-md">
-            <q-input class="q-pa-none" label="Fullname" v-model="storeAuthen.userName" :rules="[
+          <q-form class="q-gutter-md" @submit="storeAuthen.signUp()">
+            <q-input filled label="Họ và Tên" v-model="storeAuthen.userName" :rules="[
               val => !!val || 'Tên không được rỗng',
             ]" lazy-rules />
-            <q-input v-model="storeAuthen.email" type="email" suffix="@gmail.com">
-              <template v-slot:prepend>
+            <q-select filled v-model="storeAuthen.roleSelected" :options="storeAuthen.listRole" :rules="[
+              val => !!val || 'Vui lòng chọn loại tài khoản',
+            ]" lazy-rules label="Loại tài khoản" />
+            <q-input filled v-model="storeAuthen.email" type="text" placeholder="name@gmail.com" :rules="[
+              val => !!val || 'Email liên hệ không được rỗng',
+              val => storeRegex.isValidEmail(val) || 'Email không đúng định dạng'
+            ]" lazy-rules> <template v-slot:prepend>
                 <q-icon name="mail" />
-              </template>
-            </q-input>
-            <q-input label="Password" :type="isPwd ? 'password' : 'text'" v-model="storeAuthen.password" :rules="[
-              val => !!val || 'Mật khẩu phải tối thiểu 6 kí tự',
+              </template></q-input>
+            <q-input filled label="Mật khẩu" :type="isPwd ? 'password' : 'text'" v-model="storeAuthen.password" :rules="[
+              val => !!val || 'Mật khẩu không được rỗng',
               val => val.length > 5 || 'Mật khẩu phải tối thiểu 6 kí tự',
             ]" lazy-rules>
               <template v-slot:append>
                 <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="isPwd = !isPwd" />
               </template>
             </q-input>
+
+            <q-checkbox right-label v-model="storeAuthen.accept" label="Đồng ý với các điều khoản của công ty"
+              color="red" />
+
             <div>
               <q-btn class="full-width" color="primary" label="Sign Up" type="submit" rounded></q-btn>
               <div class="text-center q-mt-sm q-gutter-lg text-title">
@@ -50,22 +82,37 @@
           </q-form>
         </q-card-section>
       </q-card>
+
+      <q-dialog v-model="storeAuthen.dialogOtp" persistent transition-show="scale" transition-hide="scale">
+        <q-card class="bg-teal text-white" style="width: 900px;">
+          <q-form @submit="storeAuthen.verifyOtp()" class="q-gutter-md">
+            <q-card-section>
+              <div class="text-h6">Xác thực mã OTP: </div>
+            </q-card-section>
+
+            <q-card-section class="q-pt-none">
+              <q-input v-model="storeAuthen.otp" type="number" placeholder="Nhập mã đã được gửi về email của bạn..."
+                maxlength="4" filled class="q-mb-sm" :rules="[
+                  val => !!val || 'Vui lòng nhập mã OTP.',
+                  val => val.length < 5 || 'Mã OTP phải là một số có 4 chữ số.',
+                  val => val.length > 3 || 'Mã OTP phải là một số có 4 chữ số.',
+                ]" lazy-rules>
+                <template v-slot:after>
+                  <q-btn label="nhận mã" round dense flat @click="autoDecreaseNumber(), storeAuthen.getOtp()"
+                    :disable="storeAuthen.count !== 0" />
+                </template></q-input>
+              <span class="q-mt-md">Mã sẽ hết hạn sau: {{ storeAuthen.count }}s</span>
+            </q-card-section>
+
+            <q-card-actions align="right" class="bg-white text-teal">
+              <q-btn type="submit" flat label="Xác nhận" />
+            </q-card-actions>
+          </q-form>
+        </q-card>
+      </q-dialog>
     </div>
   </div>
 </template>
-
-<script setup>
-import { useQuasar } from 'quasar'
-import { onMounted, ref } from 'vue';
-import { useStoreAuthentication } from 'src/stores/storeAuthentication';
-
-const storeAuthen = useStoreAuthentication();
-const isPwd = ref(true);
-onMounted(() => {
-  const $q = useQuasar();
-  storeAuthen._init();
-})
-</script >
 
 <style lang="scss" scoped>
 .wave {

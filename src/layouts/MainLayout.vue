@@ -4,7 +4,6 @@ import { onMounted } from "vue";
 import { useStoreAuthentication } from "src/stores/storeAuthentication";
 import { useStoreMainLayout } from "src/stores/storeMainLayout"
 import { Notify, useQuasar } from "quasar";
-import router from "src/router";
 
 const $q = useQuasar();
 const storeAuthen = useStoreAuthentication();
@@ -14,27 +13,25 @@ const userName = localStorage.getItem('userName');
 const role = localStorage.getItem('loaiTaiKhoan');
 
 onMounted(() => {
-  if (role === 'ser') {
+  if (role === 'user') {
     window.onscroll = function () {
       scrollFunction();
     }
     if (userName) {
       storeAuthen.isDataUserAvailable = true;
+      storeAuthen.isLogin = true;
     }
   }
-  else {
-    // localStorage.clear();
-    // this.$router.push('/dang-nhap');
-    router().push({ path: "/dang-nhap" });
-    // return window.location.reload();
-    // Notify.create({
-    //   message: "Bạn không có quyền truy cập",
-    //   timeout: 2000,
-    //   position: "bottom",
-    //   color: "negative",
-    //   icon: "mood_bad",
-    // });
-  }
+  // else {
+  //   router().push({ path: "/dang-nhap" });
+  //   Notify.create({
+  //     message: "Bạn không có quyền truy cập",
+  //     timeout: 2000,
+  //     position: "bottom",
+  //     color: "negative",
+  //     icon: "mood_bad",
+  //   });
+  // }
 })
 
 /* Back to Top */
@@ -101,7 +98,6 @@ const clickToTop = () => {
 
         <div v-if="storeAuthen.isDataUserAvailable" class="col-6 col-md-6 text-black">
           <div class="row flex justify-end">
-
             <div class="flex flex-center justify-center cursor-pointer">
               <q-btn color="black" flat @mouseover="storeMainLayout.isShowDropdown = true" icon-right="arrow_drop_down"
                 :label=userName>
@@ -135,9 +131,10 @@ const clickToTop = () => {
             </div>
 
             <q-avatar font-size="20px" size="28px" color="yellow-2" text-color="orange"
-              class="text-weight-bold flex flex-center justify-center" style="align-items: center
-                                  ; flex-direction: column;" v-show="storeAuthen.userName"><img :src=picture
-                alt=""></q-avatar>
+              class="text-weight-bold flex flex-center justify-center"
+              style="align-items: center; flex-direction: column;">
+              <img :src=picture alt="">
+            </q-avatar>
           </div>
         </div>
 
