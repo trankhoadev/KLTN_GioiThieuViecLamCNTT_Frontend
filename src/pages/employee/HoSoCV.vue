@@ -1,29 +1,28 @@
 <script setup>
 import { ref, nextTick } from 'vue'
 import { useStoreAuthentication } from "src/stores/storeAuthentication";
-import { useStoreJob } from "src/stores/storeJob";
+import { useStoreHoSoCv } from "src/stores/storeHoSoCv";
 import { onMounted } from 'vue';
-import { store } from 'quasar/wrappers';
 
 onMounted(() => {
   const date = new Date();
   let index = 0;
-  storeJob.listYear.push(date.getFullYear());
+  storeHoSoCv.listYear.push(date.getFullYear());
   while (index < 25) {
     index++;
-    storeJob.listYear.push(date.getFullYear() - index);
+    storeHoSoCv.listYear.push(date.getFullYear() - index);
   }
 })
 
 const storeAuthen = useStoreAuthentication();
-const storeJob = useStoreJob();
+const storeHoSoCv = useStoreHoSoCv();
 
 const loading = ref(false)
 const nextPage = ref(2)
 const pageSize = 10
-const lastPage = Math.ceil(storeJob.listSkill.length / pageSize)
+const lastPage = Math.ceil(storeHoSoCv.listSkill.length / pageSize)
 const onScroll = ({ to, ref }) => {
-  const lastIndex = storeJob.listSkill.length - 1
+  const lastIndex = storeHoSoCv.listSkill.length - 1
 
   if (loading.value !== true && nextPage.value < lastPage && to === lastIndex) {
     loading.value = true
@@ -39,43 +38,43 @@ const onScroll = ({ to, ref }) => {
 }
 
 const clickExpandUserInfo = () => {
-  storeJob._init();
-  storeJob.expandUserInfo = true;
+  storeHoSoCv._init();
+  storeHoSoCv.expandUserInfo = true;
   var id = document.getElementById('expandUserInfo');
   id.scrollIntoView();
 }
 
 const clickExpandExperiment = () => {
-  storeJob._init();
-  storeJob.expandExperiment = true;
+  storeHoSoCv._init();
+  storeHoSoCv.expandExperiment = true;
   var id = document.getElementById('expandExperiment');
   id.scrollIntoView();
 }
 
 const clickExpandSkill = () => {
-  storeJob._init();
-  storeJob.expandSkill = true;
+  storeHoSoCv._init();
+  storeHoSoCv.expandSkill = true;
   var id = document.getElementById('expandSkill');
   id.scrollIntoView();
 }
 
 const clickExpandEducation = () => {
-  storeJob._init();
-  storeJob.expandEducation = true;
+  storeHoSoCv._init();
+  storeHoSoCv.expandEducation = true;
   var id = document.getElementById('expandEducation');
   id.scrollIntoView();
 }
 
 const clickExpandCertification = () => {
-  storeJob._init();
-  storeJob.expandCertification = true;
+  storeHoSoCv._init();
+  storeHoSoCv.expandCertification = true;
   var id = document.getElementById('expandCertification');
   id.scrollIntoView();
 }
 
 const clickExpandPrize = () => {
-  storeJob._init();
-  storeJob.expandPrize = true;
+  storeHoSoCv._init();
+  storeHoSoCv.expandPrize = true;
   var id = document.getElementById('expandPrize');
   id.scrollIntoView();
 }
@@ -135,7 +134,7 @@ const clickExpandPrize = () => {
               <q-list padding bordered class="rounded-borders">
                 <!-- E1 -->
                 <q-expansion-item class="q-pb-lg text-bold" dense dense-toggle expand-separator icon="person"
-                  label="Giới thiệu bản thân" v-model="storeJob.expandUserInfo" id="expandUserInfo">
+                  label="Giới thiệu bản thân" v-model="storeHoSoCv.expandUserInfo" id="expandUserInfo">
                   <q-card>
                     <q-card-section>
                       <div class="row">
@@ -160,12 +159,12 @@ const clickExpandPrize = () => {
                         <div class="col-md-9 col-sm-12 q-px-lg">
                           <q-input filled square class="q-mb-md" v-model="storeAuthen.userName" type="text"
                             label="Họ và Tên" />
-                          <q-input filled square class="q-mb-md" v-model="storeJob.chucVu" type="text" label="Chức vụ" />
-                          <q-input filled v-model="storeJob.ngaySinh" mask="date" :rules="['date']">
+                          <q-input filled square class="q-mb-md" v-model="storeHoSoCv.chucVu" type="text" label="Chức vụ" />
+                          <q-input filled v-model="storeHoSoCv.ngaySinh" mask="date" :rules="['date']">
                             <template v-slot:append>
                               <q-icon name="event" class="cursor-pointer">
                                 <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                  <q-date v-model="storeJob.ngaySinh">
+                                  <q-date v-model="storeHoSoCv.ngaySinh">
                                     <div class="row items-center justify-end">
                                       <q-btn v-close-popup label="Close" color="primary" flat />
                                     </div>
@@ -176,7 +175,7 @@ const clickExpandPrize = () => {
                           </q-input>
                           <div class="row flex justify-between">
                             <div class="col-md-6 q-pr-sm">
-                              <q-input filled square class="q-mb-md" v-model="storeJob.phone" type="number"
+                              <q-input filled square class="q-mb-md" v-model="storeHoSoCv.phone" type="number"
                                 label="Số điện thoại" />
                             </div>
 
@@ -185,7 +184,7 @@ const clickExpandPrize = () => {
                                 label="Địa chỉ email" />
                             </div>
                           </div>
-                          <q-input filled square class="q-mb-md" v-model="storeJob.address" type="text"
+                          <q-input filled square class="q-mb-md" v-model="storeHoSoCv.address" type="text"
                             label="Địa chỉ nhà" />
                         </div>
                       </div>
@@ -198,10 +197,10 @@ const clickExpandPrize = () => {
                           Gợi ý: Giới thiệu về bạn, điểm mạnh và số năm
                           kinh nghiệm</span>
                         <div class="col-12">
-                          <q-input v-model="storeJob.moTaBanThan" filled type="textarea" :maxlength="2500"
+                          <q-input v-model="storeHoSoCv.moTaBanThan" filled type="textarea" :maxlength="2500"
                             label="Vui lòng điền mô tả bản thân tại đây..." />
                         </div>
-                        <span>{{ storeJob.moTaBanThan.length }}/2500 ký tự</span>
+                        <span>{{ storeHoSoCv.moTaBanThan.length }}/2500 ký tự</span>
                       </div>
                     </q-card-section>
                   </q-card>
@@ -209,7 +208,7 @@ const clickExpandPrize = () => {
 
                 <!-- E2 -->
                 <q-expansion-item class="q-pb-lg text-bold" dense dense-toggle expand-separator icon="verified_user"
-                  label="Thêm kinh nghiệm làm việc" v-model="storeJob.expandExperiment" id="expandExperiment">
+                  label="Thêm kinh nghiệm làm việc" v-model="storeHoSoCv.expandExperiment" id="expandExperiment">
                   <q-card>
                     <q-card-section>
                       <h6>Kinh nghiệm làm việc: </h6>
@@ -223,19 +222,19 @@ const clickExpandPrize = () => {
 
                       <q-form @submit="() => { }" class="q-gutter-md">
                         <div>
-                          <q-input filled square class="q-mb-md" v-model="storeJob.chucVuCongTy" type="text"
+                          <q-input filled square class="q-mb-md" v-model="storeHoSoCv.chucVuCongTy" type="text"
                             label="Chức vụ tại Công Ty" />
 
-                          <q-input filled square class="q-mb-md" v-model="storeJob.tenCongTy" type="text"
+                          <q-input filled square class="q-mb-md" v-model="storeHoSoCv.tenCongTy" type="text"
                             label="Tên Công Ty" />
 
                           <div class="row flex justify-between">
                             <div class="col-md-6 q-pr-sm">
-                              <q-input filled v-model="storeJob.lamTuNgay" mask="date" :rules="['date']" label="Từ ngày">
+                              <q-input filled v-model="storeHoSoCv.lamTuNgay" mask="date" :rules="['date']" label="Từ ngày">
                                 <template v-slot:append>
                                   <q-icon name="event" class="cursor-pointer">
                                     <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                      <q-date v-model="storeJob.lamTuNgay">
+                                      <q-date v-model="storeHoSoCv.lamTuNgay">
                                         <div class="row items-center justify-end">
                                           <q-btn v-close-popup label="Close" color="primary" flat />
                                         </div>
@@ -247,12 +246,12 @@ const clickExpandPrize = () => {
                             </div>
 
                             <div class="col-md-6 q-pl-sm">
-                              <q-input filled v-model="storeJob.lamDenNgay" mask="date" :rules="['date']"
+                              <q-input filled v-model="storeHoSoCv.lamDenNgay" mask="date" :rules="['date']"
                                 label="Đến ngày">
                                 <template v-slot:append>
                                   <q-icon name="event" class="cursor-pointer">
                                     <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                      <q-date v-model="storeJob.lamDenNgay">
+                                      <q-date v-model="storeHoSoCv.lamDenNgay">
                                         <div class="row items-center justify-end">
                                           <q-btn v-close-popup label="Close" color="primary" flat />
                                         </div>
@@ -268,10 +267,10 @@ const clickExpandPrize = () => {
                             <span class="hint" style="font-style: normal">
                               Mô tả chi tiết:</span>
                             <div class="col-12">
-                              <q-input v-model="storeJob.moTaChiTietHocVan" filled type="textarea" :maxlength="2500"
+                              <q-input v-model="storeHoSoCv.moTaChiTietHocVan" filled type="textarea" :maxlength="2500"
                                 label="Vui lòng điền mô tả chi tiết công việc tại đây..." />
                             </div>
-                            <span>{{ storeJob.moTaChiTietHocVan.length }}/2500 ký tự</span>
+                            <span>{{ storeHoSoCv.moTaChiTietHocVan.length }}/2500 ký tự</span>
                           </div>
                         </div>
 
@@ -288,20 +287,20 @@ const clickExpandPrize = () => {
 
                 <!-- E3 -->
                 <q-expansion-item class="q-pb-lg text-bold" dense dense-toggle expand-separator icon="psychology"
-                  label="Thêm kỹ năng" v-model="storeJob.expandSkill" id="expandSkill">
+                  label="Thêm kỹ năng" v-model="storeHoSoCv.expandSkill" id="expandSkill">
                   <q-card>
                     <q-card-section>
                       <div class="row">
                         <div class="col-12">
-                          <q-select rounded outlined bottom-slots v-model="storeJob.listSelectSkill"
-                            :options="storeJob.listSkill" multiple="" maxlength="10" max-values="10" label="Kỹ năng"
+                          <q-select rounded outlined bottom-slots v-model="storeHoSoCv.listSelectSkill"
+                            :options="storeHoSoCv.listSkill" multiple="" maxlength="10" max-values="10" label="Kỹ năng"
                             use-chips stack-label counter :loading="loading" @virtual-scroll="onScroll">
                             <template v-slot:append>
-                              <q-icon name="clear" @click="storeJob.listSelectSkill = []" />
+                              <q-icon name="clear" @click="storeHoSoCv.listSelectSkill = []" />
                             </template>
 
                             <template v-slot:hint>
-                              {{ storeJob.listSelectSkill.length }}/10 kỹ năng
+                              {{ storeHoSoCv.listSelectSkill.length }}/10 kỹ năng
                             </template>
                           </q-select>
                         </div>
@@ -319,7 +318,7 @@ const clickExpandPrize = () => {
 
                 <!-- E4 -->
                 <q-expansion-item class="q-pb-lg text-bold" dense dense-toggle expand-separator icon="auto_stories"
-                  label="Học vấn" v-model="storeJob.expandEducation" id="expandEducation">
+                  label="Học vấn" v-model="storeHoSoCv.expandEducation" id="expandEducation">
                   <q-card>
                     <q-card-section>
                       <h6>Học vấn: </h6>
@@ -333,19 +332,19 @@ const clickExpandPrize = () => {
 
                       <q-form @submit="() => { }" class="q-gutter-md">
                         <div>
-                          <q-input filled square class="q-mb-md" v-model="storeJob.chucVuCongTy" type="text"
+                          <q-input filled square class="q-mb-md" v-model="storeHoSoCv.chucVuCongTy" type="text"
                             label="Ngành học" />
 
-                          <q-input filled square class="q-mb-md" v-model="storeJob.tenCongTy" type="text"
+                          <q-input filled square class="q-mb-md" v-model="storeHoSoCv.tenCongTy" type="text"
                             label="Tên Trường" />
 
                           <div class="row flex justify-between">
                             <div class="col-md-6 q-pr-sm">
-                              <q-input filled v-model="storeJob.hocTuNgay" mask="date" :rules="['date']" label="Từ ngày">
+                              <q-input filled v-model="storeHoSoCv.hocTuNgay" mask="date" :rules="['date']" label="Từ ngày">
                                 <template v-slot:append>
                                   <q-icon name="event" class="cursor-pointer">
                                     <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                      <q-date v-model="storeJob.hocTuNgay">
+                                      <q-date v-model="storeHoSoCv.hocTuNgay">
                                         <div class="row items-center justify-end">
                                           <q-btn v-close-popup label="Close" color="primary" flat />
                                         </div>
@@ -357,12 +356,12 @@ const clickExpandPrize = () => {
                             </div>
 
                             <div class="col-md-6 q-pl-sm">
-                              <q-input filled v-model="storeJob.hocDenNgay" mask="date" :rules="['date']"
+                              <q-input filled v-model="storeHoSoCv.hocDenNgay" mask="date" :rules="['date']"
                                 label="Đến ngày">
                                 <template v-slot:append>
                                   <q-icon name="event" class="cursor-pointer">
                                     <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                      <q-date v-model="storeJob.hocDenNgay">
+                                      <q-date v-model="storeHoSoCv.hocDenNgay">
                                         <div class="row items-center justify-end">
                                           <q-btn v-close-popup label="Close" color="primary" flat />
                                         </div>
@@ -378,10 +377,10 @@ const clickExpandPrize = () => {
                             <span class="hint" style="font-style: normal">
                               Mô tả chi tiết:</span>
                             <div class="col-12">
-                              <q-input v-model="storeJob.moTaChiTietCongViec" filled type="textarea" :maxlength="2500"
+                              <q-input v-model="storeHoSoCv.moTaChiTietCongViec" filled type="textarea" :maxlength="2500"
                                 label="Vui lòng điền mô tả chi tiết học vấn tại đây..." />
                             </div>
-                            <span>{{ storeJob.moTaChiTietCongViec.length }}/2500 ký tự</span>
+                            <span>{{ storeHoSoCv.moTaChiTietCongViec.length }}/2500 ký tự</span>
                           </div>
                         </div>
 
@@ -398,7 +397,7 @@ const clickExpandPrize = () => {
 
                 <!-- E5 -->
                 <q-expansion-item class="q-pb-lg text-bold" dense dense-toggle expand-separator icon="badge"
-                  label="Thêm chứng chỉ" v-model="storeJob.expandCertification" id="expandCertification">
+                  label="Thêm chứng chỉ" v-model="storeHoSoCv.expandCertification" id="expandCertification">
                   <q-card>
                     <q-card-section>
                       <h6>Chứng chỉ: </h6>
@@ -412,19 +411,19 @@ const clickExpandPrize = () => {
 
                       <q-form @submit="() => { }" class="q-gutter-md">
                         <div>
-                          <q-input filled square class="q-mb-md" v-model="storeJob.tenChungChi" type="text"
+                          <q-input filled square class="q-mb-md" v-model="storeHoSoCv.tenChungChi" type="text"
                             label="Tên chứng chỉ" />
 
-                          <q-input filled square class="q-mb-md" v-model="storeJob.toChucChungChi" type="text"
+                          <q-input filled square class="q-mb-md" v-model="storeHoSoCv.toChucChungChi" type="text"
                             label="Tổ chức" />
 
                           <div class="row flex justify-between">
                             <div class="col-md-6 q-pr-sm">
-                              <q-input filled v-model="storeJob.ngayNhan" mask="date" :rules="['date']" label="Ngày nhận">
+                              <q-input filled v-model="storeHoSoCv.ngayNhan" mask="date" :rules="['date']" label="Ngày nhận">
                                 <template v-slot:append>
                                   <q-icon name="event" class="cursor-pointer">
                                     <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                      <q-date v-model="storeJob.ngayNhan">
+                                      <q-date v-model="storeHoSoCv.ngayNhan">
                                         <div class="row items-center justify-end">
                                           <q-btn v-close-popup label="Close" color="primary" flat />
                                         </div>
@@ -436,11 +435,11 @@ const clickExpandPrize = () => {
                             </div>
 
                             <div class="col-md-6 q-pl-sm">
-                              <q-input filled v-model="storeJob.ngayHetHan" mask="date" :rules="['date']" label="Hết hạn">
+                              <q-input filled v-model="storeHoSoCv.ngayHetHan" mask="date" :rules="['date']" label="Hết hạn">
                                 <template v-slot:append>
                                   <q-icon name="event" class="cursor-pointer">
                                     <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                      <q-date v-model="storeJob.ngayHetHan">
+                                      <q-date v-model="storeHoSoCv.ngayHetHan">
                                         <div class="row items-center justify-end">
                                           <q-btn v-close-popup label="Close" color="primary" flat />
                                         </div>
@@ -456,10 +455,10 @@ const clickExpandPrize = () => {
                             <span class="hint" style="font-style: normal">
                               Mô tả chi tiết:</span>
                             <div class="col-12">
-                              <q-input v-model="storeJob.moTaChungChi" filled type="textarea" :maxlength="2500"
+                              <q-input v-model="storeHoSoCv.moTaChungChi" filled type="textarea" :maxlength="2500"
                                 label="Vui lòng mô tả về chứng chỉ này..." />
                             </div>
-                            <span>{{ storeJob.moTaChungChi.length }}/2500 ký tự</span>
+                            <span>{{ storeHoSoCv.moTaChungChi.length }}/2500 ký tự</span>
                           </div>
                         </div>
 
@@ -477,7 +476,7 @@ const clickExpandPrize = () => {
 
                 <!-- E6 -->
                 <q-expansion-item class="q-pb-lg text-bold" dense dense-toggle expand-separator icon="workspace_premium"
-                  label="Thêm giải thưởng và danh hiệu" v-model="storeJob.expandPrize" id="expandPrize">
+                  label="Thêm giải thưởng và danh hiệu" v-model="storeHoSoCv.expandPrize" id="expandPrize">
                   <q-card>
                     <q-card-section>
                       <h6>Giải thưởng & Danh hiệu </h6>
@@ -491,19 +490,19 @@ const clickExpandPrize = () => {
 
                       <q-form @submit="() => { }" class="q-gutter-md">
                         <div>
-                          <q-input filled square class="q-mb-md" v-model="storeJob.tenChungChi" type="text"
+                          <q-input filled square class="q-mb-md" v-model="storeHoSoCv.tenChungChi" type="text"
                             label="Tên giải thưởng/danh hiệu" />
 
-                          <q-input filled square class="q-mb-md" v-model="storeJob.toChucGiaiThuong" type="text"
+                          <q-input filled square class="q-mb-md" v-model="storeHoSoCv.toChucGiaiThuong" type="text"
                             label="Tổ chức" />
 
                           <div class="row flex justify-between">
                             <div class="col-md-6 q-pr-sm">
-                              <q-select v-model="storeJob.selectMonth" :options="storeJob.listMonth" label="Tháng"
+                              <q-select v-model="storeHoSoCv.selectMonth" :options="storeHoSoCv.listMonth" label="Tháng"
                                 filled />
                             </div>
                             <div class="col-md-6 q-pl-sm">
-                              <q-select v-model="storeJob.selectYear" :options="storeJob.listYear" label="Năm" filled />
+                              <q-select v-model="storeHoSoCv.selectYear" :options="storeHoSoCv.listYear" label="Năm" filled />
                             </div>
                           </div>
 
@@ -511,10 +510,10 @@ const clickExpandPrize = () => {
                             <span class="hint" style="font-style: normal">
                               Mô tả chi tiết:</span>
                             <div class="col-12">
-                              <q-input v-model="storeJob.moTaGiaiThuong" filled type="textarea" :maxlength="2500"
+                              <q-input v-model="storeHoSoCv.moTaGiaiThuong" filled type="textarea" :maxlength="2500"
                                 label="Vui lòng mô tả về giải thưởng mà bạn nhân được ..." />
                             </div>
-                            <span>{{ storeJob.moTaGiaiThuong.length }}/2500 ký tự</span>
+                            <span>{{ storeHoSoCv.moTaGiaiThuong.length }}/2500 ký tự</span>
                           </div>
                         </div>
 
