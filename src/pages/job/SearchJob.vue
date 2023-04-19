@@ -3,14 +3,13 @@ import { useStoreJob } from 'src/stores/storeJob';
 import { useQuasar } from 'quasar';
 const storeJob = useStoreJob();
 const $q = useQuasar();
-
 </script>
 <template>
   <q-layout>
     <q-page-container>
       <q-page class="bg-grey-3">
         <div class="row justify-evenly q-pt-md container" style="margin: 0 auto;"
-          v-bind:style="$q.screen.lt.sm ? { 'width': '100%' } : { 'width': '70%' }">
+          v-bind:style="$q.screen.lt.md ? { 'width': '95%' } : { 'width': '70%' }">
           <div class="col-12 q-mt-lg">
             <div class="flex banner" style="border-top-left-radius: 8px; border-top-right-radius: 8px;">
               <div class="ml-auto">
@@ -32,39 +31,136 @@ const $q = useQuasar();
 
           <div class="row justify-evenly bg-white q-pa-md full-width">
             <div class="col-md-3 col-12 q-my-md">
-              <q-input type="text" placeholder="Tên công việc, vị trí muốn ứng tuyển..." outlined v-model="text"
-                :dense="dense">
+              <q-input type="text" placeholder="Tên công việc, vị trí muốn ứng tuyển..." outlined
+                v-model="storeJob.searchInput">
                 <template v-slot:prepend>
                   <q-icon name="search" />
                 </template>
               </q-input>
             </div>
             <div class="col-md-2 col-12 q-my-md">
-              <q-select color="grey-3" outlined label-color="light-green-10" v-model="model" :options="options"
-                label="Lĩnh vực">
+              <q-select color="grey-3" outlined label-color="light-green-10" v-model="storeJob.selectSkill"
+                :options="storeJob.listSkill" label="Lĩnh vực">
                 <template v-slot:append>
-                  <q-icon name="event" color="light-green-10" />
+                  <q-icon name="business" color="light-green-10" />
                 </template>
               </q-select>
             </div>
             <div class="col-md-2 col-12 q-my-md">
-              <q-select color="grey-3" outlined label-color="light-green-10" v-model="model" :options="options"
-                label="Cấp bậc">
+              <q-select color="grey-3" outlined label-color="light-green-10" v-model="storeJob.selectLevel"
+                :options="storeJob.optionLevel" label="Cấp bậc">
                 <template v-slot:append>
-                  <q-icon name="event" color="light-green-10" />
+                  <q-icon name="badge" color="light-green-10" />
                 </template>
               </q-select>
             </div>
             <div class="col-md-2 col-12 q-my-md">
-              <q-select color="grey-3" outlined label-color="light-green-10" v-model="model" :options="options"
-                label="Mức lương">
+              <q-select color="grey-3" outlined label-color="light-green-10" v-model="storeJob.selectSalary"
+                :options="storeJob.optionSalary" label="Mức lương">
                 <template v-slot:append>
-                  <q-icon name="event" color="light-green-10" />
+                  <q-icon name="monetization_on" color="light-green-10" />
                 </template>
               </q-select>
             </div>
             <div class="col-md-2 flex flex-center">
-              <q-btn color="light-green-10" icon="search" label="Tìm kiếm" @click="onClick" />
+              <q-btn color="light-green-10" icon="search" label="Tìm kiếm" @click="() => { }" />
+            </div>
+
+            <div class="col-12 q-pa-md">
+              <div>Đã tìm thấy <span class="text-highlight">{{ 2000 }}</span> việc làm phù hợp với yêu cầu của bạn.</div>
+            </div>
+          </div>
+
+          <div class="row bg-white full-width">
+            <div class="col-12">
+              <hr class="q-mt-sm q-mb-md">
+            </div>
+            <div class="col-12">
+              <div class="q-px-lg">
+                <span class="custom-important">
+                  Ưu tiên hiển thị:
+                </span>
+
+                <q-radio v-model="storeJob.sortRadio" val="new" label="Tin mới nhất" />
+                <q-radio v-model="storeJob.sortRadio" val="salary" label="Lương cao nhất" />
+              </div>
+            </div>
+
+            <div class="col-12 q-pa-none">
+              <hr class="q-mt-md q-mb-lg">
+            </div>
+          </div>
+
+          <div class="row bg-white full-width q-px-md justify-evenly">
+            <div class="col-md-7 col-12">
+              <div class="item highlight q-pa-none q" v-for="item in storeJob.listRecruiter" :key="item.id">
+                <div class="row q-my-md">
+                  <div class="col-md-2 col-12">
+                    <div class="avatar">
+                      <img class="" style="max-width: 100px; max-height: 100px;" :src=item.picture alt="">
+                    </div>
+                  </div>
+                  <div class="col-md-7 col-12">
+                    <div class="title">
+                      <a>{{ item.title }}</a>
+                    </div>
+                    <div class="q-pt-sm">{{ item.companyName }}</div>
+                    <div class="q-pt-sm"> {{ item.datePost }}</div>
+                    <div class="q-pt-sm">
+                      <div class="skills">
+                        <label class="item" v-for="tag in item.tag" :key="tag">
+                          {{ tag }}
+                        </label>
+                      </div>
+                    </div>
+                    <div class="flex">
+                      <div>
+                        <q-icon name="location_on" size="sm" class="text-green-7" />
+                        <span class="q-ml-sm">{{ item.address }}</span>
+                      </div>
+
+                      <div class="q-ml-md">
+                        <q-icon name="access_time_filled" size="sm" class="text-green-7" />
+                        <span class="q-ml-sm">Còn <b>{{ 25 }}</b> ngày để ứng tuyển</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="row column flex-right justify-between full-height">
+                      <div class="salary text-right">
+                        <span class="title-salary">
+                          {{ item.salary }}
+                        </span>
+                      </div>
+                      <div class="function flex text-right flex-right justify-end">
+                        <q-btn class="apply-now q-mr-md" color="green-7" label="Ứng tuyển" />
+                        <q-btn class="favorite" icon="favorite_border" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="q-pa-lg flex flex-center">
+                  <q-pagination color="green-7" v-model="storeJob.panigateSelected" :max="5" direction-links />
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 col-12">
+              <h6 class="text-bold">Top công ty nổi bật</h6>
+              <div class="list-company" v-for="item in storeJob.listCompany" :key="item.id">
+                <div class="item item-hover">
+                  <div class="row full-width">
+                    <div class="col-md-2">
+                      <img :src=item.picture alt="">
+                    </div>
+                    <div class="col-md-10 flex column justify-between">
+                      <b class="text-uppercase">{{ item.name }}</b>
+                      <p class="count">{{ item.amount }} việc làm</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -78,6 +174,159 @@ const $q = useQuasar();
 @mixin sm {
   @media screen and (max-width: 799px) {
     @content;
+  }
+}
+
+.ml-auto {
+  margin-right: auto;
+}
+
+.text-highlight {
+  color: #00b14f;
+  font-weight: 600;
+}
+
+hr {
+  height: 1px;
+  background-color: #c7c8c9;
+}
+
+span.custom-important {
+  color: #999;
+  font-size: 14px;
+}
+
+.item {
+  background: #fff 0 0 no-repeat padding-box;
+  border: 1px solid #f4f4f4;
+  border-radius: 5px;
+  margin-bottom: 16px;
+  padding: 16px;
+  transition: all .2s;
+
+  &.highlight {
+    background-color: #f2fbf6;
+  }
+
+  &:hover {
+    border: 1px solid #00b04e;
+  }
+}
+
+.avatar {
+  background-color: #fff;
+  border-radius: 8px;
+  flex-shrink: 0;
+  height: 100px;
+  outline: 1px solid #e9eaec;
+  padding: 8px;
+  width: 100px;
+
+  img {
+    border-radius: 5px;
+    height: 100%;
+    -o-object-fit: contain;
+    object-fit: contain;
+    width: 100%;
+  }
+}
+
+.title {
+  font-weight: 600;
+  font-size: 1.2em;
+
+  a {
+    color: #212f3f;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all ease .1s;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.skills {
+  margin-bottom: 12px;
+  margin-top: 0;
+  display: flex;
+
+  label.item {
+    background: #e5f7ed;
+    border-radius: 20px;
+    color: #00b14f;
+    font-weight: 400;
+    padding: 4px 8px;
+  }
+}
+
+span.title-salary {
+  color: #00b14f;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 20px;
+  margin-bottom: 0;
+  margin-top: 0;
+  white-space: nowrap;
+}
+
+button {
+  &.apply-now {
+    background: #00b14f;
+    border-radius: 3px;
+    color: #fff;
+    font-size: 12px;
+    height: 28px;
+    outline: none;
+    padding: 6px 16px;
+  }
+
+  &.favorite {
+    align-items: center;
+    background: #e5f7ed;
+    color: #00b14f;
+    display: inline-flex;
+    font-size: 12px;
+    height: 28px;
+    justify-content: center;
+    padding: 0 8px;
+    white-space: nowrap;
+    width: 28px;
+  }
+}
+
+.list-company {
+  .item {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    box-sizing: border-box;
+    display: flex;
+    margin-bottom: 12px;
+    padding: 12px;
+
+    &.item-hover {
+      box-shadow: -1px 1px 2px rgba(0, 0, 0, .01);
+      transition: all .3s;
+    }
+
+    img {
+      border: 1px solid #f7f7f7;
+      border-radius: 5px;
+      height: 48px;
+      -o-object-fit: contain;
+      object-fit: contain;
+      width: 48px;
+    }
+
+    p.count {
+      color: #999;
+      font-size: 15px;
+      line-height: 20px;
+      margin-bottom: 0;
+    }
   }
 }
 
@@ -140,9 +389,5 @@ const $q = useQuasar();
     right: 0;
   }
 
-}
-
-.ml-auto {
-  margin-right: auto;
 }
 </style>

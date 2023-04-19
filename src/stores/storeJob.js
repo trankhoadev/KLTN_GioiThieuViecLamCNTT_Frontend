@@ -5,6 +5,8 @@ import { ref } from "vue";
 export const useStoreJob = defineStore("storeJob", {
   state: () => {
     return {
+      sortRadio: ref(""),
+      panigateSelected: ref(1),
       /* step 1 */
       chucVu: "",
       ngaySinh: ref(""),
@@ -273,6 +275,54 @@ export const useStoreJob = defineStore("storeJob", {
           id: "8",
           name: "Swift",
           picture: "https://developer.apple.com/swift/images/swift-og.png",
+        },
+      ],
+      listCompany: [
+        {
+          id: "1",
+          name: "Công Ty Cổ Phần Công Nghệ VMO Holdings",
+          picture:
+            "https://cdn.topcv.vn/48/company_logos/Drpdbc28IUtQjlGRyI5u1Hf4tIXtfiae_1678416305____a27ee094e700a72b093985db22e69d7e.png",
+          amount: "20",
+        },
+        {
+          id: "2",
+          name: "Công ty TNHH CMC GLOBAL",
+          picture:
+            "https://cdn.topcv.vn/48/company_logos/cong-ty-tnhh-cmc-global-1d94bf2be044cc832cd72d2f4f8fad66-5e72d0edadcfb.jpg",
+          amount: "18",
+        },
+
+        {
+          id: "3",
+          name: "CÔNG TY TNHH PHẦN MỀM FPT",
+          picture:
+            "https://cdn.topcv.vn/48/company_logos/cong-ty-tnhh-phan-mem-fpt-5e006f1d44fed.jpg",
+          amount: "29",
+        },
+
+        {
+          id: "4",
+          name: "FPT Software",
+          picture:
+            "https://cdn.topcv.vn/48/company_logos/fpt-software-6073b38a10cb4.jpg",
+          amount: "23",
+        },
+
+        {
+          id: "5",
+          name: "CÔNG TY TNHH AMARIS VIỆT NAM",
+          picture:
+            "https://cdn.topcv.vn/48/company_logos/9c7G3P3T9ax2xjTUuFrGuzERBnewqWCr_1655459515____7c02ee0971f3c131d91cb63cbdbdf588.png",
+          amount: "17",
+        },
+
+        {
+          id: "6",
+          name: "Công ty TNHH Công nghệ số Adamo",
+          picture:
+            "https://cdn.topcv.vn/48/company_logos/cong-ty-tnhh-cong-nghe-so-adamo-5c8f238c6a15b_rs.jpg",
+          amount: "8",
         },
       ],
     };
