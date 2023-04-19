@@ -7,6 +7,7 @@ export const useStoreJob = defineStore("storeJob", {
     return {
       sortRadio: ref(""),
       panigateSelected: ref(1),
+      tabJobDetail: ref("news"),
       /* step 1 */
       chucVu: "",
       ngaySinh: ref(""),
@@ -325,6 +326,28 @@ export const useStoreJob = defineStore("storeJob", {
           amount: "8",
         },
       ],
+
+      oneJobSelected: {
+        id: "1",
+        picture:
+          "https://cdn.topcv.vn/80/company_logos/cong-ty-tnhh-giai-phap-ket-noi-du-lich-viet-nam-59db4efdb678f_rs.jpg",
+        title: "Lập trình viên Frontend VueJS",
+        companyName: "Công ty TNHH giải pháp kết nối du lịch việt nam",
+        salary: "Tới 20 triệu",
+        workingType: "Toàn thời gian",
+        gender: "Không yêu cầu",
+        amount: "3", // so luong can tuyen
+        level: "nhân viên",
+        experience: "Không yêu cầu kinh nghiệm",
+        address:
+          "Hà Nội: Số 2, đường 3.5, khu đô thị Gamuda Gardens, P. Trần Phú, Q. Hoàng Mai. Ra tết sẽ chuyển qua Xã Đàn, Quận Đống Đa, TP Hà Nội",
+        moTaCongViec:
+          "Viết API Firebase cho Web và mobile app.\nLên kế hoạch, chuẩn bị giải pháp, thiết kế hệ thống phía server-side cùng các kiến trúc cơ sở dữ liệu lớn.\nTham gia viết tài liệu, mô tả hệ thống, kỹ thuật cho hệ thống phần mềm.\nỨng dụng các công nghệ, kỹ thuật mới để cải tiến hiệu năng và nâng cao chất lượng phần mềm.\nHỗ trợ các công việc liên quan cơ sở hạ tầng (Web Server, Database…).",
+        yeuCauUngVien:
+          "Ít nhất 6 tháng kinh nghiệm làm API.\nÍt nhất 6 tháng kinh nghiệm làm việc với Firebase.\nChủ động, đam mê công việc, sẵn sàng chấp nhận thách thức, luôn chú ý phát triển bản thân lên tầm cao mới.\nCó kinh nghiệm về RESTful API, API-first design.\nCó kinh nghiệm thiết kế đặc tả API và xây dựng tài liệu API.\nCó hiểu biết về các kỹ thuật tối ưu API performance.\nCó kiến thức cơ bản về Design Patterns và kiến trúc Microservice Architecture pattern.\nCó hiểu biết về phân tích, thiết kế và tối ưu database (đặc biệt là MongoDB hoặc hệ cơ sở dữ liệu NoSQL).\nCó kinh nghiệm lập trình đa luồng, lập trình thời gian thực (real-time chat/voice) và xử lý dữ liệu lớn là một lợi thế.\nCó kinh nghiệm về ReactJS là một lợi thế.",
+        quyenLoiUngVien:
+          "Mức lương cạnh tranh, xứng đáng với năng lực.\nCó cơ hội làm việc với nhiều công nghệ mới nhất trên thế giới.\nĐược tăng lương hàng năm và thưởng đặc biệt theo hiệu quả công việc. \nĐược làm việc trong một môi trường có sự chuyên môn hóa sâu về công việc. \nĐược làm việc với các đồng nghiệp thân thiện, hòa đồng và sẵn sàng giúp đỡ. \nĐược tạo điều kiện và trao cơ hội thăng tiến lên các vị trí cao hơn nếu đủ năng lực và thể hiện tốt. \nThường xuyên được đào tạo nội bộ kiến thức chuyên môn và kỹ năng mềm \nChế độ thưởng, phúc lợi theo chính sách Công ty (lế, tết, sinh nhật, hiếu hỷ, …) \nĐược hưởng chế độ bảo hiểm y tế, bảo hiểm xã hội theo quy định",
+      },
     };
   },
   getters: {},

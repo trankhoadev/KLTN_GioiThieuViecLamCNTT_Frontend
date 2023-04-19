@@ -8,6 +8,7 @@ import IndexPage from "pages/IndexPage.vue";
 import SignIn from "pages/SignIn.vue";
 import SignUp from "pages/SignUp.vue";
 import SearchJob from "pages/job/SearchJob.vue";
+import JobDetail from "pages/job/JobDetail.vue";
 import HoSoCV from "pages/employee/HoSoCV.vue";
 
 /* layout */
@@ -50,6 +51,10 @@ const router = [
       {
         path: "/search",
         component: SearchJob,
+      },
+      {
+        path: "/search/job/:id",
+        component: JobDetail,
       },
       {
         path: "/ho-so-cv",
