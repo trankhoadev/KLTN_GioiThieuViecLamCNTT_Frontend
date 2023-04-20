@@ -138,6 +138,18 @@ export const useStoreRecruiterAddPost = defineStore("storeRecruiterAddPost", {
     },
 
     confirmForm() {
+      const url = "api/tintuyendung/";
+      const data = {
+        tieude: this.titleName,
+        vitri: this.positionSelected,
+        soLuongTuyen: this.amount,
+        kinhNghiem: this.experienceSelected,
+        diaChi: this.districtSelected + ", " + this.provinceSelected,
+        nganhNghe: this.careerSelected,
+        hinhThucLamViec: this.styleSelected,
+        moTaCongViec: this.limitCharacterJob,
+        ngayDungTuyen: this.dateExpired,
+      }
       Notify.create({
         message: "Thao tác thành công",
         position: "bottom",

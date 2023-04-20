@@ -101,24 +101,42 @@ onMounted(() => { })
             </div>
           </div>
 
-          <div class="row q-py-lg">
+        <div class="row q-py-lg">
+          <div class="col-md-6 col-12 q-px-sm">
+            <label for="">Mức lương <span class="text-red">(*)</span></label>
+            <q-select v-model="storeRecruiterAddPost.salarySelected" :options="storeRecruiterAddPost.listSalary"
+              label="Chọn mức lương mong muốn" filled :rules="[
+                val => !!val || 'Mức lương không được rỗng',
+              ]" lazy-rules />
+          </div>
+
+
+            <!-- <div v-if="storeRecruiterAddPost.salarySelected.value == 4" class="col-md-6 col-12 q-px-sm">
+                <label for="">Mức lương cụ thể <span class="text-red">(*)</span></label>
+                <q-input filled v-model="storeRecruiterAddPost.specificSalary" type="number" label="Nhập số lương mong muốn"
+                  :rules="[
+                    val => !!val || 'Số lương không được rỗng',
+                    val => val > 999 || 'Lương nhập vào phải tối thiểu là 1000 !',
+                    val => val < 4999999999 || 'Lương nhập vào phải tối đa là 500.000.000 !',
+                  ]" lazy-rules />
+              </div> -->
+
             <div class="col-md-6 col-12 q-px-sm">
-              <label for="">Mức lương <span class="text-red">(*)</span></label>
-              <q-select v-model="storeRecruiterAddPost.salarySelected" :options="storeRecruiterAddPost.listSalary"
-                label="Chọn mức lương mong muốn" filled :rules="[
-                  val => !!val || 'Mức lương không được rỗng',
-                ]" lazy-rules />
-            </div>
-
-
-            <div v-if="storeRecruiterAddPost.salarySelected.value == 4" class="col-md-6 col-12 q-px-sm">
-              <label for="">Mức lương cụ thể <span class="text-red">(*)</span></label>
-              <q-input filled v-model="storeRecruiterAddPost.specificSalary" type="number" label="Nhập số lương mong muốn"
-                :rules="[
-                  val => !!val || 'Số lương không được rỗng',
-                  val => val > 999 || 'Lương nhập vào phải tối thiểu là 1000 !',
-                  val => val < 4999999999 || 'Lương nhập vào phải tối đa là 500.000.000 !',
-                ]" lazy-rules />
+              <label for="">Ngày dừng tuyển <span class="text-red">(*)</span></label>
+              <q-input filled v-model="storeRecruiterAddPost.dateExpired" mask="date" :rules="['date']"
+                label="Ngày hết hạn">
+                <template v-slot:append>
+                  <q-icon name="event" class="cursor-pointer">
+                    <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                      <q-date v-model="storeRecruiterAddPost.dateExpired">
+                        <div class="row items-center justify-end">
+                          <q-btn v-close-popup label="Close" color="primary" flat />
+                        </div>
+                      </q-date>
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
             </div>
           </div>
 
