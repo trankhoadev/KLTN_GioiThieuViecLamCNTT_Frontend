@@ -7,6 +7,8 @@ import { Loading, Notify } from "quasar";
 export const useStoreRecruiterAddPost = defineStore("storeRecruiterAddPost", {
   state: () => {
     return {
+      formattedDateExpired: "",
+      formattedDateCreated: "",
       titleName: "",
       provinceSelected: "",
       listProvince: app.listProvince,
@@ -16,17 +18,6 @@ export const useStoreRecruiterAddPost = defineStore("storeRecruiterAddPost", {
       listCareer: ["test"],
       amount: "",
       positionSelected: "",
-      listPosition: [
-        "Sinh viên",
-        "Thực tập sinh",
-        "Mới tốt nghiệp",
-        "Nhân viên",
-        "Trưởng phòng",
-        "Giám sát",
-        "Quản lý",
-        "Phó giám đốc",
-        "Giám đốc",
-      ],
       styleSelected: "",
       listStyle: [
         "Toàn thời gian",
@@ -38,40 +29,9 @@ export const useStoreRecruiterAddPost = defineStore("storeRecruiterAddPost", {
       ],
       salarySelected: "",
       specificSalary: "",
-      listSalary: [
-        {
-          value: "0",
-          label: "≥ 5 triệu đồng",
-        },
-
-        {
-          value: "1",
-          label: "≥ 15 triệu đồng",
-        },
-
-        {
-          value: "2",
-          label: "≥ 25 triệu đồng",
-        },
-
-        {
-          value: "3",
-          label: "≥ 40 triệu đồng",
-        },
-
-        {
-          value: "4",
-          label: "cụ thể",
-        },
-
-        {
-          value: "5",
-          label: "thỏa thuận",
-        },
-      ],
       experienceSelected: "",
       listExperience: [
-        "Chưa có kinh nghiệm",
+        "Không cần kinh nghiệm",
         "Dưới 1 năm",
         "1 năm",
         "2 năm",
@@ -138,26 +98,82 @@ export const useStoreRecruiterAddPost = defineStore("storeRecruiterAddPost", {
     },
 
     confirmForm() {
-      Notify.create({
-        message: "Thao tác thành công",
-        position: "bottom",
-        timeout: 2000,
-        color: "green",
-        icon: "mood",
-      });
-      setTimeout(() => {
-        Loading.show({
-          message: "Đang chuyển trang...",
-          boxClass: "bg-grey-2 text-grey-9",
-          spinnerColor: "primary",
-        });
-        this.router.push("/recruiter/welcome");
-      }, 1500);
+      let date = new Date(this.dateExpired);
+      this.formattedDateExpired = [
+        date.getDate(),
+        date.getMonth() + 1,
+        date.getFullYear(),
+      ].join("-");
 
-      setTimeout(() => {
-        Loading.hide();
-        window.location.reload();
-      }, 2500);
+      date = new Date();
+      this.formattedDateCreated = [
+        date.getDate(),
+        date.getMonth() + 1,
+        date.getFullYear(),
+      ].join("-");
+
+      let userId = localStorage.getItem("id");
+
+      try {
+        const url = "api/tintuyendung/";
+        const data = {
+          tieude: this.titleName,
+          diachi:
+            this.provinceSelected.label + ", " + this.districtSelected.label,
+          nganhnghe: this.careerSelected,
+          vitri: this.positionSelected,
+          soluongtuyen: this.amount,
+          hinhthuclamviec: this.styleSelected,
+          mucluong: this.salarySelected.label,
+          motacongviec: this.limitCharacterJob,
+          sonamkinhnghiem: this.experienceSelected,
+          bangcap: this.degreeSelected,
+          gioitinh: this.genderSelected,
+          ngayhethan: this.formattedDateExpired,
+          tutuoi: this.minAge,
+          dentuoi: this.maxAge,
+          motayeucau: this.limitCharacterRequire,
+          quyenloiungvien: this.limitCharacterBenefit,
+          tenlienhe: this.contactName,
+          sodienthoailienhe: this.contactPhone,
+          emaillienhe: this.contactEmail,
+          ngaycapnhat: this.formattedDateCreated,
+          trangthai: "đang chờ",
+          nhatuyendung: userId,
+        };
+        api.post(url, data).then((res) => {
+          if (res) {
+            Notify.create({
+              message: "Thao tác thành công",
+              position: "bottom",
+              timeout: 2000,
+              color: "green",
+              icon: "mood",
+            });
+            setTimeout(() => {
+              Loading.show({
+                message: "Đang chuyển trang...",
+                boxClass: "bg-grey-2 text-grey-9",
+                spinnerColor: "primary",
+              });
+              this.router.push("/recruiter/my-post");
+            }, 1500);
+
+            setTimeout(() => {
+              Loading.hide();
+              window.location.reload();
+            }, 2500);
+          }
+        });
+      } catch (error) {
+        Notify.create({
+          message: "Thao tác thất bại",
+          timeout: 2000,
+          position: "bottom",
+          color: "negative",
+          icon: "mood_bad",
+        });
+      }
     },
   },
 });

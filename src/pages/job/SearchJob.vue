@@ -1,6 +1,8 @@
 <script setup>
-import { useStoreJob } from 'src/stores/storeJob';
 import { useQuasar } from 'quasar';
+import { useStoreJob } from 'src/stores/storeJob';
+import { useMyStore } from 'src/stores/myStore';
+const myStore = useMyStore();
 const storeJob = useStoreJob();
 const $q = useQuasar();
 </script>
@@ -40,7 +42,7 @@ const $q = useQuasar();
             </div>
             <div class="col-md-2 col-12 q-my-md">
               <q-select color="grey-3" outlined label-color="light-green-10" v-model="storeJob.selectSkill"
-                :options="storeJob.listSkill" label="Lĩnh vực">
+                :options="myStore.optionCareer" label="Lĩnh vực">
                 <template v-slot:append>
                   <q-icon name="business" color="light-green-10" />
                 </template>
@@ -48,7 +50,7 @@ const $q = useQuasar();
             </div>
             <div class="col-md-2 col-12 q-my-md">
               <q-select color="grey-3" outlined label-color="light-green-10" v-model="storeJob.selectLevel"
-                :options="storeJob.optionLevel" label="Cấp bậc">
+                :options="myStore.optionPosition" label="Cấp bậc">
                 <template v-slot:append>
                   <q-icon name="badge" color="light-green-10" />
                 </template>
@@ -56,7 +58,7 @@ const $q = useQuasar();
             </div>
             <div class="col-md-2 col-12 q-my-md">
               <q-select color="grey-3" outlined label-color="light-green-10" v-model="storeJob.selectSalary"
-                :options="storeJob.optionSalary" label="Mức lương">
+                :options="myStore.optionSalary" label="Mức lương">
                 <template v-slot:append>
                   <q-icon name="monetization_on" color="light-green-10" />
                 </template>

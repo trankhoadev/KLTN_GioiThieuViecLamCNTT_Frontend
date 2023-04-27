@@ -1,32 +1,18 @@
-<script>
+<script setup>
 // import EssentialLink from 'layouts/EssentialLink.vue';
 import Messages from "./MessageComponent.vue";
-
+import { useStoreAuthentication } from "src/stores/storeAuthentication";
 import { defineComponent, ref } from 'vue'
 import { useQuasar } from "quasar";
 
 /* Remember Delete it */
 localStorage.setItem('role', 2);
-
-export default defineComponent({
-  name: 'MainLayout',
-
-  components: {
-    // EssentialLink,
-    Messages
-  },
-
-  setup() {
-    const leftDrawerOpen = ref(false)
-
-    return {
-      leftDrawerOpen,
-      toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value
-      }
-    }
-  }
-})
+const leftDrawerOpen = ref(false)
+const storeAuthen = useStoreAuthentication();
+const imgUrl = localStorage.getItem('picture');
+function toggleLeftDrawer() {
+  leftDrawerOpen.value = !leftDrawerOpen.value
+}
 </script>
 <template>
   <q-layout view="lHh Lpr lFf">
@@ -53,7 +39,7 @@ export default defineComponent({
           </q-btn>
           <q-btn round flat>
             <q-avatar size="26px">
-              <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+              <img :src=imgUrl>
             </q-avatar>
           </q-btn>
         </div>
@@ -110,7 +96,7 @@ export default defineComponent({
             <q-item-label>Cài đặt</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item to="/recruiter" active-class="q-item-no-link-highlighting">
+        <q-item to="/recruiter" @click="storeAuthen.logOut" active-class="q-item-no-link-highlighting">
           <q-item-section avatar>
             <q-icon name="logout" />
           </q-item-section>

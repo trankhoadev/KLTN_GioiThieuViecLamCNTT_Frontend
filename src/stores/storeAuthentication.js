@@ -114,15 +114,16 @@ export const useStoreAuthentication = defineStore("storeAuthentication", {
             }
           });
       } catch (err) {
-        if (err) throw err;
+        Loading.hide();
         this.isLoadingLogin = false;
         Notify.create({
-          message: "Gặp lỗi trong quá trình đăng nhập",
+          message: "Sai tên tài khoản hoặc mật khẩu",
           timeout: 2000,
           position: "bottom",
           color: "negative",
           icon: "mood_bad",
         });
+        if (err) throw err;
       }
     },
 

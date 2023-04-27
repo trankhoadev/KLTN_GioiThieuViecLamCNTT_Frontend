@@ -31,7 +31,7 @@ onMounted(() => { })
         </div>
 
         <div class="col-md-6 col-12 q-px-sm q-py-sm">
-          <b>Chức vụ: </b> <span>{{ storeRecruiterAddPost.positionSelected }}</span>
+          <b>Chức vụ: </b> <span>{{ storeRecruiterAddPost.positionSelected.label }}</span>
         </div>
 
         <div class="col-md-6 col-12 q-px-sm q-py-sm">

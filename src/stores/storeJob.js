@@ -96,13 +96,6 @@ export const useStoreJob = defineStore("storeJob", {
       selectSalary: ref(null),
       selectExperiment: ref(null),
       selectWorkType: ref(null),
-      optionLevel: ["Fresher", "Junior", "Senior", "Manager"],
-      optionSalary: [
-        "≥ 5 triệu đồng",
-        "≥ 15 triệu đồng",
-        "≥ 25 triệu đồng",
-        "≥ 40 triệu đồng",
-      ],
       optionExperiment: [
         "Chưa có kinh nghiệm",
         "≥ 1 năm",

@@ -2,8 +2,10 @@
 import { onMounted } from "vue";
 import { useStoreRecruiterAddPost } from "stores/recruiter/storeRecruiterAddPost";
 import { useStoreRegex } from 'stores/middleware/storeRegex'
+import { useMyStore } from 'stores/myStore'
 const storeRecruiterAddPost = useStoreRecruiterAddPost();
 const storeRegex = useStoreRegex();
+const myStore = useMyStore();
 
 onMounted(() => { })
 
@@ -68,7 +70,7 @@ onMounted(() => { })
           <div class="row q-py-lg">
             <div class="col-md-6 col-12 q-px-sm">
               <label for="">Ngành nghề <span class="text-red">(*)</span></label>
-              <q-select v-model="storeRecruiterAddPost.careerSelected" :options="storeRecruiterAddPost.listCareer"
+              <q-select v-model="storeRecruiterAddPost.careerSelected" :options="myStore.optionCareer"
                 label="Chọn ngành nghề" filled :rules="[
                   val => !!val || 'Ngành nghề không được rỗng',
                 ]" lazy-rules />
@@ -76,7 +78,7 @@ onMounted(() => { })
 
             <div class="col-md-6 col-12 q-px-sm">
               <label for="">Vị trí <span class="text-red">(*)</span></label>
-              <q-select v-model="storeRecruiterAddPost.positionSelected" :options="storeRecruiterAddPost.listPosition"
+              <q-select v-model="storeRecruiterAddPost.positionSelected" :options="myStore.optionPosition"
                 label="Chọn vị trí" filled :rules="[
                   val => !!val || 'Vị trí không được rỗng',
                 ]" lazy-rules />
@@ -104,7 +106,7 @@ onMounted(() => { })
           <div class="row q-py-lg">
             <div class="col-md-6 col-12 q-px-sm">
               <label for="">Mức lương <span class="text-red">(*)</span></label>
-              <q-select v-model="storeRecruiterAddPost.salarySelected" :options="storeRecruiterAddPost.listSalary"
+              <q-select v-model="storeRecruiterAddPost.salarySelected" :options="myStore.optionSalary"
                 label="Chọn mức lương mong muốn" filled :rules="[
                   val => !!val || 'Mức lương không được rỗng',
                 ]" lazy-rules />
