@@ -1,15 +1,36 @@
 <script setup>
 import { useQuasar } from 'quasar'
 import { useStoreManagePost } from 'src/stores/admin/storeManagePost.js';
+import { onMounted, onUpdated, onBeforeUpdate } from 'vue';
 const storeManagePost = useStoreManagePost();
+
+onMounted(() => {
+  storeManagePost.getAllPost()
+});
+
+onBeforeUpdate(() => {
+  getCount();
+});
+
+const getCount = () => {
+  storeManagePost.tinDangCho = 0;
+  storeManagePost.tinDaDuyet = 0;
+  storeManagePost.tinTuChoi = 0;
+  storeManagePost.rowDataManagePost.map(e => {
+    e['trangthai'] === 'đang chờ' ? storeManagePost.tinDangCho++ : void (0);
+    e['trangthai'] === 'đang tuyển' || 'dừng tuyển' ? storeManagePost.tinDaDuyet++ : void (0);
+    e['trangthai'] === 'đã hủy' ? storeManagePost.tinTuChoi++ : void (0);
+  })
+}
+
 const $q = useQuasar();
 </script>
 
 <template>
   <div>
     <q-table title="QUẢN LÝ TIN ĐĂNG TUYỂN" virtual-scroll :columns="storeManagePost.columnManagePost"
-      :rows="storeManagePost.rowDataManagePost" style="height: 90vh" row-key="email" :rows-per-page-options="[0]"
-      class="q-my-lg q-mx-md" rows-per-page-label="Số dòng mỗi trang"
+      :rows="storeManagePost.rowDataManagePost" :loading="storeManagePost.loadData" style="height: 90vh" row-key="name"
+      :rows-per-page-options="[10]" class="q-my-lg q-mx-md" rows-per-page-label="Số dòng mỗi trang"
       v-model:selected="storeManagePost.listSelectManagePost" selection="multiple" :filter="storeManagePost.filter">
 
       <template v-slot:top-left>
@@ -20,14 +41,14 @@ const $q = useQuasar();
         <div class="row">
           <div class="header-tabs flex justify-between">
             <q-tabs align="center" class="text-teal" dense>
-              <q-tab class="text-cyan" icon="select_all" :label="'Tất cả ' + '(' + storeManagePost.taiKhoanUtv + ')'"
+              <q-tab class="text-cyan" icon="select_all" :label="'Tất cả ' + '(' + storeManagePost.rowDataManagePost.length + ')'"
                 @click="storeManagePost.filter = ''" v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
               <q-tab class="text-orange" icon="reply_all"
-                :label="'Đang chờ ' + '(' + storeManagePost.taiKhoanUtvDangCho + ')'"
+                :label="'Đang chờ ' + '(' + storeManagePost.tinDangCho + ')'"
                 @click="storeManagePost.filter = 'đang chờ'" v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
-              <q-tab class="text-teal" icon="done" :label="'Đã duyệt ' + '(' + storeManagePost.taiKhoanUtvDaDuyet + ')'"
-                @click="storeManagePost.filter = 'đã duyệt'" v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
-              <q-tab class="text-red" icon="close" :label="'Từ chối ' + '(' + storeManagePost.taiKhoanUtvTuChoi + ')'"
+              <q-tab class="text-teal" icon="done" :label="'Đã duyệt ' + '(' + storeManagePost.tinDaDuyet + ')'"
+                @click="storeManagePost.filter = ' tuyển'" v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
+              <q-tab class="text-red" icon="close" :label="'Từ chối ' + '(' + storeManagePost.tinTuChoi + ')'"
                 @click="storeManagePost.filter = 'đã hủy'" v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
             </q-tabs>
           </div>
@@ -69,30 +90,37 @@ const $q = useQuasar();
           <td class="text-left" key="stt" :props="props" style="width: 5%;">
             {{ props.rowIndex }}
           </td>
-          <td class="text-left" key="name" :props="props" style="width: 25%;">
+          <td class="text-left" key="tieude" :props="props" style="width: 25%;">
             <p class="text-weight-bold" style="font-size: 1.2em; white-space: pre-wrap;">{{
-              props.row.title }}</p>
-            <b>Địa chỉ: </b><span>{{ props.row.address }}</span>
+              props.row.tieude }}</p>
+            <b>Địa chỉ: </b><span>{{ props.row.diaChi }}</span>
             <br>
-            <b>Lượt đánh giá: </b> <span>{{ props.row.danhGia }}</span>
+            <b>Lượt đánh giá: </b> <span>{{ 0 }}</span>
             <br>
-            <span class="text-primary cursor-pointer q-pt-lg" @click="storeManagePost.seeDetail(props.row.idPost)">Xem chi tiết</span>
+            <span class="text-primary cursor-pointer q-pt-lg" @click="storeManagePost.seeDetail(props.row._id)">Xem chi
+              tiết</span>
           </td>
 
-          <td class="text-left" key="email" :props="props" style="width: 20%;">
-            <span style="white-space: pre-wrap;">{{ props.row.name }}</span>
+          <td class="text-left" key="name" :props="props" style="width: 20%;">
+            <span style="white-space: pre-wrap;">{{ props.row._id }}</span>
           </td>
 
           <td class="text-left" key="date" :props="props" style="width: 10%;">
-            <span style="white-space: pre-wrap;">{{ props.row.date }}</span>
+            <!-- <span style="white-space: pre-wrap;">{{ [
+              new Date(props.row.createdAt).getDate(),
+              new Date(props.row.createdAt).getMonth() + 1,
+              new Date(props.row.createdAt).getFullYear(),
+            ].join("-") }}</span> -->
+
+            <span>{{ props.row.createdAt.substr(0,10) }}</span>
           </td>
 
-          <td class="text-left" key="date" :props="props" style="width: 10%;">
-            <span style="white-space: pre-wrap;">{{ props.row.date }}</span>
+          <td class="text-left" key="state" :props="props" style="width: 10%;">
+            <span style="white-space: pre-wrap;">{{ props.row.trangthai }}</span>
           </td>
 
           <td class="text-left" key="action" :props="props">
-            <div v-if="props.row.state === 'đang chờ'">
+            <div v-if="props.row.trangthai === 'đang chờ'">
               <q-btn color="light-green" icon="check" label="Duyệt" @click="storeManagePost.acceptOne(props.row.email)" />
               <q-btn class="q-ml-lg" color="pink" icon="cancel" label="Từ chối"
                 @click="storeManagePost.checkDenyOne(props.row.name, props.row.email)" />
