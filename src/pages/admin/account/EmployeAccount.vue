@@ -1,8 +1,14 @@
 <script setup>
 import { useQuasar } from 'quasar'
 import { useStoreEmployeeAccount } from 'src/stores/admin/storeEmployeeAccount.js';
+import { onMounted } from 'vue';
 const storeEmployeeAccount = useStoreEmployeeAccount();
 const $q = useQuasar();
+
+onMounted(() => {
+  storeEmployeeAccount.getAllData();
+});
+
 </script>
 
 <template>
@@ -16,6 +22,7 @@ const $q = useQuasar();
       <template v-slot:top-left>
         <div class="row">
           <h5 class="q-py-md">DUYỆT TÀI KHOẢN ỨNG TUYỂN VIÊN</h5>
+          <pre>{{ storeEmployeeAccount.listData }}</pre>
         </div>
 
         <div class="row">

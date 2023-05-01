@@ -7,6 +7,7 @@ export const useStoreEmployeeAccount = defineStore("storeEmployeeAccount", {
   state: () => {
     return {
       filter: "",
+      listData: [],
       listSelectEmployeeAccount: ref(),
       taiKhoanUtv: 0,
       taiKhoanUtvDangCho: 0,
@@ -368,6 +369,19 @@ export const useStoreEmployeeAccount = defineStore("storeEmployeeAccount", {
             });
           }
         }, 1000);
+      }
+    },
+
+    getAllData() {
+      const url = "api/user";
+      try {
+        api.get(url).then((res) => {
+          if (res.data) {
+            this.listData = res.data;
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
       }
     },
   },

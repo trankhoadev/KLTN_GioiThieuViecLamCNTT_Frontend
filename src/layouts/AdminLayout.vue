@@ -1,4 +1,4 @@
-<script>
+<script setup>
 // import EssentialLink from 'layouts/EssentialLink.vue';
 import Messages from "./MessageComponent.vue";
 
@@ -7,26 +7,13 @@ import { useQuasar } from "quasar";
 
 /* Remember Delete it */
 localStorage.setItem('role', 2);
+const picture = localStorage.getItem('picture');
+const leftDrawerOpen = ref(false)
+const toggleLeftDrawer = () => {
+  leftDrawerOpen.value = !leftDrawerOpen.value
+}
 
-export default defineComponent({
-  name: 'MainLayout',
 
-  components: {
-    // EssentialLink,
-    Messages
-  },
-
-  setup() {
-    const leftDrawerOpen = ref(false)
-
-    return {
-      leftDrawerOpen,
-      toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value
-      }
-    }
-  }
-})
 </script>
 <template>
   <q-layout view="lHh Lpr lFf">
@@ -53,7 +40,7 @@ export default defineComponent({
           </q-btn>
           <q-btn round flat>
             <q-avatar size="26px">
-              <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+              <img :src="picture">
             </q-avatar>
           </q-btn>
         </div>
