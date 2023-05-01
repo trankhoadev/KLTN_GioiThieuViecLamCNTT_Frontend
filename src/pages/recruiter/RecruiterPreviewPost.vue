@@ -53,6 +53,10 @@ onMounted(() => { })
         <div class="col-md-6 col-12 q-px-sm q-py-sm">
           <b>Kinh nghiệm: </b> <span> {{ storeRecruiterAddPost.experienceSelected }}</span>
         </div>
+
+        <div class="col-md-6 col-12 q-px-sm q-py-sm">
+          <b>Tags: </b> <span> {{ storeRecruiterAddPost.tagsSelected.map(e => e.ngonngu) }}</span>
+        </div>
       </div>
 
       <div class="row q-py-md q-mt-lg">

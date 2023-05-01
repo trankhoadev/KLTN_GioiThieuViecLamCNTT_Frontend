@@ -28,7 +28,9 @@ export const useStoreRecruiterAddPost = defineStore("storeRecruiterAddPost", {
         "Khác (liên hệ sau)",
       ],
       salarySelected: "",
-      specificSalary: "",
+      listTagId: [],
+      listTag: ref(),
+      tagsSelected: ref(null),
       experienceSelected: "",
       listExperience: [
         "Không cần kinh nghiệm",
@@ -118,29 +120,33 @@ export const useStoreRecruiterAddPost = defineStore("storeRecruiterAddPost", {
         const url = "api/tintuyendung/";
         const data = {
           tieude: this.titleName,
-          diachi:
+          diaChi:
             this.provinceSelected.label + ", " + this.districtSelected.label,
-          nganhnghe: this.careerSelected,
-          vitri: this.positionSelected,
-          soluongtuyen: this.amount,
-          hinhthuclamviec: this.styleSelected,
+          nganhNghe: this.careerSelected.label,
+          vitri: this.positionSelected.label,
+          soLuongTuyen: this.amount,
+          hinhThucLamViec: this.styleSelected,
           mucluong: this.salarySelected.label,
-          motacongviec: this.limitCharacterJob,
-          sonamkinhnghiem: this.experienceSelected,
+          moTaCongViec: this.limitCharacterJob,
+          kinhNghiem: this.experienceSelected,
           bangcap: this.degreeSelected,
           gioitinh: this.genderSelected,
-          ngayhethan: this.formattedDateExpired,
           tutuoi: this.minAge,
           dentuoi: this.maxAge,
-          motayeucau: this.limitCharacterRequire,
-          quyenloiungvien: this.limitCharacterBenefit,
-          tenlienhe: this.contactName,
-          sodienthoailienhe: this.contactPhone,
-          emaillienhe: this.contactEmail,
-          ngaycapnhat: this.formattedDateCreated,
+          moTaYeuCau: this.limitCharacterRequire,
+          quyenLoiUngVien: this.limitCharacterBenefit,
+          tenNguoiLienHe: this.contactName,
+          soDienThoaiLienHe: this.contactPhone,
+          emailLienHe: this.contactEmail,
+          ngayHetHan: this.formattedDateExpired,
+          ngayTao: this.formattedDateCreated,
+          ngonngu: this.listTagId,
           trangthai: "đang chờ",
           nhatuyendung: userId,
         };
+
+        console.log(data);
+
         api.post(url, data).then((res) => {
           if (res) {
             Notify.create({
@@ -173,6 +179,19 @@ export const useStoreRecruiterAddPost = defineStore("storeRecruiterAddPost", {
           color: "negative",
           icon: "mood_bad",
         });
+      }
+    },
+
+    async getListTag() {
+      const url = "api/ngonngu";
+      try {
+        await api.get(url).then((res) => {
+          if (res.data) {
+            this.listTag = res.data;
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
       }
     },
   },
