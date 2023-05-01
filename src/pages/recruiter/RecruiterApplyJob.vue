@@ -7,11 +7,11 @@ const $q = useQuasar();
 
 <template>
   <div>
-    <q-table title="DUYỆT TÀI KHOẢN NHÀ TUYỂN DỤNG" virtual-scroll
-      :columns="storeRecruiterApplyJob.columnRecruiterAccount" :rows="storeRecruiterApplyJob.rowDataRecruiterAccount"
-      style="height: 90vh" row-key="email" :rows-per-page-options="[0]" class="q-my-lg q-mx-md my-sticky-header-table"
-      rows-per-page-label="Số dòng mỗi trang" v-model:selected="storeRecruiterApplyJob.listSelectRecruiterAccount"
-      selection="multiple" :filter="storeRecruiterApplyJob.filter">
+    <q-table title="HỒ SƠ ỨNG TUYỂN" virtual-scroll :columns="storeRecruiterApplyJob.columnRecruiterAccount"
+      :rows="storeRecruiterApplyJob.rowDataRecruiterAccount" style="height: 90vh" row-key="email"
+      :rows-per-page-options="[0]" class="q-my-lg q-mx-md my-sticky-header-table" rows-per-page-label="Số dòng mỗi trang"
+      v-model:selected="storeRecruiterApplyJob.listSelectRecruiterAccount" selection="multiple"
+      :filter="storeRecruiterApplyJob.filter">
 
       <template v-slot:top-left>
         <div class="row">

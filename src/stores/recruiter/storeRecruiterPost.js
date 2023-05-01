@@ -7,10 +7,13 @@ export const useStoreRecruiterPost = defineStore("storeRecruiterPost", {
   state: () => {
     return {
       filter: "",
+      listData: [],
+      getDataSuccessfully: false,
       listSelectRecruiter: ref(),
       tinTuyenDung: 0,
       tinTuyenDungDangCho: 0,
-      tinTuyenDungDaDuyet: 0,
+      tinTuyenDungDangTuyen: 0,
+      tinTuyenDungDungTuyen: 0,
       tinTuyenDungTuChoi: 0,
       columnRecruiterAccount: [
         {
@@ -69,121 +72,121 @@ export const useStoreRecruiterPost = defineStore("storeRecruiterPost", {
           2: đang chờ
         }
       */
-      rowDataRecruiterAccount: [
-        {
-          name: "Nhân viên thực tập nodejs",
-          address: "tỉnh Hà nội, huyện Ba Vì",
-          profile: "/",
-          dateCreate: "22-10-2001",
-          dateExpired: "22-10-2001",
-          state: "đang chờ",
-        },
-        {
-          name: "Nhân viên thực tập nodejs",
-          address: "tỉnh Hà nội, huyện Ba Vì",
-          profile: "/",
-          dateCreate: "22-10-2001",
-          dateExpired: "22-10-2001",
-          state: "đang chờ",
-        },
-        {
-          name: "Nhân viên thực tập nodejs",
-          address: "tỉnh Hà nội, huyện Ba Vì",
-          profile: "/",
-          dateCreate: "22-10-2001",
-          dateExpired: "22-10-2001",
-          state: "đang tuyển",
-        },
-        {
-          name: "Nhân viên thực tập nodejs",
-          address: "tỉnh Hà nội, huyện Ba Vì",
-          profile: "/",
-          dateCreate: "22-10-2001",
-          dateExpired: "22-10-2001",
-          state: "dừng tuyển",
-        },
-        {
-          name: "Nhân viên thực tập nodejs",
-          address: "tỉnh Hà nội, huyện Ba Vì",
-          profile: "/",
-          dateCreate: "22-10-2001",
-          dateExpired: "22-10-2001",
-          state: "đang chờ",
-        },
-        {
-          name: "Nhân viên thực tập nodejs",
-          address: "tỉnh Hà nội, huyện Ba Vì",
-          profile: "/",
-          dateCreate: "22-10-2001",
-          dateExpired: "22-10-2001",
-          state: "đang tuyển",
-        },
-        {
-          name: "Nhân viên thực tập nodejs",
-          address: "tỉnh Hà nội, huyện Ba Vì",
-          profile: "/",
-          dateCreate: "22-10-2001",
-          dateExpired: "22-10-2001",
-          state: "đang chờ",
-        },
-        {
-          name: "Nhân viên thực tập nodejs",
-          address: "tỉnh Hà nội, huyện Ba Vì",
-          profile: "/",
-          dateCreate: "22-10-2001",
-          dateExpired: "22-10-2001",
-          state: "dừng tuyển",
-        },
-        {
-          name: "Nhân viên thực tập nodejs",
-          address: "tỉnh Hà nội, huyện Ba Vì",
-          profile: "/",
-          dateCreate: "22-10-2001",
-          dateExpired: "22-10-2001",
-          state: "đang tuyển",
-        },
-        {
-          name: "Nhân viên thực tập nodejs",
-          address: "tỉnh Hà nội, huyện Ba Vì",
-          profile: "/",
-          dateCreate: "22-10-2001",
-          dateExpired: "22-10-2001",
-          state: "đang chờ",
-        },
-        {
-          name: "Nhân viên thực tập nodejs",
-          address: "tỉnh Hà nội, huyện Ba Vì",
-          profile: "/",
-          dateCreate: "22-10-2001",
-          dateExpired: "22-10-2001",
-          state: "dừng tuyển",
-        },
-        {
-          name: "Nhân viên thực tập nodejs",
-          address: "tỉnh Hà nội, huyện Ba Vì",
-          profile: "/",
-          dateCreate: "22-10-2001",
-          dateExpired: "22-10-2001",
-          state: "đang chờ",
-        },
-        {
-          name: "Nhân viên thực tập nodejs",
-          address: "tỉnh Hà nội, huyện Ba Vì",
-          profile: "/",
-          dateCreate: "22-10-2001",
-          dateExpired: "22-10-2001",
-          state: "đang chờ",
-        },
+      // rowDataRecruiterAccount: [
+      //   {
+      //     name: "Nhân viên thực tập nodejs",
+      //     address: "tỉnh Hà nội, huyện Ba Vì",
+      //     profile: "/",
+      //     dateCreate: "22-10-2001",
+      //     dateExpired: "22-10-2001",
+      //     state: "đang chờ",
+      //   },
+      //   {
+      //     name: "Nhân viên thực tập nodejs",
+      //     address: "tỉnh Hà nội, huyện Ba Vì",
+      //     profile: "/",
+      //     dateCreate: "22-10-2001",
+      //     dateExpired: "22-10-2001",
+      //     state: "đang chờ",
+      //   },
+      //   {
+      //     name: "Nhân viên thực tập nodejs",
+      //     address: "tỉnh Hà nội, huyện Ba Vì",
+      //     profile: "/",
+      //     dateCreate: "22-10-2001",
+      //     dateExpired: "22-10-2001",
+      //     state: "đang tuyển",
+      //   },
+      //   {
+      //     name: "Nhân viên thực tập nodejs",
+      //     address: "tỉnh Hà nội, huyện Ba Vì",
+      //     profile: "/",
+      //     dateCreate: "22-10-2001",
+      //     dateExpired: "22-10-2001",
+      //     state: "dừng tuyển",
+      //   },
+      //   {
+      //     name: "Nhân viên thực tập nodejs",
+      //     address: "tỉnh Hà nội, huyện Ba Vì",
+      //     profile: "/",
+      //     dateCreate: "22-10-2001",
+      //     dateExpired: "22-10-2001",
+      //     state: "đang chờ",
+      //   },
+      //   {
+      //     name: "Nhân viên thực tập nodejs",
+      //     address: "tỉnh Hà nội, huyện Ba Vì",
+      //     profile: "/",
+      //     dateCreate: "22-10-2001",
+      //     dateExpired: "22-10-2001",
+      //     state: "đang tuyển",
+      //   },
+      //   {
+      //     name: "Nhân viên thực tập nodejs",
+      //     address: "tỉnh Hà nội, huyện Ba Vì",
+      //     profile: "/",
+      //     dateCreate: "22-10-2001",
+      //     dateExpired: "22-10-2001",
+      //     state: "đang chờ",
+      //   },
+      //   {
+      //     name: "Nhân viên thực tập nodejs",
+      //     address: "tỉnh Hà nội, huyện Ba Vì",
+      //     profile: "/",
+      //     dateCreate: "22-10-2001",
+      //     dateExpired: "22-10-2001",
+      //     state: "dừng tuyển",
+      //   },
+      //   {
+      //     name: "Nhân viên thực tập nodejs",
+      //     address: "tỉnh Hà nội, huyện Ba Vì",
+      //     profile: "/",
+      //     dateCreate: "22-10-2001",
+      //     dateExpired: "22-10-2001",
+      //     state: "đang tuyển",
+      //   },
+      //   {
+      //     name: "Nhân viên thực tập nodejs",
+      //     address: "tỉnh Hà nội, huyện Ba Vì",
+      //     profile: "/",
+      //     dateCreate: "22-10-2001",
+      //     dateExpired: "22-10-2001",
+      //     state: "đang chờ",
+      //   },
+      //   {
+      //     name: "Nhân viên thực tập nodejs",
+      //     address: "tỉnh Hà nội, huyện Ba Vì",
+      //     profile: "/",
+      //     dateCreate: "22-10-2001",
+      //     dateExpired: "22-10-2001",
+      //     state: "dừng tuyển",
+      //   },
+      //   {
+      //     name: "Nhân viên thực tập nodejs",
+      //     address: "tỉnh Hà nội, huyện Ba Vì",
+      //     profile: "/",
+      //     dateCreate: "22-10-2001",
+      //     dateExpired: "22-10-2001",
+      //     state: "đang chờ",
+      //   },
+      //   {
+      //     name: "Nhân viên thực tập nodejs",
+      //     address: "tỉnh Hà nội, huyện Ba Vì",
+      //     profile: "/",
+      //     dateCreate: "22-10-2001",
+      //     dateExpired: "22-10-2001",
+      //     state: "đang chờ",
+      //   },
 
-        {
-          name: "Nhân viên thực tập nodejs",
-          address: "tỉnh Hà nội, huyện Ba Vì",
-          profile: "/",
-          dateCreate: "22-10-2001",
-          dateExpired: "22-10-2001",
-          state: "đã xóa",
-        },
-      ],
+      //   {
+      //     name: "Nhân viên thực tập nodejs",
+      //     address: "tỉnh Hà nội, huyện Ba Vì",
+      //     profile: "/",
+      //     dateCreate: "22-10-2001",
+      //     dateExpired: "22-10-2001",
+      //     state: "đã xóa",
+      //   },
+      // ],
     };
   },
   getters: {},
@@ -233,6 +236,34 @@ export const useStoreRecruiterPost = defineStore("storeRecruiterPost", {
       this.dialogDenyOne = true;
       this.oneAccountSelectName = name;
       this.oneAccountSelectEmail = email;
+    },
+
+    getAllPost() {
+      const url = "api/tintuyendung";
+      try {
+        api.get(url).then((res) => {
+          if (res) {
+            this.listData = res.data;
+            this.getDataSuccessfully = true;
+          }
+        });
+      } catch (error) {
+        console.log("Internal Server Error: ", error);
+      } finally {
+        // if (this.getDataSuccessfully) {
+        //   for (let i = 0; i < this.listData.length; ++i) {
+        //     if (this.listData[i].trangthai === "đang chờ") {
+        //       this.tinTuyenDungDangCho++;
+        //     }
+        //     if (this.listData[i].trangthai === "đang tuyển") {
+        //       this.tinTuyenDungDangTuyen++;
+        //     }
+        //     if (this.listData[i].trangthai === "dừng tuyển") {
+        //       this.tinTuyenDungDungTuyen++;
+        //     }
+        //   }
+        // }
+      }
     },
   },
 });
