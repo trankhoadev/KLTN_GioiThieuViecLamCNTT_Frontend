@@ -86,7 +86,7 @@ const getCount = () => {
           <td class="text-left" key="stt" :props="props" style="width: 5%;">
             {{ props.rowIndex }}
           </td>
-          <td class="text-left" key="name" :props="props" style="width: 30%;">
+          <td class="text-left" key="tieude" :props="props" style="width: 30%;">
             <b style="font-size: 1.2em;"><span style="white-space: pre-wrap;">{{ props.row.tieude }}</span></b>
             <br>
             <br>

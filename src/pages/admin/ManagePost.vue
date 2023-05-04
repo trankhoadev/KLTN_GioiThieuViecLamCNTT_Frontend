@@ -6,6 +6,7 @@ const storeManagePost = useStoreManagePost();
 
 onMounted(() => {
   storeManagePost.getAllPost()
+  console.log(storeManagePost.rowDataManagePost);
 });
 
 onBeforeUpdate(() => {

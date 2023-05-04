@@ -445,5 +445,20 @@ export const useStoreManagePost = defineStore("storeManagePost", {
         this.loadData = false;
       }
     },
+
+    async getOneRecruiter(id) {
+      const url = "api/nhatuyendung/?id=" + id;
+      try {
+        await api.get(url).then((res) => {
+          if (res) {
+            return res.data;
+          }
+        });
+      } catch (error) {
+        console.log("Internal Server Error: ", error);
+      } finally {
+        this.loadData = false;
+      }
+    },
   },
 });
