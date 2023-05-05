@@ -1,3 +1,22 @@
+<script setup>
+import { useStoreJob } from 'src/stores/storeJob';
+import { Dark, useQuasar } from 'quasar'
+import { watch, onMounted } from 'vue';
+
+const storeJob = useStoreJob();
+const $q = useQuasar();
+
+watch(() => $q.dark.isActive, val => {
+  console.log(val)
+})
+
+onMounted(() => {
+  storeJob.getAllPost();
+  console.log(storeJob.listPost);
+});
+
+</script>
+
 <template>
   <q-layout>
     <q-page-container>
@@ -160,20 +179,6 @@
     </q-page-container>
   </q-layout>
 </template>
-
-<script setup>
-import { useStoreJob } from 'src/stores/storeJob';
-import { Dark, useQuasar } from 'quasar'
-import { watch } from 'vue';
-
-const $q = useQuasar();
-
-watch(() => $q.dark.isActive, val => {
-  console.log(val)
-})
-const storeJob = useStoreJob();
-
-</script>
 
 <style lang="scss" scoped>
 @mixin sm {

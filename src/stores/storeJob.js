@@ -5,6 +5,7 @@ import { ref } from "vue";
 export const useStoreJob = defineStore("storeJob", {
   state: () => {
     return {
+      listPost: [],
       sortRadio: ref(""),
       panigateSelected: ref(1),
       tabJobDetail: ref("news"),
@@ -352,6 +353,21 @@ export const useStoreJob = defineStore("storeJob", {
       this.expandEducation = false;
       this.expandCertification = false;
       this.expandPrize = false;
+    },
+
+    getAllPost() {
+      const url = "api/tintuyendung";
+      try {
+        api.get(url).then((res) => {
+          if (res) {
+            this.listPost = res.data;
+            console.log(res.data);
+          }
+        });
+      } catch (error) {
+        console.log("Internal Server Error: ", error);
+      } finally {
+      }
     },
   },
 });

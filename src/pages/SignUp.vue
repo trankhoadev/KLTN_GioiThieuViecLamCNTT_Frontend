@@ -98,7 +98,7 @@ const autoDecreaseNumber = () => {
                   val => val.length > 3 || 'Mã OTP phải là một số có 4 chữ số.',
                 ]" lazy-rules>
                 <template v-slot:after>
-                  <q-btn label="nhận mã" round dense flat @click="autoDecreaseNumber(), storeAuthen.getOtp()"
+                  <q-btn class="text-white" label="nhận mã" round dense flat @click="autoDecreaseNumber(), storeAuthen.getOtp()"
                     :disable="storeAuthen.count !== 0" />
                 </template></q-input>
               <span class="q-mt-md">Mã sẽ hết hạn sau: {{ storeAuthen.count }}s</span>

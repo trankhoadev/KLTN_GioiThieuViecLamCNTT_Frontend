@@ -8,7 +8,7 @@ import { Dialog } from "quasar";
 // good idea to move this instance creation inside of the
 // "export default () => {}" function below (which runs individually
 // for each client)
-const api = axios.create({ baseURL: "http://localhost:3000/" });
+const api = axios.create({ baseURL: "http://192.168.1.11:3000/" });
 
 export default boot(({ app }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api
@@ -16,10 +16,12 @@ export default boot(({ app }) => {
   app.config.globalProperties.$axios = axios;
   // ^ ^ ^ this will allow you to use this.$axios (for Vue Options API form)
   //       so you won't necessarily have to import axios in each vue file
-  api.defaults.headers["Bearer"] = localStorage.getItem("accessToken");
+  api.defaults.headers.common["Authorization"] =
+    "Bearer " + localStorage.getItem("accessToken");
 
   api.interceptors.request.use((request) => {
-    api.defaults.headers["Bearer"] = localStorage.getItem("accessToken");
+    api.defaults.headers.common["Authorization"] =
+      "Bearer " + localStorage.getItem("accessToken");
     return request;
   });
   axios.interceptors.response.use(

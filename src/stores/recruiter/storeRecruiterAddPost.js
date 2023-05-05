@@ -15,7 +15,7 @@ export const useStoreRecruiterAddPost = defineStore("storeRecruiterAddPost", {
       districtSelected: "",
       listDistrict: [],
       careerSelected: "",
-      listCareer: ["test"],
+      listCareer: [],
       amount: "",
       positionSelected: "",
       styleSelected: "",
@@ -71,6 +71,7 @@ export const useStoreRecruiterAddPost = defineStore("storeRecruiterAddPost", {
   actions: {
     _init() {},
     getListDistrict() {
+      this.listDistrict = [];
       for (let i = 0; i < app.listDistrict.length; ++i) {
         if (app.listDistrict[i].province_code == this.provinceSelected.code) {
           this.listDistrict.push(app.listDistrict[i]);
@@ -100,19 +101,11 @@ export const useStoreRecruiterAddPost = defineStore("storeRecruiterAddPost", {
     },
 
     confirmForm() {
-      let date = new Date(this.dateExpired);
-      this.formattedDateExpired = [
-        date.getDate(),
-        date.getMonth() + 1,
-        date.getFullYear(),
-      ].join("-");
-
-      date = new Date();
-      this.formattedDateCreated = [
-        date.getDate(),
-        date.getMonth() + 1,
-        date.getFullYear(),
-      ].join("-");
+      // const dateExpiredConvert = (this.formattedDateExpired = [
+      //   date.getMonth() + 1,
+      //   date.getDate(),
+      //   date.getFullYear(),
+      // ].join("/"));
 
       let userId = localStorage.getItem("id");
 
@@ -122,7 +115,7 @@ export const useStoreRecruiterAddPost = defineStore("storeRecruiterAddPost", {
           tieude: this.titleName,
           diaChi:
             this.provinceSelected.label + ", " + this.districtSelected.label,
-          nganhNghe: this.careerSelected.label,
+          nganhNghe: this.careerSelected,
           vitri: this.positionSelected.label,
           soLuongTuyen: this.amount,
           hinhThucLamViec: this.styleSelected,
@@ -138,14 +131,11 @@ export const useStoreRecruiterAddPost = defineStore("storeRecruiterAddPost", {
           tenNguoiLienHe: this.contactName,
           soDienThoaiLienHe: this.contactPhone,
           emailLienHe: this.contactEmail,
-          ngayHetHan: this.formattedDateExpired,
-          ngayTao: this.formattedDateCreated,
+          ngayHetHan: new Date(this.dateExpired),
           ngonngu: this.listTagId,
           trangthai: "đang chờ",
           nhatuyendung: userId,
         };
-
-        console.log(data);
 
         api.post(url, data).then((res) => {
           if (res) {
@@ -188,6 +178,19 @@ export const useStoreRecruiterAddPost = defineStore("storeRecruiterAddPost", {
         await api.get(url).then((res) => {
           if (res.data) {
             this.listTag = res.data;
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
+      }
+    },
+
+    async getListCareer() {
+      const url = "api/nganhnghe";
+      try {
+        await api.get(url).then((res) => {
+          if (res.data) {
+            this.listCareer = res.data;
           }
         });
       } catch (err) {

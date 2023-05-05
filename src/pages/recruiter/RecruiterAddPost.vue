@@ -10,6 +10,7 @@ const myStore = useMyStore();
 
 onMounted(() => {
   storeRecruiterAddPost.getListTag();
+  storeRecruiterAddPost.getListCareer();
 })
 
 const filteredOptions = ref([]);
@@ -96,8 +97,8 @@ const updateIdTag = () => {
           <div class="row q-py-lg">
             <div class="col-md-6 col-12 q-px-sm">
               <label for="">Ngành nghề <span class="text-red">(*)</span></label>
-              <q-select v-model="storeRecruiterAddPost.careerSelected" :options="myStore.optionCareer"
-                label="Chọn ngành nghề" filled :rules="[
+              <q-select v-model="storeRecruiterAddPost.careerSelected" :options="storeRecruiterAddPost.listCareer"
+                label="Chọn ngành nghề" option-label="tennganhnghe" option-value="_id" filled :rules="[
                     val => !!val || 'Ngành nghề không được rỗng',
                   ]" lazy-rules />
             </div>

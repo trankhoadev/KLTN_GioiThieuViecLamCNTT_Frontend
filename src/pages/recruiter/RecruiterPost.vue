@@ -94,7 +94,7 @@ const getCount = () => {
             <br>
             <span>Ngày tạo: {{ new Date(props.row.createdAt).toLocaleDateString('en-GB') }}</span>
             <br>
-            <span>Ngày dừng tuyển: {{ new Date(props.row.ngayhethan).toLocaleDateString('en-GB') }}</span>
+            <span>Ngày dừng tuyển: {{ new Date(props.row.ngayHetHan).toLocaleDateString('en-GB') }}</span>
             <br>
             <br>
             <a href="#" class="text-blue-5">Xem chi tiết tin tuyển dụng</a>

@@ -219,7 +219,7 @@ export const useStoreAuthentication = defineStore("storeAuthentication", {
       console.log(data);
       try {
         api.post(url, data).then((res) => {
-          console.log(res);
+          console.log(res.data);
           if (res.data) {
             Notify.create({
               message: "Tạo tài khoản thành công",
