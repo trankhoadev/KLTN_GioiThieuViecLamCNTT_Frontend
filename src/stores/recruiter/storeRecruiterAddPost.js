@@ -134,7 +134,7 @@ export const useStoreRecruiterAddPost = defineStore("storeRecruiterAddPost", {
           ngayHetHan: new Date(this.dateExpired),
           ngonngu: this.listTagId,
           trangthai: "đang chờ",
-          nhatuyendung: userId,
+          nhatuyendung: "6454fbfcc3d0f475d8cdaadc",
         };
 
         api.post(url, data).then((res) => {

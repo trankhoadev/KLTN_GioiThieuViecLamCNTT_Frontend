@@ -6,7 +6,7 @@ const storeManagePost = useStoreManagePost();
 
 onMounted(() => {
   storeManagePost.getAllPost()
-  console.log(storeManagePost.rowDataManagePost);
+  // console.log(storeManagePost.rowDataManagePost);
 });
 
 onBeforeUpdate(() => {
@@ -122,9 +122,9 @@ const $q = useQuasar();
 
           <td class="text-left" key="action" :props="props">
             <div v-if="props.row.trangthai === 'đang chờ'">
-              <q-btn color="light-green" icon="check" label="Duyệt" @click="storeManagePost.acceptOne(props.row.email)" />
+              <q-btn color="light-green" icon="check" label="Duyệt" @click="storeManagePost.acceptOne(props.row._id)" />
               <q-btn class="q-ml-lg" color="pink" icon="cancel" label="Từ chối"
-                @click="storeManagePost.checkDenyOne(props.row.name, props.row.email)" />
+                @click="storeManagePost.checkDenyOne(props.row.tieude, props.row._id)" />
             </div>
           </td>
         </tr>
@@ -138,7 +138,7 @@ const $q = useQuasar();
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn flat label="Đồng ý" color="primary" v-close-popup @click="storeManagePost.denyOne" />
+          <q-btn flat label="Đồng ý" color="primary" v-close-popup @click="storeManagePost.denyOne(storeManagePost.oneAccountSelectId)" />
           <q-btn flat label="Hủy" color="primary" v-close-popup />
         </q-card-actions>
       </q-card>
@@ -148,13 +148,13 @@ const $q = useQuasar();
       <q-card>
         <q-card-section class="row items-center">
           <q-avatar icon="warning" color="primary" text-color="white" />
-          <span style="max-width: 400px;" class="q-ml-sm">Bạn có thực sự muốn từ chối người dùng "{{
-            storeManagePost.oneAccountSelectName }}" với email đăng ký là: "{{
-    storeManagePost.oneAccountSelectEmail }}" ?</span>
+          <span style="max-width: 400px;" class="q-ml-sm">Bạn có thực sự muốn từ chối tin tuyển dụng "{{
+            storeManagePost.oneAccountSelectName }}" của nhà tuyển dụng: "{{
+    storeManagePost.oneAccountSelectId }}" ?</span>
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn flat label="Đồng ý" color="primary" v-close-popup @click="storeManagePost.denyOne" />
+          <q-btn flat label="Đồng ý" color="primary" v-close-popup @click="storeManagePost.denyOne(storeManagePost.oneAccountSelectId)" />
           <q-btn flat label="Hủy" color="primary" v-close-popup />
         </q-card-actions>
       </q-card>

@@ -7,12 +7,11 @@ const storeJob = useStoreJob();
 const $q = useQuasar();
 
 watch(() => $q.dark.isActive, val => {
-  console.log(val)
+  // console.log(val)
 })
 
 onMounted(() => {
   storeJob.getAllPost();
-  console.log(storeJob.listPost);
 });
 
 </script>

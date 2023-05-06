@@ -157,25 +157,29 @@ export const useStoreAuthentication = defineStore("storeAuthentication", {
           boxClass: "bg-grey-2 text-grey-9",
           spinnerColor: "primary",
         });
-        try {
-          const data = {
-            username: this.userName,
-            email: this.email,
-            password: this.password,
-            loaitaikhoan: this.roleSelected.value,
-          };
-          api.post("api/user/", data).then((res) => {
-            if (res) {
-              this.idUser = res.data._id;
-              setTimeout(() => {
-                Loading.hide();
-                this.dialogOtp = true;
-              }, 1500);
-            }
-          });
-        } catch (error) {
-          console.log("Internal server error: ", error);
-        }
+        // try {
+        //   const data = {
+        //     username: this.userName,
+        //     email: this.email,
+        //     password: this.password,
+        //     loaitaikhoan: this.roleSelected.value,
+        //   };
+        //   api.post("api/user/", data).then((res) => {
+        //     if (res) {
+        //       this.idUser = res.data._id;
+        //       setTimeout(() => {
+        //         Loading.hide();
+        //         this.dialogOtp = true;
+        //       }, 1500);
+        //     }
+        //   });
+        // } catch (error) {
+        //   console.log("Internal server error: ", error);
+        // }
+        setTimeout(() => {
+          Loading.hide();
+          this.dialogOtp = true;
+        }, 1500);
       }
     },
 
@@ -189,6 +193,7 @@ export const useStoreAuthentication = defineStore("storeAuthentication", {
         };
         api.post("api/user/", data).then((res) => {
           if (res) {
+            this.idUser = res.data.userId;
             Notify.create({
               message: "Vui lòng kiểm tra hòm thư của bạn.",
               position: "bottom",
@@ -251,13 +256,13 @@ export const useStoreAuthentication = defineStore("storeAuthentication", {
           }
         });
       } catch (error) {
-        console.log("Internal server error: ", error);
         Notify.create({
           color: "red-5",
           textColor: "white",
           icon: "warning",
           message: "Tạo tài khoản thất bại.",
         });
+        console.log("Internal server error: ", error);
       }
     },
   },

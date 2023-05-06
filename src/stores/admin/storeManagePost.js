@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { api } from "src/boot/axios";
 import { ref, reactive } from "vue";
-import { Loading, Notify } from "quasar";
+import { Loading, Notify, Dialog } from "quasar";
 
 export const useStoreManagePost = defineStore("storeManagePost", {
   state: () => {
@@ -19,6 +19,7 @@ export const useStoreManagePost = defineStore("storeManagePost", {
       dialogDenyAll: ref(false),
       confirmDenyAll: ref(false),
       oneAccountSelectName: "",
+      oneAccountSelectId: "",
       oneAccountSelectEmail: "",
       filter: "",
       resultImplement: reactive({
@@ -87,147 +88,7 @@ export const useStoreManagePost = defineStore("storeManagePost", {
           headerStyle: "font-size: 1.1em; font-weight: bold",
         },
       ],
-      /*
-        state: {
-          0： từ chối
-          1: đã duyệt
-          2: đang chờ
-        }
-      */
-      rowDataManagePost: [
-        // {
-        //   name: "Nhà tuyển dụng 1",
-        //   title:
-        //     "Tuyển nhân viên làm việc bán thời gian cho nhà ngày 100-200 tiếng",
-        //   address: "Tỉnh Quảng Ninh",
-        //   idPost: "https://templateurl.com",
-        //   danhGia: "2",
-        //   email: "ayonnon@gmail.com",
-        //   date: "22-10-2001",
-        //   state: "đang chờ",
-        // },
-        // {
-        //   name: "Nhà tuyển dụng ABC",
-        //   title:
-        //     "Tuyển nhân viên làm việc bán thời gian. Tuyển nhân viên làm việc bán thời gian cho nhà ngày 100-200 tiếng",
-        //   address: "thành phố Hồ Chí Minh",
-        //   idPost: "https://templateurl.com",
-        //   danhGia: "2",
-        //   email: "byonnon@gmail.com",
-        //   date: "22-10-2004",
-        //   state: "đang chờ",
-        // },
-        // {
-        //   name: "2 thành viên, 2 thành viên, 2 thành viên, 2 thành viên, 2 thành viên",
-        //   title: "Tuyển nhân viên làm việc bán thời gian",
-        //   address: "Hà nội",
-        //   idPost: "https://templateurl.com",
-        //   danhGia: "2",
-        //   email: "cyonnon@gmail.com",
-        //   date: "22-10-2004",
-        //   state: "đã duyệt",
-        // },
-        // {
-        //   name: "Công Ty TNHH 3 con gà",
-        //   title: "Tuyển nhân viên làm việc bán thời gian",
-        //   address: "tỉnh Quy Nhơn",
-        //   idPost: "https://templateurl.com",
-        //   danhGia: "2",
-        //   email: "dyonnon@gmail.com",
-        //   date: "22-10-2004",
-        //   state: "đã hủy",
-        // },
-        // {
-        //   name: "Hỏng biết nữa",
-        //   title: "Tuyển nhân viên làm việc bán thời gian",
-        //   address: "Huyện Cái Bè",
-        //   idPost: "https://templateurl.com",
-        //   danhGia: "2",
-        //   email: "dawdawyonnon@gmail.com",
-        //   date: "22-10-2004",
-        //   state: "đang chờ",
-        // },
-        // {
-        //   name: "yonnon6",
-        //   title: "Tuyển nhân viên làm việc bán thời gian",
-        //   address: "",
-        //   idPost: "https://templateurl.com",
-        //   danhGia: "2",
-        //   email: "byfawfwaonnon@gmail.com",
-        //   date: "22-10-2004",
-        //   state: "đã duyệt",
-        // },
-        // {
-        //   name: "yonnon7",
-        //   title: "Tuyển nhân viên làm việc bán thời gian",
-        //   address: "",
-        //   idPost: "https://templateurl.com",
-        //   danhGia: "2",
-        //   email: "byofafannon@gmail.com",
-        //   date: "22-10-2004",
-        //   state: "đang chờ",
-        // },
-        // {
-        //   name: "yonnon8",
-        //   title: "Tuyển nhân viên làm việc bán thời gian",
-        //   address: "",
-        //   idPost: "https://templateurl.com",
-        //   danhGia: "2",
-        //   email: "byonwdnon@gmail.com",
-        //   date: "22-10-2004",
-        //   state: "đã hủy",
-        // },
-        // {
-        //   name: "yonnon9",
-        //   title: "Tuyển nhân viên làm việc bán thời gian",
-        //   address: "",
-        //   idPost: "https://templateurl.com",
-        //   danhGia: "2",
-        //   email: "byonnfawfawon@gmail.com",
-        //   date: "22-10-2004",
-        //   state: "đã duyệt",
-        // },
-        // {
-        //   name: "yonnon10",
-        //   title: "Tuyển nhân viên làm việc bán thời gian",
-        //   address: "",
-        //   idPost: "https://templateurl.com",
-        //   danhGia: "2",
-        //   email: "byonnofda awfawn@gmail.com",
-        //   date: "22-10-2004",
-        //   state: "đang chờ",
-        // },
-        // {
-        //   name: "yonnon11",
-        //   title: "Tuyển nhân viên làm việc bán thời gian",
-        //   address: "",
-        //   idPost: "https://templateurl.com",
-        //   danhGia: "2",
-        //   email: "byonnofawfawn@gmail.com",
-        //   date: "22-10-2004",
-        //   state: "đã hủy",
-        // },
-        // {
-        //   name: "yonnon12",
-        //   title: "Tuyển nhân viên làm việc bán thời gian",
-        //   address: "",
-        //   idPost: "https://templateurl.com",
-        //   danhGia: "2",
-        //   email: "byofawnnon@gmail.com",
-        //   date: "22-10-2004",
-        //   state: "đang chờ",
-        // },
-        // {
-        //   name: "yonnon13",
-        //   title: "Tuyển nhân viên làm việc bán thời gian",
-        //   address: "",
-        //   idPost: "https://templateurl.com",
-        //   danhGia: "2",
-        //   email: "byonfawnon@gmail.com",
-        //   date: "22-10-2004",
-        //   state: "đang chờ",
-        // },
-      ],
+      rowDataManagePost: [],
     };
   },
   getters: {},
@@ -235,10 +96,10 @@ export const useStoreManagePost = defineStore("storeManagePost", {
     _init() {},
 
     logOut() {},
-    checkDenyOne(name, email) {
+    checkDenyOne(name, id) {
       this.dialogDenyOne = true;
       this.oneAccountSelectName = name;
-      this.oneAccountSelectEmail = email;
+      this.oneAccountSelectId = id;
     },
 
     checkDenyAll() {
@@ -263,17 +124,28 @@ export const useStoreManagePost = defineStore("storeManagePost", {
       }
     },
 
-    acceptOne(inputData) {
-      let data = inputData;
+    async acceptOne(id) {
       Loading.show({
         message: "Đang xử lí...",
         boxClass: "bg-grey-2 text-grey-9",
         spinnerColor: "primary",
       });
 
+      const url = "api/tintuyendung/duyet";
+      const data = {
+        postId: id,
+        trangthai: "đã duyệt",
+      };
+
       try {
-        this.resultImplement.acceptOne = true;
+        await api.put(data, url).then((res) => {
+          if (res) {
+            this.resultImplement.acceptOne = true;
+            return res.data;
+          }
+        });
       } catch (error) {
+        console.log("Internal Server Error: ", error);
       } finally {
         setTimeout(() => {
           if (this.resultImplement.acceptOne) {
@@ -354,16 +226,31 @@ export const useStoreManagePost = defineStore("storeManagePost", {
       }
     },
 
-    denyOne() {
+    async denyOne(id) {
       Loading.show({
         message: "Đang xử lí...",
         boxClass: "bg-grey-2 text-grey-9",
         spinnerColor: "primary",
       });
 
+      const url = "api/tintuyendung/duyet";
+      const data = {
+        postId: id,
+        trangthai: "từ chối",
+      };
+
+      console.log(data);
+      return;
+
       try {
-        this.resultImplement.denyOne = true;
+        await api.put(data, url).then((res) => {
+          if (res) {
+            this.resultImplement.denyOne = true;
+            return res.data;
+          }
+        });
       } catch (error) {
+        console.log("Internal Server Error: ", error);
       } finally {
         setTimeout(() => {
           if (this.resultImplement.denyOne) {
