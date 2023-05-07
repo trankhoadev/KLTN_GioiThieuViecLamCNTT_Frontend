@@ -350,5 +350,60 @@ export const useStoreHoSoCv = defineStore("storeHoSoCv", {
         }, 1000);
       }
     },
+
+    updateChungChi() {
+      Loading.show({
+        message: "Đang xử lí...",
+        boxClass: "bg-grey-2 text-grey-9",
+        spinnerColor: "primary",
+      });
+      const url = "api/ungtuyenvien/updateChungChiUngTuyenVien";
+      const data = {
+        ungTuyenVienId: localStorage.getItem("idUngTuyenVien"),
+
+        tenchungchi: this.listData.tenchungchi,
+
+        tochuc: this.listData.tochuc,
+
+        motachitietChungChi: this.listData.motachitietChungChi,
+
+        ngaycap: new Date(this.listData.ngaycap),
+
+        ngayhethan: new Date(this.listData.ngayhethan),
+      };
+      try {
+        api.put(url, data).then((res) => {
+          if (res.data) {
+            this.resultExecute.updateChungChi = true;
+            return;
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
+      } finally {
+        setTimeout(() => {
+          if (this.resultExecute.updateChungChi) {
+            Loading.hide();
+            Notify.create({
+              message: "Thao tác thành công",
+              position: "bottom",
+              timeout: 2000,
+              color: "green",
+              icon: "mood",
+            });
+            // setTimeout(() => {
+            //   return window.location.reload();
+            // }, 1500);
+          } else {
+            Loading.hide();
+            Dialog.create({
+              message: "Thao tác thất bại! Vui lòng thử lại.",
+              title: "Thông báo",
+              color: "red",
+            });
+          }
+        }, 1000);
+      }
+    },
   },
 });
