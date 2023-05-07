@@ -170,9 +170,9 @@ export const useStoreHoSoCv = defineStore("storeHoSoCv", {
               color: "green",
               icon: "mood",
             });
-            setTimeout(() => {
-              return window.location.reload();
-            }, 1500);
+            // setTimeout(() => {
+            //   return window.location.reload();
+            // }, 1500);
           } else {
             Loading.hide();
             Dialog.create({
@@ -208,7 +208,6 @@ export const useStoreHoSoCv = defineStore("storeHoSoCv", {
       try {
         api.put(url, data).then((res) => {
           if (res.data) {
-            console.log(res.data);
             this.resultExecute.updateKinhNghiemLamViec = true;
             return;
           }
@@ -226,9 +225,65 @@ export const useStoreHoSoCv = defineStore("storeHoSoCv", {
               color: "green",
               icon: "mood",
             });
-            setTimeout(() => {
-              return window.location.reload();
-            }, 1500);
+            // setTimeout(() => {
+            //   return window.location.reload();
+            // }, 1500);
+          } else {
+            Loading.hide();
+            Dialog.create({
+              message: "Thao tác thất bại! Vui lòng thử lại.",
+              title: "Thông báo",
+              color: "red",
+            });
+          }
+        }, 1000);
+      }
+    },
+
+    updateKyNang() {
+      this.listData.kiNang = "";
+      this.listSelectSkill.map((e) => {
+        this.listData.kiNang += e.ngonngu + ", ";
+      });
+      this.listData.kiNang = this.listData.kiNang.substring(
+        0,
+        this.listData.kiNang.length - 2
+      );
+
+      Loading.show({
+        message: "Đang xử lí...",
+        boxClass: "bg-grey-2 text-grey-9",
+        spinnerColor: "primary",
+      });
+      const url = "api/ungtuyenvien/updateKiNangUngTuyenVien";
+      const data = {
+        ungTuyenVienId: localStorage.getItem("idUngTuyenVien"),
+
+        kiNang: this.listData.kiNang,
+      };
+      try {
+        api.put(url, data).then((res) => {
+          if (res.data) {
+            this.resultExecute.updateKyNang = true;
+            return;
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
+      } finally {
+        setTimeout(() => {
+          if (this.resultExecute.updateKyNang) {
+            Loading.hide();
+            Notify.create({
+              message: "Thao tác thành công",
+              position: "bottom",
+              timeout: 2000,
+              color: "green",
+              icon: "mood",
+            });
+            // setTimeout(() => {
+            //   return window.location.reload();
+            // }, 1500);
           } else {
             Loading.hide();
             Dialog.create({

@@ -198,17 +198,18 @@ const clickExpandPrize = () => {
                           Gợi ý: Giới thiệu về bạn, điểm mạnh và số năm
                           kinh nghiệm</span>
                         <div class="col-12">
-                          <q-input v-model="storeHoSoCv.listData.gioithieubanthan" filled type="textarea" :maxlength="2500"
-                            label="Vui lòng điền mô tả bản thân tại đây..." />
+                          <q-input v-model="storeHoSoCv.listData.gioithieubanthan" filled type="textarea"
+                            :maxlength="2500" label="Vui lòng điền mô tả bản thân tại đây..." />
                         </div>
-                        <span>{{ storeHoSoCv.listData.gioithieubanthan ? storeHoSoCv.listData.gioithieubanthan.length : 0 }}/2500 ký tự</span>
+                        <span>{{ storeHoSoCv.listData.gioithieubanthan ? storeHoSoCv.listData.gioithieubanthan.length : 0
+                        }}/2500 ký tự</span>
                       </div>
 
                       <div class="row q-pa-lg">
-                          <div class="col-12 flex justify-end">
-                            <q-btn @click="storeHoSoCv.updateGioiThieuBanThan()" class="q-mx-sm" color="red" label="Lưu" />
-                          </div>
+                        <div class="col-12 flex justify-end">
+                          <q-btn @click="storeHoSoCv.updateGioiThieuBanThan()" class="q-mx-sm" color="red" label="Lưu" />
                         </div>
+                      </div>
                     </q-card-section>
                   </q-card>
                 </q-expansion-item>
@@ -237,8 +238,8 @@ const clickExpandPrize = () => {
 
                           <div class="row flex justify-between">
                             <div class="col-md-6 q-pr-sm">
-                              <q-input filled v-model="storeHoSoCv.listData.tungayKinhNghiemLV" mask="date" :rules="['date']"
-                                label="Từ ngày">
+                              <q-input filled v-model="storeHoSoCv.listData.tungayKinhNghiemLV" mask="date"
+                                :rules="['date']" label="Từ ngày">
                                 <template v-slot:append>
                                   <q-icon name="event" class="cursor-pointer">
                                     <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -254,8 +255,8 @@ const clickExpandPrize = () => {
                             </div>
 
                             <div class="col-md-6 q-pl-sm">
-                              <q-input filled v-model="storeHoSoCv.listData.denngayKinhNghiemLV" mask="date" :rules="['date']"
-                                label="Đến ngày">
+                              <q-input filled v-model="storeHoSoCv.listData.denngayKinhNghiemLV" mask="date"
+                                :rules="['date']" label="Đến ngày">
                                 <template v-slot:append>
                                   <q-icon name="event" class="cursor-pointer">
                                     <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -275,17 +276,20 @@ const clickExpandPrize = () => {
                             <span class="hint" style="font-style: normal">
                               Mô tả chi tiết:</span>
                             <div class="col-12">
-                              <q-input v-model="storeHoSoCv.listData.motachitietKinhNghiemLV" filled type="textarea" :maxlength="2500"
-                                label="Vui lòng điền mô tả chi tiết công việc tại đây..." />
+                              <q-input v-model="storeHoSoCv.listData.motachitietKinhNghiemLV" filled type="textarea"
+                                :maxlength="2500" label="Vui lòng điền mô tả chi tiết công việc tại đây..." />
                             </div>
-                            <span>{{ storeHoSoCv.listData.motachitietKinhNghiemLV ? storeHoSoCv.listData.motachitietKinhNghiemLV.length : 0 }}/2500 ký tự</span>
+                            <span>{{ storeHoSoCv.listData.motachitietKinhNghiemLV ?
+                              storeHoSoCv.listData.motachitietKinhNghiemLV.length : 0 }}/2500 ký tự</span>
                           </div>
                         </div>
 
                         <div class="row q-pa-lg">
                           <div class="col-12 flex justify-end">
-                            <q-btn @click="storeHoSoCv.updateKinhNghiemLamViec()" class="q-mx-sm" color="red" label="Lưu" />
-                            <q-btn @click="storeHoSoCv.expandExperiment = false" class="q-mx-sm text-black" color="white" label="Hủy" />
+                            <q-btn @click="storeHoSoCv.updateKinhNghiemLamViec()" class="q-mx-sm" color="red"
+                              label="Lưu" />
+                            <q-btn @click="storeHoSoCv.expandExperiment = false" class="q-mx-sm text-black" color="white"
+                              label="Hủy" />
                           </div>
                         </div>
                       </q-form>
@@ -302,7 +306,8 @@ const clickExpandPrize = () => {
                         <div class="col-12">
                           <q-select rounded outlined bottom-slots v-model="storeHoSoCv.listSelectSkill"
                             :options="storeHoSoCv.listSkill" multiple="" maxlength="10" max-values="10" label="Kỹ năng"
-                            use-chips stack-label counter :loading="loading" @virtual-scroll="onScroll" option-value="_id" option-label="ngonngu">
+                            use-chips stack-label counter :loading="loading" @virtual-scroll="onScroll" option-value="_id"
+                            option-label="ngonngu">
                             <template v-slot:append>
                               <q-icon name="clear" @click="storeHoSoCv.listSelectSkill = []" />
                             </template>
@@ -312,11 +317,15 @@ const clickExpandPrize = () => {
                             </template>
                           </q-select>
                         </div>
+                        <b class="q-pt-md q-px-sm">Kỹ năng: <span class="text-weight-regular">{{
+                          storeHoSoCv.listData.kiNang }}</span></b>
                       </div>
+
+
 
                       <div class="row q-pa-lg">
                         <div class="col-12 flex justify-end">
-                          <q-btn class="q-mx-sm" color="red" label="Lưu" />
+                          <q-btn class="q-mx-sm" color="red" label="Lưu" @click="storeHoSoCv.updateKyNang()" />
                           <q-btn class="q-mx-sm text-black" color="white" label="Hủy" />
                         </div>
                       </div>
@@ -386,10 +395,11 @@ const clickExpandPrize = () => {
                             <span class="hint" style="font-style: normal">
                               Mô tả chi tiết:</span>
                             <div class="col-12">
-                              <q-input v-model="storeHoSoCv.listData.motachitietHocVan" filled type="textarea" :maxlength="2500"
-                                label="Vui lòng điền mô tả chi tiết học vấn tại đây..." />
+                              <q-input v-model="storeHoSoCv.listData.motachitietHocVan" filled type="textarea"
+                                :maxlength="2500" label="Vui lòng điền mô tả chi tiết học vấn tại đây..." />
                             </div>
-                            <span>{{ storeHoSoCv.listData.motachitietHocVan ? storeHoSoCv.listData.motachitietHocVan.length : 0 }}/2500 ký tự</span>
+                            <span>{{ storeHoSoCv.listData.motachitietHocVan ?
+                              storeHoSoCv.listData.motachitietHocVan.length : 0 }}/2500 ký tự</span>
                           </div>
                         </div>
 
@@ -466,10 +476,11 @@ const clickExpandPrize = () => {
                             <span class="hint" style="font-style: normal">
                               Mô tả chi tiết:</span>
                             <div class="col-12">
-                              <q-input v-model="storeHoSoCv.listData.motachitietChungChi" filled type="textarea" :maxlength="2500"
-                                label="Vui lòng mô tả về chứng chỉ này..." />
+                              <q-input v-model="storeHoSoCv.listData.motachitietChungChi" filled type="textarea"
+                                :maxlength="2500" label="Vui lòng mô tả về chứng chỉ này..." />
                             </div>
-                            <span>{{ storeHoSoCv.listData.motachitietChungChi ? storeHoSoCv.listData.motachitietChungChi.length : 0 }}/2500 ký tự</span>
+                            <span>{{ storeHoSoCv.listData.motachitietChungChi ?
+                              storeHoSoCv.listData.motachitietChungChi.length : 0 }}/2500 ký tự</span>
                           </div>
                         </div>
 
@@ -504,13 +515,13 @@ const clickExpandPrize = () => {
                           <q-input filled square class="q-mb-md" v-model="storeHoSoCv.listData.tenGiaiThuong" type="text"
                             label="Tên giải thưởng/danh hiệu" />
 
-                          <q-input filled square class="q-mb-md" v-model="storeHoSoCv.listData.tochucGiaiThuong" type="text"
-                            label="Tổ chức" />
+                          <q-input filled square class="q-mb-md" v-model="storeHoSoCv.listData.tochucGiaiThuong"
+                            type="text" label="Tổ chức" />
 
                           <div class="row flex justify-between">
                             <div class="col-md-6 col-6 q-pr-sm">
-                              <q-select v-model="storeHoSoCv.listData.thang" :options="storeHoSoCv.listMonth" label="Tháng"
-                                filled />
+                              <q-select v-model="storeHoSoCv.listData.thang" :options="storeHoSoCv.listMonth"
+                                label="Tháng" filled />
                             </div>
                             <div class="col-md-6 col-6 q-pl-sm">
                               <q-select v-model="storeHoSoCv.listData.nam" :options="storeHoSoCv.listYear" label="Năm"
@@ -522,10 +533,11 @@ const clickExpandPrize = () => {
                             <span class="hint" style="font-style: normal">
                               Mô tả chi tiết:</span>
                             <div class="col-12">
-                              <q-input v-model="storeHoSoCv.listData.motachitietGiaiThuong" filled type="textarea" :maxlength="2500"
-                                label="Vui lòng mô tả về giải thưởng mà bạn nhân được ..." />
+                              <q-input v-model="storeHoSoCv.listData.motachitietGiaiThuong" filled type="textarea"
+                                :maxlength="2500" label="Vui lòng mô tả về giải thưởng mà bạn nhân được ..." />
                             </div>
-                            <span>{{ storeHoSoCv.listData.motachitietGiaiThuong ? storeHoSoCv.listData.motachitietGiaiThuong.length : 0 }}/2500 ký tự</span>
+                            <span>{{ storeHoSoCv.listData.motachitietGiaiThuong ?
+                              storeHoSoCv.listData.motachitietGiaiThuong.length : 0 }}/2500 ký tự</span>
                           </div>
                         </div>
 
@@ -566,4 +578,5 @@ span.hint {
   line-height: 24px;
   color: #868686;
   padding: 20px 0;
-}</style>
+}
+</style>
