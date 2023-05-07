@@ -1,12 +1,13 @@
 import { defineStore } from "pinia";
 import { api } from "src/boot/axios";
 import { Dialog, Loading, Notify } from "quasar";
-import { ref } from "vue";
+import { reactive, ref } from "vue";
 
 export const useStoreAuthentication = defineStore("storeAuthentication", {
   state: () => {
     return {
       idUser: "",
+      idUngTuyenVien: localStorage.getItem("idUngTuyenVien"),
       isPwd: false,
       isAdmin: false,
       isLogin: false,
@@ -14,7 +15,7 @@ export const useStoreAuthentication = defineStore("storeAuthentication", {
       userName: "",
       password: "",
       rePassword: "",
-      picture: "",
+      picture: localStorage.getItem("picture"),
       accessToken: null,
       isLoadingLogin: false,
       isDark: false,
@@ -27,6 +28,9 @@ export const useStoreAuthentication = defineStore("storeAuthentication", {
         { label: "Ứng tuyển viên", value: "user" },
         { label: "Nhà tuyển dụng", value: "recruiter" },
       ],
+      result: reactive({
+        resultAutoCreateId: false,
+      }),
       roleSelected: "",
     };
   },
@@ -221,7 +225,6 @@ export const useStoreAuthentication = defineStore("storeAuthentication", {
         userId: this.idUser,
         otp: this.otp,
       };
-      console.log(data);
       try {
         api.post(url, data).then((res) => {
           console.log(res.data);
@@ -263,6 +266,102 @@ export const useStoreAuthentication = defineStore("storeAuthentication", {
           message: "Tạo tài khoản thất bại.",
         });
         console.log("Internal server error: ", error);
+      }
+    },
+
+    async checkExistUngTuyenVien() {
+      let url = "api/ungtuyenvien";
+      const id = localStorage.getItem("id");
+      try {
+        await api.get(url).then((res) => {
+          if (res.data) {
+            res.data.map((e) => {
+              if (id === e.taikhoan._id) {
+                localStorage.setItem("idUngTuyenVien", e._id);
+                this.result.resultAutoCreateId = true;
+                return;
+              }
+            });
+            // for (let i = 0; i < res.data.length; ++i) {
+            //   if (id === res.data[i].taikhoan._id) {
+            //     console.log("tim thay");
+            //     localStorage.setItem("idUngTuyenVien", res.data[i]._id);
+            //     this.result.resultAutoCreateId = true;
+            //   }
+            // }
+          }
+          if (this.result.resultAutoCreateId === false) {
+            localStorage.setItem("idUngTuyenVien", "");
+            return;
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
+      }
+    },
+
+    async checkCreateUngTuyenVien() {
+      // const idUtv = localStorage.getItem("idUngTuyenVien");
+      // if (idUtv) {
+      //   const url = "api/ungtuyenvien/" + "6456ce4af5a24023cf1d65ad";
+      //   api.get(url).then((res) => {
+      //     if (res.data) {
+      //       console.log("hello");
+      //       return;
+      //     }
+      //     localStorage.setItem("idUngTuyenVien", "");
+      //   });
+      // }
+      // this.checkExistUngTuyenVien();
+      // return;
+      let loaiTaiKhoan = localStorage.getItem("loaiTaiKhoan");
+      if (loaiTaiKhoan === "user") {
+        await this.checkExistUngTuyenVien();
+        if (this.result.resultAutoCreateId === false) {
+          try {
+            let url = "api/ungtuyenvien";
+            const data = {
+              hovaten: localStorage.getItem("userName"),
+              anhdaidien: localStorage.getItem("picture"),
+              sdt: "",
+              gioithieubanthan: "",
+              ngaysinh: "",
+              diachi: "",
+              email: localStorage.getItem("email"),
+              chucvu: "",
+              tencty: "",
+              tungayKinhNghiemLV: "",
+              denngayKinhNghiemLV: "",
+              motachitietKinhNghiemLV: "",
+              kiNang: "",
+              tenNganhHoc: "",
+              tenTruongHoc: "",
+              tungayHocVan: "",
+              denngayHocVan: "",
+              motachitietHocVan: "",
+              tenchungchi: "",
+              tochuc: "",
+              motachitietChungChi: "",
+              ngaycap: "",
+              ngayhethan: "",
+              tenGiaiThuong: "",
+              tochucGiaiThuong: "",
+              thang: "",
+              nam: "",
+              motachitietGiaiThuong: "",
+            };
+            api.post(url, data).then((res) => {
+              if (res.data) {
+                // console.log("tao acc ne");
+                // console.log(res.data);
+                localStorage.setItem("idUngTuyenVien", res.data._id);
+                return;
+              }
+            });
+          } catch (err) {
+            console.log("Internal Server Error: ", err);
+          }
+        }
       }
     },
   },

@@ -2,8 +2,10 @@
 import { useStoreJob } from 'src/stores/storeJob';
 import { Dark, useQuasar } from 'quasar'
 import { watch, onMounted } from 'vue';
+import { useStoreAuthentication } from 'src/stores/storeAuthentication';
 
 const storeJob = useStoreJob();
+const storeAuthen = useStoreAuthentication();
 const $q = useQuasar();
 
 watch(() => $q.dark.isActive, val => {
@@ -12,6 +14,7 @@ watch(() => $q.dark.isActive, val => {
 
 onMounted(() => {
   storeJob.getAllPost();
+  storeAuthen.checkCreateUngTuyenVien();
 });
 
 </script>

@@ -1,12 +1,13 @@
 import { defineStore } from "pinia";
 import { api } from "src/boot/axios";
-import { ref } from "vue";
+import { ref, reactive } from "vue";
+import { Loading, Notify, Dialog } from "quasar";
 
 export const useStoreHoSoCv = defineStore("storeHoSoCv", {
   state: () => {
     return {
       /* step 1 */
-      chucVu: "",
+      listData: [],
       ngaySinh: ref(""),
       phone: "",
       address: "",
@@ -18,37 +19,7 @@ export const useStoreHoSoCv = defineStore("storeHoSoCv", {
       lamDenNgay: ref(""),
       moTaChiTietCongViec: "",
       /* step 3 */
-      listSkill: [
-        "Python",
-        "Java",
-        "JavaScript",
-        "C#",
-        "Ruby",
-        "Swift",
-        "Kotlin",
-        "Go",
-        "TypeScript",
-        "SQL",
-        "C++",
-        "Rust",
-        ".Net",
-        "Scala",
-        "Objective-C",
-        "Lua",
-        "R",
-        "Assembly",
-        "MATLAB",
-        "Visual Basic",
-        "Dart",
-        "DevOps",
-        "VueJs",
-        "ReactJs",
-        "AngularJs",
-        "HTML",
-        "CSS",
-        "Linux",
-        "Designer",
-      ],
+      listSkill: [],
       /* step 4 */
       nganhHoc: "",
       tenTruong: "",
@@ -107,6 +78,14 @@ export const useStoreHoSoCv = defineStore("storeHoSoCv", {
         "≥ 4 năm",
       ],
       optionWorkType: ["Làm việc tại văn phòng", "Làm việc từ xa", "Linh hoạt"],
+      resultExecute: {
+        updateGioiThieuBanThan: false,
+        updateKinhNghiemLamViec: false,
+        updateKyNang: false,
+        updateHocVan: false,
+        updateChungChi: false,
+        updateGiaiThuong: false,
+      },
     };
   },
   getters: {},
@@ -118,6 +97,86 @@ export const useStoreHoSoCv = defineStore("storeHoSoCv", {
       this.expandEducation = false;
       this.expandCertification = false;
       this.expandPrize = false;
+    },
+    getDataOfUserById(id) {
+      const url = "api/ungtuyenvien/" + id;
+      try {
+        api.get(url).then((res) => {
+          if (res.data) {
+            this.listData = res.data;
+            console.log(this.listData);
+            return;
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
+      }
+    },
+    getListSkill() {
+      const url = "api/ngonngu/";
+      try {
+        api.get(url).then((res) => {
+          if (res.data) {
+            this.listSkill = res.data;
+            return;
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
+      }
+    },
+
+    updateGioiThieuBanThan() {
+      Loading.show({
+        message: "Đang xử lí...",
+        boxClass: "bg-grey-2 text-grey-9",
+        spinnerColor: "primary",
+      });
+      const url = "api/ungtuyenvien/updateThongTinUngTuyenVien";
+      const data = {
+        ungTuyenVienId: localStorage.getItem("idUngTuyenVien"),
+        hovaten: this.listData.hovaten,
+        anhdaidien: this.listData.anhdaidien,
+        sdt: this.listData.sdt,
+        gioithieubanthan: this.listData.gioithieubanthan,
+        ngaysinh: new Date(this.listData.ngaysinh),
+        diachi: this.listData.diachi,
+        email: this.listData.email,
+      };
+      try {
+        api.put(url, data).then((res) => {
+          if (res.data) {
+            console.log(res.data);
+            this.resultExecute.updateGioiThieuBanThan = true;
+            return;
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
+      } finally {
+        setTimeout(() => {
+          if (this.resultExecute.updateGioiThieuBanThan) {
+            Loading.hide();
+            Notify.create({
+              message: "Thao tác thành công",
+              position: "bottom",
+              timeout: 2000,
+              color: "green",
+              icon: "mood",
+            });
+            setTimeout(() => {
+              return window.location.reload();
+            }, 1500);
+          } else {
+            Loading.hide();
+            Dialog.create({
+              message: "Thao tác thất bại! Vui lòng thử lại.",
+              title: "Thông báo",
+              color: "red",
+            });
+          }
+        }, 1000);
+      }
     },
   },
 });

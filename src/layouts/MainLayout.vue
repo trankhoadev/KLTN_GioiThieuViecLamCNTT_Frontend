@@ -107,7 +107,7 @@ const clickToTop = () => {
                       <router-link class="flex flex-center justify-center" to="/ho-so-cv">
                         <q-icon size="sm" name="account_circle" />
                         &nbsp;
-                        <q-item-section>Hồ sơ và CV</q-item-section>
+                        <q-item-section @click="storeAuthen.checkCreateUngTuyenVien()">Hồ sơ và CV</q-item-section>
                       </router-link>
                     </q-item>
                     <q-item clickable class="flex flex-center justify-center">

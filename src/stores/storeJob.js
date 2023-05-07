@@ -361,7 +361,7 @@ export const useStoreJob = defineStore("storeJob", {
         api.get(url).then((res) => {
           if (res) {
             this.listPost = res.data;
-            console.log(res.data);
+            // console.log(res.data);
           }
         });
       } catch (error) {
