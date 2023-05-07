@@ -135,18 +135,24 @@ export const useStoreHoSoCv = defineStore("storeHoSoCv", {
       const url = "api/ungtuyenvien/updateThongTinUngTuyenVien";
       const data = {
         ungTuyenVienId: localStorage.getItem("idUngTuyenVien"),
+
         hovaten: this.listData.hovaten,
+
         anhdaidien: this.listData.anhdaidien,
+
         sdt: this.listData.sdt,
+
         gioithieubanthan: this.listData.gioithieubanthan,
+
         ngaysinh: new Date(this.listData.ngaysinh),
+
         diachi: this.listData.diachi,
+
         email: this.listData.email,
       };
       try {
         api.put(url, data).then((res) => {
           if (res.data) {
-            console.log(res.data);
             this.resultExecute.updateGioiThieuBanThan = true;
             return;
           }
@@ -156,6 +162,62 @@ export const useStoreHoSoCv = defineStore("storeHoSoCv", {
       } finally {
         setTimeout(() => {
           if (this.resultExecute.updateGioiThieuBanThan) {
+            Loading.hide();
+            Notify.create({
+              message: "Thao tác thành công",
+              position: "bottom",
+              timeout: 2000,
+              color: "green",
+              icon: "mood",
+            });
+            setTimeout(() => {
+              return window.location.reload();
+            }, 1500);
+          } else {
+            Loading.hide();
+            Dialog.create({
+              message: "Thao tác thất bại! Vui lòng thử lại.",
+              title: "Thông báo",
+              color: "red",
+            });
+          }
+        }, 1000);
+      }
+    },
+
+    updateKinhNghiemLamViec() {
+      Loading.show({
+        message: "Đang xử lí...",
+        boxClass: "bg-grey-2 text-grey-9",
+        spinnerColor: "primary",
+      });
+      const url = "api/ungtuyenvien/updateKinhNghiemLamViecUngTuyenVien";
+      const data = {
+        ungTuyenVienId: localStorage.getItem("idUngTuyenVien"),
+
+        chucvu: this.listData.chucvu,
+
+        tencty: this.listData.tencty,
+
+        tungayKinhNghiemLV: new Date(this.listData.tungayKinhNghiemLV),
+
+        denngayKinhNghiemLV: new Date(this.listData.denngayKinhNghiemLV),
+
+        motachitietKinhNghiemLV: this.listData.motachitietKinhNghiemLV,
+      };
+      try {
+        api.put(url, data).then((res) => {
+          if (res.data) {
+            console.log(res.data);
+            this.resultExecute.updateKinhNghiemLamViec = true;
+            return;
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
+      } finally {
+        setTimeout(() => {
+          if (this.resultExecute.updateKinhNghiemLamViec) {
             Loading.hide();
             Notify.create({
               message: "Thao tác thành công",

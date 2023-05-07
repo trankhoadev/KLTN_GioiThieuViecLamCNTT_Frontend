@@ -182,7 +182,7 @@ const clickExpandPrize = () => {
 
                             <div class="col-md-6 q-pl-sm">
                               <q-input filled square class="q-mb-md" v-model="storeHoSoCv.listData.email" type="text"
-                                label="Địa chỉ email" />
+                                label="Địa chỉ email" disable />
                             </div>
                           </div>
                           <q-input filled square class="q-mb-md" v-model="storeHoSoCv.listData.diachi" type="text"
@@ -284,8 +284,8 @@ const clickExpandPrize = () => {
 
                         <div class="row q-pa-lg">
                           <div class="col-12 flex justify-end">
-                            <q-btn class="q-mx-sm" color="red" label="Lưu" />
-                            <q-btn class="q-mx-sm text-black" color="white" label="Hủy" />
+                            <q-btn @click="storeHoSoCv.updateKinhNghiemLamViec()" class="q-mx-sm" color="red" label="Lưu" />
+                            <q-btn @click="storeHoSoCv.expandExperiment = false" class="q-mx-sm text-black" color="white" label="Hủy" />
                           </div>
                         </div>
                       </q-form>
