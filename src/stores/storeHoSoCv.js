@@ -104,7 +104,6 @@ export const useStoreHoSoCv = defineStore("storeHoSoCv", {
         api.get(url).then((res) => {
           if (res.data) {
             this.listData = res.data;
-            console.log(this.listData);
             return;
           }
         });
@@ -383,6 +382,62 @@ export const useStoreHoSoCv = defineStore("storeHoSoCv", {
       } finally {
         setTimeout(() => {
           if (this.resultExecute.updateChungChi) {
+            Loading.hide();
+            Notify.create({
+              message: "Thao tác thành công",
+              position: "bottom",
+              timeout: 2000,
+              color: "green",
+              icon: "mood",
+            });
+            // setTimeout(() => {
+            //   return window.location.reload();
+            // }, 1500);
+          } else {
+            Loading.hide();
+            Dialog.create({
+              message: "Thao tác thất bại! Vui lòng thử lại.",
+              title: "Thông báo",
+              color: "red",
+            });
+          }
+        }, 1000);
+      }
+    },
+
+    updateGiaiThuong() {
+      Loading.show({
+        message: "Đang xử lí...",
+        boxClass: "bg-grey-2 text-grey-9",
+        spinnerColor: "primary",
+      });
+      const url = "api/ungtuyenvien/updateDanhHieuvaGiaThuongUngTuyenVien";
+      const data = {
+        ungTuyenVienId: localStorage.getItem("idUngTuyenVien"),
+
+        tenGiaiThuong: this.listData.tenGiaiThuong,
+
+        tochucGiaiThuong: this.listData.tochucGiaiThuong,
+
+        thang: this.listData.thang,
+
+        nam: this.listData.nam,
+
+        motachitietGiaiThuong: this.listData.motachitietGiaiThuong,
+      };
+
+      try {
+        api.put(url, data).then((res) => {
+          if (res.data) {
+            this.resultExecute.updateGiaiThuong = true;
+            return;
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
+      } finally {
+        setTimeout(() => {
+          if (this.resultExecute.updateGiaiThuong) {
             Loading.hide();
             Notify.create({
               message: "Thao tác thành công",

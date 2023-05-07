@@ -208,6 +208,8 @@ const clickExpandPrize = () => {
                       <div class="row q-pa-lg">
                         <div class="col-12 flex justify-end">
                           <q-btn @click="storeHoSoCv.updateGioiThieuBanThan()" class="q-mx-sm" color="red" label="Lưu" />
+                          <q-btn @click="storeHoSoCv.expandUserInfo = false" class="q-mx-sm text-black" color="white"
+                              label="Hủy" />
                         </div>
                       </div>
                     </q-card-section>
@@ -326,7 +328,7 @@ const clickExpandPrize = () => {
                       <div class="row q-pa-lg">
                         <div class="col-12 flex justify-end">
                           <q-btn class="q-mx-sm" color="red" label="Lưu" @click="storeHoSoCv.updateKyNang()" />
-                          <q-btn class="q-mx-sm text-black" color="white" label="Hủy" />
+                          <q-btn class="q-mx-sm text-black" color="white" label="Hủy" @click="storeHoSoCv.expandSkill = false" />
                         </div>
                       </div>
                     </q-card-section>
@@ -406,7 +408,7 @@ const clickExpandPrize = () => {
                         <div class="row q-pa-lg">
                           <div class="col-12 flex justify-end">
                             <q-btn class="q-mx-sm" color="red" label="Lưu" @click="storeHoSoCv.updateHocVan()" />
-                            <q-btn class="q-mx-sm text-black" color="white" label="Hủy" />
+                            <q-btn class="q-mx-sm text-black" color="white" label="Hủy" @click="storeHoSoCv.expandEducation = false" />
                           </div>
                         </div>
                       </q-form>
@@ -488,7 +490,7 @@ const clickExpandPrize = () => {
                         <div class="row q-pa-lg">
                           <div class="col-12 flex justify-end">
                             <q-btn class="q-mx-sm" color="red" label="Lưu" @click="storeHoSoCv.updateChungChi()" />
-                            <q-btn class="q-mx-sm text-black" color="white" label="Hủy" />
+                            <q-btn class="q-mx-sm text-black" color="white" label="Hủy" @click="storeHoSoCv.expandCertification = false" />
                           </div>
                         </div>
                       </q-form>
@@ -544,8 +546,8 @@ const clickExpandPrize = () => {
 
                         <div class="row q-pa-lg">
                           <div class="col-12 flex justify-end">
-                            <q-btn class="q-mx-sm" color="red" label="Lưu" />
-                            <q-btn class="q-mx-sm text-black" color="white" label="Hủy" />
+                            <q-btn class="q-mx-sm" color="red" label="Lưu" @click="storeHoSoCv.updateGiaiThuong()" />
+                            <q-btn class="q-mx-sm text-black" color="white" label="Hủy" @click="storeHoSoCv.expandPrize = false" />
                           </div>
                         </div>
                       </q-form>
