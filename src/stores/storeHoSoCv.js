@@ -295,5 +295,60 @@ export const useStoreHoSoCv = defineStore("storeHoSoCv", {
         }, 1000);
       }
     },
+
+    updateHocVan() {
+      Loading.show({
+        message: "Đang xử lí...",
+        boxClass: "bg-grey-2 text-grey-9",
+        spinnerColor: "primary",
+      });
+      const url = "api/ungtuyenvien/updateHocVanUngTuyenVien";
+      const data = {
+        ungTuyenVienId: localStorage.getItem("idUngTuyenVien"),
+
+        tenNganhHoc: this.listData.tenNganhHoc,
+
+        tenTruongHoc: this.listData.tenTruongHoc,
+
+        tungayHocVan: this.listData.tungayHocVan,
+
+        denngayHocVan: this.listData.denngayHocVan,
+
+        motachitietHocVan: this.listData.motachitietHocVan,
+      };
+      try {
+        api.put(url, data).then((res) => {
+          if (res.data) {
+            this.resultExecute.updateHocVan = true;
+            return;
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
+      } finally {
+        setTimeout(() => {
+          if (this.resultExecute.updateHocVan) {
+            Loading.hide();
+            Notify.create({
+              message: "Thao tác thành công",
+              position: "bottom",
+              timeout: 2000,
+              color: "green",
+              icon: "mood",
+            });
+            // setTimeout(() => {
+            //   return window.location.reload();
+            // }, 1500);
+          } else {
+            Loading.hide();
+            Dialog.create({
+              message: "Thao tác thất bại! Vui lòng thử lại.",
+              title: "Thông báo",
+              color: "red",
+            });
+          }
+        }, 1000);
+      }
+    },
   },
 });
