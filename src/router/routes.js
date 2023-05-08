@@ -50,7 +50,7 @@ const router = [
         component: SignUp,
       },
       {
-        path: "/search",
+        path: "/search/:id",
         component: SearchJob,
       },
       {

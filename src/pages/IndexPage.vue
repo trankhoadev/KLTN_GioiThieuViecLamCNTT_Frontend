@@ -12,9 +12,9 @@ watch(() => $q.dark.isActive, val => {
   // console.log(val)
 })
 
-onMounted(() => {
-  storeJob.getAllPost();
-  storeAuthen.checkCreateUngTuyenVien();
+onMounted(async () => {
+  await storeJob.getAllPost();
+  await storeAuthen.checkCreateUngTuyenVien();
 });
 
 </script>
@@ -48,16 +48,17 @@ onMounted(() => {
               <div class="search-input-container">
                 <div class="search-input-with-dropdown">
                   <div class="left-side-wrapper">
-                    <q-form @submit="() => { }" class="js-search-input-form search-input-form">
-                      <input id="search" type="search" placeholder="Search..." value=""
-                        class="search-input js-search-input text-black" />
+                    <q-form @submit="storeJob.searchJob()" class="js-search-input-form search-input-form">
+                      <q-input class="search-input js-search-input text-black" v-model="storeJob.searchInput" id="search"
+                        placeholder="Search..." type="text" hide-bottom-space clearable />
                     </q-form>
                   </div>
 
                   <div class="vertical-divider"></div>
 
                   <span class="btn-search">
-                    <q-btn icon="search" />
+                    <!-- <router-link to="/search"></router-link> -->
+                    <q-btn @click="storeJob.searchJob()" icon="search" />
                   </span>
                 </div>
               </div>
@@ -99,7 +100,7 @@ onMounted(() => {
           <div class="q-px-lg hotjob-content">
             <div class="row">
               <q-card class="col-12 col-md-4 q-my-md bg-grey-2 text-dark" style="min-height: 200px;"
-                v-for="item in storeJob.listRecruiter" :key="item.id">
+                v-for="item in storeJob.listData" :key="item._id">
                 <q-card-section>
                   <div class="row">
                     <div class="col-3 col-md-3 col-lg-3">
@@ -108,7 +109,7 @@ onMounted(() => {
 
                     <div class="col-7 col-lg-7 col-md-12 column">
                       <p class="text-bold text-uppercase q-py-sm q-my-none">
-                        {{ item.title }}
+                        {{ item.tieude }}
                       </p>
                       <span style="color: #333;">
                         {{ item.companyName }}
@@ -117,11 +118,11 @@ onMounted(() => {
                         <div class="row flex justify-between">
                           <div class="col-6">
                             <q-icon name="monetization_on" size="sm" />
-                            <span class="text-red-10 q-pl-md q-py-sm text-bold">{{ item.salary }}</span>
+                            <span class="text-red-10 q-pl-md q-py-sm text-bold">{{ item.mucluong }}</span>
                           </div>
 
                           <div class="col-6 flex justify-end">
-                            {{ item.address }}
+                            {{ item.diaChi }}
                           </div>
                         </div>
                       </div>
@@ -135,14 +136,10 @@ onMounted(() => {
                         </div>
 
                         <div class="col-4 col-lg-4 col-md-12 col-sm-4 flex justify-end">
-                          {{ item.datePost }}
+                          {{ new Date(item.createdAt).toLocaleDateString('en-GB') }}
                         </div>
                       </div>
                     </div>
-
-                    <!-- <div class="col-2 col-ld-2 col-md-12 flex column justify-between">
-                      <q-icon name="star" size="sm" />
-                    </div> -->
                   </div>
                 </q-card-section>
               </q-card>

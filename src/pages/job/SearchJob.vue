@@ -2,9 +2,19 @@
 import { useQuasar } from 'quasar';
 import { useStoreJob } from 'src/stores/storeJob';
 import { useMyStore } from 'src/stores/myStore';
+import { useRoute } from 'vue-router';
+import { onMounted } from 'vue';
+
+const route = useRoute();
 const myStore = useMyStore();
 const storeJob = useStoreJob();
 const $q = useQuasar();
+
+onMounted(async () => {
+  storeJob.searchInput = route.params.id;
+  await storeJob.reloadSearchJob(route.params.id);
+});
+
 </script>
 <template>
   <q-layout>
@@ -69,11 +79,13 @@ const $q = useQuasar();
             </div>
 
             <div class="col-12 q-pa-md">
-              <div>Đã tìm thấy <span class="text-highlight">{{ 2000 }}</span> việc làm phù hợp với yêu cầu của bạn.</div>
+              <div v-if="storeJob.listDataSearch.length">Đã tìm thấy <span class="text-highlight">{{
+                storeJob.listDataSearch.length }}</span> việc làm phù hợp với yêu cầu của bạn.</div>
+              <div v-else>Chưa tìm thấy việc làm phù hợp với yêu cầu tìm kiếm của bạn.</div>
             </div>
           </div>
 
-          <div class="row bg-white full-width">
+          <div v-if="storeJob.listDataSearch.length" class="row bg-white full-width">
             <div class="col-12">
               <hr class="q-mt-sm q-mb-md">
             </div>
@@ -95,7 +107,7 @@ const $q = useQuasar();
 
           <div class="row bg-white full-width q-px-md justify-evenly">
             <div class="col-md-7 col-12">
-              <div class="item highlight q-pa-none q" v-for="item in storeJob.listRecruiter" :key="item.id">
+              <div class="item highlight q-pa-none q" v-for="item in storeJob.listDataSearch" :key="item._id">
                 <div class="row q-my-md">
                   <div class="col-md-2 col-12">
                     <div class="avatar">
@@ -104,26 +116,44 @@ const $q = useQuasar();
                   </div>
                   <div class="col-md-7 col-12">
                     <div class="title">
-                      <a>{{ item.title }}</a>
+                      <a>{{ item.tieude }}</a>
                     </div>
                     <div class="q-pt-sm">{{ item.companyName }}</div>
-                    <div class="q-pt-sm"> {{ item.datePost }}</div>
+                    <div class="q-pt-sm"> {{ new Date(item.createdAt).toLocaleDateString('en-GB') }}</div>
                     <div class="q-pt-sm">
                       <div class="skills">
-                        <label class="item" v-for="tag in item.tag" :key="tag">
+                        <label class="item" v-for="tag in item.ngonngu" :key="tag">
                           {{ tag }}
                         </label>
                       </div>
                     </div>
                     <div class="flex">
-                      <div>
-                        <q-icon name="location_on" size="sm" class="text-green-7" />
-                        <span class="q-ml-sm">{{ item.address }}</span>
-                      </div>
+                      <div class="row">
+                        <div class="col-6">
+                          <div>
+                            <div class="row">
+                              <div class="col-2">
+                                <q-icon name="location_on" size="sm" class="text-green-7" />
+                              </div>
+                              <div class="col-10">
+                                <span class="text-justify">{{ item.diaChi }}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
 
-                      <div class="q-ml-md">
-                        <q-icon name="access_time_filled" size="sm" class="text-green-7" />
-                        <span class="q-ml-sm">Còn <b>{{ 25 }}</b> ngày để ứng tuyển</span>
+                        <div class="col-6">
+                          <div class="q-ml-md">
+                            <div class="row">
+                              <div class="col-2">
+                                <q-icon name="access_time_filled" size="sm" class="text-green-7" />
+                              </div>
+                              <div class="col-10">
+                                <span>Còn <b>{{ 25 }}</b> ngày để ứng tuyển</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
