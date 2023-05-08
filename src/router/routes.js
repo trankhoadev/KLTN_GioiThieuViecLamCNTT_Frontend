@@ -10,6 +10,7 @@ import SignUp from "pages/SignUp.vue";
 import SearchJob from "pages/job/SearchJob.vue";
 import JobDetail from "pages/job/JobDetail.vue";
 import HoSoCV from "pages/employee/HoSoCV.vue";
+import PreviewCV from "src/pages/employee/PreviewCV.vue";
 
 /* layout */
 import MainLayout from "layouts/MainLayout.vue";
@@ -85,6 +86,14 @@ const router = [
         component: LienHe,
       },
     ],
+  },
+  {
+    path: "/preview-cv",
+    component: PreviewCV,
+    beforeEnter: requireAuth,
+    meta: {
+      permission: "employee",
+    },
   },
   {
     /* recruiter */

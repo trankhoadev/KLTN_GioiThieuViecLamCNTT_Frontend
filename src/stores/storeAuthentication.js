@@ -7,6 +7,7 @@ export const useStoreAuthentication = defineStore("storeAuthentication", {
   state: () => {
     return {
       idUser: "",
+      loaiTaiKhoan: localStorage.getItem("loaiTaiKhoan"),
       idUngTuyenVien: localStorage.getItem("idUngTuyenVien"),
       isPwd: false,
       isAdmin: false,
