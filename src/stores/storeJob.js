@@ -16,6 +16,10 @@ export const useStoreJob = defineStore("storeJob", {
       panigateSelected: ref(1),
       tabJobDetail: ref("news"),
       href: "",
+      defaultShareFacebookUrl: "https://www.facebook.com/sharer/sharer.php?u=",
+      defaultShareTwitterUrl: "https://twitter.com/intent/tweet?url=",
+      defaultShareLinkedinUrl:
+        "https://www.linkedin.com/uas/login?session_redirect=",
       /* step 1 */
       chucVu: "",
       ngaySinh: ref(""),
@@ -363,6 +367,10 @@ export const useStoreJob = defineStore("storeJob", {
         .catch((err) => {
           console.log("Can't coppy text. Error: ", err);
         });
+    },
+
+    openUrl(defaultUrl, path) {
+      window.open(defaultUrl + path);
     },
   },
 });

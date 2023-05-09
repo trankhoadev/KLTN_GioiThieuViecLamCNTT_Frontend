@@ -207,16 +207,16 @@ onMounted(async () => {
                   </div>
                 </div>
                 <p>Chia sẻ qua mạng xã hội</p>
-                <div class="box-share">
-                  <a href="" target="_blank">
-                    <img src="https://www.topcv.vn/v4/image/job-detail/share/facebook.png" alt="">
-                  </a>
-                  <a href="" target="_blank" class="q-mx-md">
+                <div class="box-share flex">
+                  <div class="q-mx-sm" @click="storeJob.openUrl(storeJob.defaultShareFacebookUrl, storeJob.href)">
+                    <img src="https://www.topcv.vn/v4/image/job-detail/share/facebook.png" alt=""/>
+                  </div>
+                  <div class="q-mx-sm" @click="storeJob.openUrl(storeJob.defaultShareTwitterUrl, storeJob.href)">
                     <img src="https://www.topcv.vn/v4/image/job-detail/share/twitter.png" alt="">
-                  </a>
-                  <a href="" target="_blank">
+                  </div>
+                  <div class="q-mx-sm" @click="storeJob.openUrl(storeJob.defaultShareLinkedinUrl, storeJob.href)">
                     <img src="https://www.topcv.vn/v4/image/job-detail/share/linkedin.png" alt="">
-                  </a>
+                  </div>
                 </div>
               </div>
             </div>
