@@ -10,6 +10,7 @@ export const useStoreJob = defineStore("storeJob", {
       listData: [],
       listDataSearch: [],
       sortRadio: ref(""),
+      lengthResponse: ref(0),
       panigateSelected: ref(1),
       tabJobDetail: ref("news"),
       /* step 1 */
@@ -274,26 +275,21 @@ export const useStoreJob = defineStore("storeJob", {
       const url = "api/tintuyendung/search/" + this.searchInput;
       try {
         api.get(url).then((res) => {
-          if (res.data.length !== 0) {
-            this.listDataSearch = res.data;
+          if (res.data.length === 0) {
+            setTimeout(() => {
+              this.listDataSearch = [];
+              Loading.hide();
+              this.router.push("/search/" + this.searchInput);
+            }, 1500);
           }
-        });
-      } catch (err) {
-      } finally {
-        setTimeout(() => {
-          Loading.hide();
-          this.router.push("/search/" + this.searchInput);
-        }, 1500);
-      }
-    },
-
-    reloadSearchJob(data) {
-      const url = "api/tintuyendung/search/" + data;
-      console.log(url);
-      try {
-        api.get(url).then((res) => {
           if (res.data.length !== 0) {
-            this.listDataSearch = res.data;
+            this.listDataSearch = [];
+            setTimeout(() => {
+              this.listDataSearch = res.data;
+              this.lengthResponse = this.listDataSearch.length;
+              Loading.hide();
+              this.router.push("/search/" + this.searchInput);
+            }, 1500);
           }
         });
       } catch (err) {
@@ -301,8 +297,31 @@ export const useStoreJob = defineStore("storeJob", {
       }
     },
 
-    getLanguageName() {
-      const url = "";
+    async reloadSearchJob(data) {
+      const url = "api/tintuyendung/search/" + data;
+      try {
+        await api.get(url).then((res) => {
+          if (res.data.length !== 0) {
+            this.listDataSearch = res.data;
+            this.lengthResponse = this.listDataSearch.length;
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
+      }
+    },
+
+    async getLanguageName(id) {
+      const url = "api/ngonngu/" + id;
+      try {
+        await api.get(url).then((res) => {
+          if (res.data) {
+            return res.data.ngonngu;
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
+      }
     },
   },
 });

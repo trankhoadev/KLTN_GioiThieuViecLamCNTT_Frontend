@@ -3,7 +3,8 @@ import { useQuasar } from 'quasar';
 import { useStoreJob } from 'src/stores/storeJob';
 import { useMyStore } from 'src/stores/myStore';
 import { useRoute } from 'vue-router';
-import { onMounted } from 'vue';
+import { onMounted, watch } from 'vue';
+import { Loading } from 'quasar';
 
 const route = useRoute();
 const myStore = useMyStore();
@@ -13,7 +14,35 @@ const $q = useQuasar();
 onMounted(async () => {
   storeJob.searchInput = route.params.id;
   await storeJob.reloadSearchJob(route.params.id);
+  if (storeJob.listDataSearch.length > 9) {
+    storeJob.listDataSearch = [...storeJob.listDataSearch].slice(0, -1);
+  }
 });
+
+watch(() => storeJob.panigateSelected, val => {
+  const executePanigation = async () => {
+    Loading.show({
+    message: "Vui lòng đợi trong giấy lát...",
+    boxClass: "bg-grey-2 text-grey-9",
+    spinnerColor: "primary",
+  });
+
+  storeJob.listData = [];
+  await storeJob.reloadSearchJob(route.params.id);
+
+  for (let i = (storeJob.panigateSelected - 1) * 10; i < storeJob.panigateSelected * 10; ++i) {
+    if (storeJob.listDataSearch[i] !== undefined) {
+      storeJob.listData.push(storeJob.listDataSearch[i]);
+    }
+  }
+
+  setTimeout(() => {
+    storeJob.listDataSearch = [...storeJob.listData];
+    Loading.hide();
+  }, 1000);
+  }
+  executePanigation();
+})
 
 </script>
 <template>
@@ -43,12 +72,14 @@ onMounted(async () => {
 
           <div class="row justify-evenly bg-white q-pa-md full-width">
             <div class="col-md-3 col-12 q-my-md">
-              <q-input type="text" placeholder="Tên công việc, vị trí muốn ứng tuyển..." outlined
-                v-model="storeJob.searchInput">
-                <template v-slot:prepend>
-                  <q-icon name="search" />
-                </template>
-              </q-input>
+              <q-form @submit="storeJob.searchJob()">
+                <q-input type="text" placeholder="Tên công việc, vị trí muốn ứng tuyển..." outlined
+                  v-model="storeJob.searchInput">
+                  <template v-slot:prepend>
+                    <q-icon name="search" />
+                  </template>
+                </q-input>
+              </q-form>
             </div>
             <div class="col-md-2 col-12 q-my-md">
               <q-select color="grey-3" outlined label-color="light-green-10" v-model="storeJob.selectSkill"
@@ -75,12 +106,12 @@ onMounted(async () => {
               </q-select>
             </div>
             <div class="col-md-2 flex flex-center">
-              <q-btn color="light-green-10" icon="search" label="Tìm kiếm" @click="() => { }" />
+              <q-btn color="light-green-10" icon="search" label="Tìm kiếm" @click="storeJob.searchJob()" />
             </div>
 
             <div class="col-12 q-pa-md">
               <div v-if="storeJob.listDataSearch.length">Đã tìm thấy <span class="text-highlight">{{
-                storeJob.listDataSearch.length }}</span> việc làm phù hợp với yêu cầu của bạn.</div>
+                storeJob.lengthResponse }}</span> việc làm phù hợp với yêu cầu của bạn.</div>
               <div v-else>Chưa tìm thấy việc làm phù hợp với yêu cầu tìm kiếm của bạn.</div>
             </div>
           </div>
@@ -116,14 +147,14 @@ onMounted(async () => {
                   </div>
                   <div class="col-md-7 col-12">
                     <div class="title">
-                      <a>{{ item.tieude }}</a>
+                      <router-link :to="`/search/job/${item._id}`" target="_blank">{{ item.tieude }}</router-link>
                     </div>
                     <div class="q-pt-sm">{{ item.companyName }}</div>
                     <div class="q-pt-sm"> {{ new Date(item.createdAt).toLocaleDateString('en-GB') }}</div>
                     <div class="q-pt-sm">
                       <div class="skills">
                         <label class="item" v-for="tag in item.ngonngu" :key="tag">
-                          {{ tag }}
+                          {{ storeJob.getLanguageName(tag) }}
                         </label>
                       </div>
                     </div>
@@ -173,8 +204,9 @@ onMounted(async () => {
                 </div>
               </div>
               <div>
-                <div class="q-pa-lg flex flex-center">
-                  <q-pagination color="green-7" v-model="storeJob.panigateSelected" :max="5" direction-links />
+                <div v-if="storeJob.listDataSearch.length" class="q-pa-lg flex flex-center">
+                  <q-pagination color="green-7" v-model="storeJob.panigateSelected"
+                    :max="storeJob.lengthResponse / 10 + 1" :max-pages="6" direction-links />
                 </div>
               </div>
             </div>
