@@ -1,8 +1,9 @@
 import { defineStore } from "pinia";
 import { api } from "src/boot/axios";
 import { ref, reactive } from "vue";
-import { Loading } from "quasar";
+import { Loading, Notify } from "quasar";
 import QSpinnerFacebook from "quasar/src/components/spinner/QSpinnerFacebook.js";
+import { copyToClipboard } from "quasar";
 
 export const useStoreJob = defineStore("storeJob", {
   state: () => {
@@ -346,6 +347,22 @@ export const useStoreJob = defineStore("storeJob", {
           });
         }
       }
+    },
+
+    copyToClipBoard(data) {
+      copyToClipboard(data)
+        .then(() => {
+          Notify.create({
+            message: "Sao chép thành công.",
+            position: "bottom",
+            timeout: 2000,
+            color: "green",
+            icon: "mood",
+          });
+        })
+        .catch((err) => {
+          console.log("Can't coppy text. Error: ", err);
+        });
     },
   },
 });

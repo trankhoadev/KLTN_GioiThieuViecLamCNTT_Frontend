@@ -203,7 +203,7 @@ onMounted(async () => {
                     {{ storeJob.href }}
                   </div>
                   <div class="btn-copy">
-                    <q-btn color="green" class="bg-white" size="md" icon="content_copy" />
+                    <q-btn color="green" class="bg-white" size="md" icon="content_copy" @click="storeJob.copyToClipBoard(storeJob.href)" />
                   </div>
                 </div>
                 <p>Chia sẻ qua mạng xã hội</p>
