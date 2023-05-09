@@ -44,43 +44,55 @@ const onScroll = ({ to, ref }) => {
 const clickExpandUserInfo = () => {
   storeHoSoCv._init();
   storeHoSoCv.expandUserInfo = true;
-  var id = document.getElementById('expandUserInfo');
-  id.scrollIntoView();
+  setTimeout(() => {
+    var id = document.getElementById('expandUserInfo');
+    id.scrollIntoView();
+  }, 400);
 }
 
 const clickExpandExperiment = () => {
   storeHoSoCv._init();
   storeHoSoCv.expandExperiment = true;
-  var id = document.getElementById('expandExperiment');
-  id.scrollIntoView();
+  setTimeout(() => {
+    var id = document.getElementById('expandExperiment');
+    id.scrollIntoView();
+  }, 400);
 }
 
 const clickExpandSkill = () => {
   storeHoSoCv._init();
   storeHoSoCv.expandSkill = true;
-  var id = document.getElementById('expandSkill');
-  id.scrollIntoView();
+  setTimeout(() => {
+    var id = document.getElementById('expandSkill');
+    id.scrollIntoView();
+  }, 400);
 }
 
 const clickExpandEducation = () => {
   storeHoSoCv._init();
   storeHoSoCv.expandEducation = true;
-  var id = document.getElementById('expandEducation');
-  id.scrollIntoView();
+  setTimeout(() => {
+    var id = document.getElementById('expandEducation');
+    id.scrollIntoView();
+  }, 400);
 }
 
 const clickExpandCertification = () => {
   storeHoSoCv._init();
   storeHoSoCv.expandCertification = true;
-  var id = document.getElementById('expandCertification');
-  id.scrollIntoView();
+  setTimeout(() => {
+    var id = document.getElementById('expandCertification');
+    id.scrollIntoView();
+  }, 400);
 }
 
 const clickExpandPrize = () => {
   storeHoSoCv._init();
   storeHoSoCv.expandPrize = true;
-  var id = document.getElementById('expandPrize');
-  id.scrollIntoView();
+  setTimeout(() => {
+    var id = document.getElementById('expandPrize');
+    id.scrollIntoView();
+  }, 400);
 }
 </script>
 

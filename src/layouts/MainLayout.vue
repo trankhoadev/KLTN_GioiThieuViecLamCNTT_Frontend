@@ -85,13 +85,13 @@ const clickToTop = () => {
               </div>
             </div>
 
-            <div class="sm-none col-md-4">
+            <!-- <div class="sm-none col-md-4">
               <a href="#">Cách hoạt động</a>
             </div>
 
             <div class="sm-none col-md-4">
               <a href="#">Tìm công việc</a>
-            </div>
+            </div> -->
 
           </div>
         </div>
@@ -138,26 +138,13 @@ const clickToTop = () => {
           </div>
         </div>
 
-        <div v-else class="col-6 col-md-6">
-          <div class="row">
-            <div class="col-md-4 col-6">
-              <!-- <a href="#">Đăng nhập</a> -->
-              <router-link to="/dang-nhap">
-                Đăng nhập
-              </router-link>
-            </div>
-
-            <div class="col-md-4 col-6">
-              <!-- <a href="#">Đăng ký</a> -->
-              <router-link to="/dang-ky">
-                Đăng ký
-              </router-link>
-            </div>
-
-            <div class="sm-none col-md-4 text-white text-weight-bold">
-              <button class="post">Đăng dự án</button>
-            </div>
-          </div>
+        <div v-else class="col-6 col-md-6 flex justify-end">
+          <router-link to="/dang-nhap">
+            <q-btn class="text-weight-bold q-mr-md" outline style="color: #0e1724;" label="Đăng nhập" />
+          </router-link>
+          <router-link to="/dang-ky">
+            <q-btn class="text-weight-bold q-px-lg" style="background: #FF0080; color: white" label="Đăng ký" />
+          </router-link>
         </div>
       </div>
 
@@ -291,7 +278,7 @@ const clickToTop = () => {
       </div>
 
       <span class="flex flex-center q-pa-md text-white no-wrap footer-copyright">
-        Copyright © 2023 Freelancer Technology Pty Limited
+        Copyright © 2023 Designed By Tran Anh Khoa
       </span>
     </q-footer>
 

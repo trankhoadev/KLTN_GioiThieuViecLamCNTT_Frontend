@@ -48,7 +48,7 @@ onMounted(async () => {
               <div class="search-input-container">
                 <div class="search-input-with-dropdown">
                   <div class="left-side-wrapper">
-                    <q-form @submit="storeJob.searchJob()" class="js-search-input-form search-input-form">
+                    <q-form @submit="storeJob.searchJob()" class="search-input-form">
                       <q-input class="search-input js-search-input text-black" v-model="storeJob.searchInput" id="search"
                         placeholder="Search..." type="text" hide-bottom-space clearable />
                     </q-form>
@@ -67,22 +67,23 @@ onMounted(async () => {
               <ul class="search-results-suggestions">
                 <li class="search-results-suggestion search-results-suggestion-heading">Suggested:</li>
                 <li class="search-results-suggestion">
-                  <a href="/search/landing%20page">Java</a>
+                  <!-- <router-link to="/search/Java">Java</router-link> -->
+                  <a href="/search/java">Java</a>
                 </li>
                 <li class="search-results-suggestion">
-                  <a href="/search/ios">ReactJS</a>
+                  <a href="/search/reactjs">ReactJS</a>
                 </li>
                 <li class="search-results-suggestion">
-                  <a href="/search/food">VueJS</a>
+                  <a href="/search/vuejs">VueJS</a>
                 </li>
                 <li class="search-results-suggestion">
-                  <a href="/search/landingpage">PHP</a>
+                  <a href="/search/php">PHP</a>
                 </li>
                 <li class="search-results-suggestion">
-                  <a href="/search/uxdesign">NodeJS</a>
+                  <a href="/search/nodejs">NodeJS</a>
                 </li>
                 <li class="search-results-suggestion">
-                  <a href="/search/app%20design">JavaScript</a>
+                  <a href="/search/javacript">JavaScript</a>
                 </li>
               </ul>
             </div>
@@ -97,31 +98,33 @@ onMounted(async () => {
           </div>
 
           <!-- Render Item List Hot Job -->
-          <div class="q-px-lg hotjob-content">
-            <div class="row">
-              <q-card class="col-12 col-md-4 q-my-md bg-grey-2 text-dark" style="min-height: 200px;"
-                v-for="item in storeJob.listData" :key="item._id">
-                <q-card-section>
+          <div class="hotjob-content">
+            <div class="row flex justify-between">
+              <div class="col-12 col-md-4" v-for="item in storeJob.listData.slice(0, 9)" :key="item._id">
+                <div class="box-job-item q-my-md text-dark q-mx-sm q-pa-lg" style="min-height: 250px;">
                   <div class="row">
-                    <div class="col-3 col-md-3 col-lg-3">
-                      <img class="" style="max-width: 100px; max-height: 100px;" :src=item.picture alt="">
+                    <div class="col-4 col-md-3 col-lg-3">
+                      <img class="" style="max-width: 100px; max-height: 100px;"
+                        src="https://www.nicepng.com/png/detail/202-2024922_markoja-company-profile-icon-png-company-profile-icon.png"
+                        alt="">
                     </div>
 
-                    <div class="col-7 col-lg-7 col-md-12 column">
+                    <div class="col-8 col-lg-7 col-md-12 column">
                       <p class="text-bold text-uppercase q-py-sm q-my-none">
-                        {{ item.tieude }}
+                        <router-link class="text-black hover-underline" :to="`/search/job/${item._id}`" target="_blank">{{
+                          item.tieude }}</router-link>
                       </p>
                       <span style="color: #333;">
                         {{ item.companyName }}
                       </span>
                       <div class="q-py-sm">
                         <div class="row flex justify-between">
-                          <div class="col-6">
+                          <div class="col-12 col-md-6">
                             <q-icon name="monetization_on" size="sm" />
                             <span class="text-red-10 q-pl-md q-py-sm text-bold">{{ item.mucluong }}</span>
                           </div>
 
-                          <div class="col-6 flex justify-end">
+                          <div class="col-12 col-md-6 flex justify-start">
                             {{ item.diaChi }}
                           </div>
                         </div>
@@ -141,8 +144,8 @@ onMounted(async () => {
                       </div>
                     </div>
                   </div>
-                </q-card-section>
-              </q-card>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -154,7 +157,7 @@ onMounted(async () => {
           </div>
 
           <div class="q-px-lg hotlanguage-content" style="height: 100%;">
-            <div class="row q-gutter-lg justify-evenly" style="height: 100%;">
+            <div class="row q-gutter-lg justify-evenly q-pt-lg" style="height: 100%;">
               <q-card class="col-12 col-md-3 q-my-md bg-white" style="min-height: 150px;"
                 v-for="item in storeJob.listLanguage" :key="item.id">
                 <q-card-section>
@@ -251,18 +254,6 @@ a {
   }
 }
 
-.pro-text {
-  color: #ea4c89 !important;
-}
-
-.job-text {
-  color: #c142a0 !important;
-}
-
-.hiring-text {
-  color: #c142a0 !important;
-}
-
 body {
   font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
@@ -276,6 +267,12 @@ body {
   overflow-x: hidden;
   background: #fff;
   color: #0d0c22;
+}
+
+.hover-underline {
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 .search-input-with-dropdown {
@@ -569,6 +566,20 @@ body {
     &:hover {
       color: #fd507e;
       transition: all ease .3s;
+    }
+  }
+
+  .box-job-item {
+    background-color: #f1f2f6;
+    // border: 1px solid #00b04e;
+    border: 1px solid #f1f2f6;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    transition: all ease .3s;
+
+    &:hover {
+      box-shadow: none;
+      border: 1px solid #646d79;
     }
   }
 }

@@ -169,9 +169,6 @@ export const useStoreHoSoCv = defineStore("storeHoSoCv", {
               color: "green",
               icon: "mood",
             });
-            // setTimeout(() => {
-            //   return window.location.reload();
-            // }, 1500);
           } else {
             Loading.hide();
             Dialog.create({
@@ -224,9 +221,6 @@ export const useStoreHoSoCv = defineStore("storeHoSoCv", {
               color: "green",
               icon: "mood",
             });
-            // setTimeout(() => {
-            //   return window.location.reload();
-            // }, 1500);
           } else {
             Loading.hide();
             Dialog.create({
@@ -280,9 +274,6 @@ export const useStoreHoSoCv = defineStore("storeHoSoCv", {
               color: "green",
               icon: "mood",
             });
-            // setTimeout(() => {
-            //   return window.location.reload();
-            // }, 1500);
           } else {
             Loading.hide();
             Dialog.create({
@@ -335,9 +326,6 @@ export const useStoreHoSoCv = defineStore("storeHoSoCv", {
               color: "green",
               icon: "mood",
             });
-            // setTimeout(() => {
-            //   return window.location.reload();
-            // }, 1500);
           } else {
             Loading.hide();
             Dialog.create({
@@ -390,9 +378,6 @@ export const useStoreHoSoCv = defineStore("storeHoSoCv", {
               color: "green",
               icon: "mood",
             });
-            // setTimeout(() => {
-            //   return window.location.reload();
-            // }, 1500);
           } else {
             Loading.hide();
             Dialog.create({
@@ -446,9 +431,6 @@ export const useStoreHoSoCv = defineStore("storeHoSoCv", {
               color: "green",
               icon: "mood",
             });
-            // setTimeout(() => {
-            //   return window.location.reload();
-            // }, 1500);
           } else {
             Loading.hide();
             Dialog.create({

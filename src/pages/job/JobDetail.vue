@@ -9,11 +9,13 @@ const storeJob = useStoreJob();
 const myStore = useMyStore();
 const $q = useQuasar();
 const route = useRoute();
-const href = window.location.href;
 
 onMounted(async () => {
   await storeJob.getDataJobDetail(route.params.id);
   console.log(storeJob.listDataJobDetail);
+  storeJob.listDataJobDetail.moTaCongViec = storeJob.listDataJobDetail.moTaCongViec.replace(/\n/gi, "\n - ");
+  storeJob.listDataJobDetail.moTaYeuCau = storeJob.listDataJobDetail.moTaYeuCau.replace(/\n/gi, "\n - ");
+  storeJob.listDataJobDetail.quyenLoiUngVien = storeJob.listDataJobDetail.quyenLoiUngVien.replace(/\n/gi, "\n - ");
 });
 </script>
 <template>
@@ -158,14 +160,14 @@ onMounted(async () => {
 
               <div class="box-info q-mt-md q-py-md">
                 <p class="p-underline">Địa điểm làm việc</p>
-                <span class="q-py-md">- {{ storeJob.listDataJobDetail.diaChi }}</span>
+                <div class="q-pb-md">- {{ storeJob.listDataJobDetail.diaChi }}</div>
               </div>
 
               <div class="q-mt-md post-info">
                 <div class="post-item">
                   <h3>Mô tả công việc</h3>
                   <div>
-                    <p class="q-px-md" style="white-space: pre-wrap; line-height: 25px;">{{
+                    <p class="q-px-md" style="white-space: pre-wrap; line-height: 35px;"> - {{
                       storeJob.listDataJobDetail.moTaCongViec }}</p>
                   </div>
                 </div>
@@ -173,7 +175,7 @@ onMounted(async () => {
                 <div class="post-item">
                   <h3>Yêu cầu ứng viên</h3>
                   <div>
-                    <p class="q-px-md" style="white-space: pre-wrap; line-height: 25px;">{{
+                    <p class="q-px-md" style="white-space: pre-wrap; line-height: 35px;"> - {{
                       storeJob.listDataJobDetail.moTaYeuCau }}</p>
                   </div>
                 </div>
@@ -181,7 +183,7 @@ onMounted(async () => {
                 <div class="post-item">
                   <h3>Quyền lợi</h3>
                   <div>
-                    <p class="q-px-md" style="white-space: pre-wrap; line-height: 25px;">{{
+                    <p class="q-px-md" style="white-space: pre-wrap; line-height: 35px;"> - {{
                       storeJob.listDataJobDetail.quyenLoiUngVien }}</p>
                   </div>
                 </div>
