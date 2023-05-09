@@ -9,10 +9,12 @@ export const useStoreJob = defineStore("storeJob", {
     return {
       listData: [],
       listDataSearch: [],
+      listDataJobDetail: [],
       sortRadio: ref(""),
       lengthResponse: ref(0),
       panigateSelected: ref(1),
       tabJobDetail: ref("news"),
+      href: "",
       /* step 1 */
       chucVu: "",
       ngaySinh: ref(""),
@@ -27,6 +29,7 @@ export const useStoreJob = defineStore("storeJob", {
       moTaChiTietCongViec: "",
       resultExecuted: reactive({
         resultSearchJob: false,
+        resultJobDetail: false,
       }),
       /* step 3 */
       listSkill: [
@@ -321,6 +324,27 @@ export const useStoreJob = defineStore("storeJob", {
         });
       } catch (err) {
         console.log("Internal Server Error: ", err);
+      }
+    },
+
+    async getDataJobDetail(id) {
+      const url = "api/tintuyendung/" + id;
+      try {
+        await api.get(url).then((res) => {
+          if (res.data) {
+            this.listDataJobDetail = res.data;
+            this.resultExecuted.resultJobDetail = true;
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
+      } finally {
+        this.href = window.location.href;
+        if (!this.resultExecuted.resultJobDetail) {
+          this.router.push({
+            name: "NotFound",
+          });
+        }
       }
     },
   },

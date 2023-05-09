@@ -3,13 +3,14 @@ import { useQuasar } from 'quasar';
 import { useStoreJob } from 'src/stores/storeJob';
 import { useMyStore } from 'src/stores/myStore';
 import { useRoute } from 'vue-router';
-import { onMounted, watch } from 'vue';
+import { onMounted, onUpdated, watch } from 'vue';
 import { Loading } from 'quasar';
 
 const route = useRoute();
 const myStore = useMyStore();
 const storeJob = useStoreJob();
 const $q = useQuasar();
+
 
 onMounted(async () => {
   storeJob.searchInput = route.params.id;
@@ -22,24 +23,24 @@ onMounted(async () => {
 watch(() => storeJob.panigateSelected, val => {
   const executePanigation = async () => {
     Loading.show({
-    message: "Vui lòng đợi trong giấy lát...",
-    boxClass: "bg-grey-2 text-grey-9",
-    spinnerColor: "primary",
-  });
+      message: "Vui lòng đợi trong giấy lát...",
+      boxClass: "bg-grey-2 text-grey-9",
+      spinnerColor: "primary",
+    });
 
-  storeJob.listData = [];
-  await storeJob.reloadSearchJob(route.params.id);
+    storeJob.listData = [];
+    await storeJob.reloadSearchJob(route.params.id);
 
-  for (let i = (storeJob.panigateSelected - 1) * 10; i < storeJob.panigateSelected * 10; ++i) {
-    if (storeJob.listDataSearch[i] !== undefined) {
-      storeJob.listData.push(storeJob.listDataSearch[i]);
+    for (let i = (storeJob.panigateSelected - 1) * 10; i < storeJob.panigateSelected * 10; ++i) {
+      if (storeJob.listDataSearch[i] !== undefined) {
+        storeJob.listData.push(storeJob.listDataSearch[i]);
+      }
     }
-  }
 
-  setTimeout(() => {
-    storeJob.listDataSearch = [...storeJob.listData];
-    Loading.hide();
-  }, 1000);
+    setTimeout(() => {
+      storeJob.listDataSearch = [...storeJob.listData];
+      Loading.hide();
+    }, 300);
   }
   executePanigation();
 })
@@ -180,7 +181,11 @@ watch(() => storeJob.panigateSelected, val => {
                                 <q-icon name="access_time_filled" size="sm" class="text-green-7" />
                               </div>
                               <div class="col-10">
-                                <span>Còn <b>{{ 25 }}</b> ngày để ứng tuyển</span>
+                                <span>Còn <b>{{ ((new Date(item.ngayHetHan).getTime() - new Date().getTime()) / (1000 * 60
+                                  * 60 * 24)).toFixed(0) > 0 ? ((new Date(item.ngayHetHan).getTime() - new
+                                    Date().getTime())
+                                    / (1000 * 60
+                                      * 60 * 24)).toFixed(0) : 0 }}</b> ngày để ứng tuyển</span>
                               </div>
                             </div>
                           </div>

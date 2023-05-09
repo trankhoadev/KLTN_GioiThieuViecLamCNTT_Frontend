@@ -1,8 +1,20 @@
 <script setup>
 import { useStoreJob } from 'src/stores/storeJob';
 import { useQuasar } from 'quasar';
+import { useMyStore } from 'src/stores/myStore';
+import { onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+
 const storeJob = useStoreJob();
+const myStore = useMyStore();
 const $q = useQuasar();
+const route = useRoute();
+const href = window.location.href;
+
+onMounted(async () => {
+  await storeJob.getDataJobDetail(route.params.id);
+  console.log(storeJob.listDataJobDetail);
+});
 </script>
 <template>
   <q-layout>
@@ -12,16 +24,18 @@ const $q = useQuasar();
           v-bind:style="$q.screen.lt.md ? { 'width': '95%' } : { 'width': '70%' }">
           <div class="row justify-evenly bg-white q-pa-md full-width">
             <div class="col-md-3 col-12 q-my-md">
-              <q-input type="text" placeholder="Tên công việc, vị trí muốn ứng tuyển..." outlined
-                v-model="storeJob.searchInput">
-                <template v-slot:prepend>
-                  <q-icon name="search" />
-                </template>
-              </q-input>
+              <q-form @submit="storeJob.searchJob()">
+                <q-input type="text" placeholder="Tên công việc, vị trí muốn ứng tuyển..." outlined
+                  v-model="storeJob.searchInput">
+                  <template v-slot:prepend>
+                    <q-icon name="search" />
+                  </template>
+                </q-input>
+              </q-form>
             </div>
             <div class="col-md-2 col-12 q-my-md">
               <q-select color="grey-3" outlined label-color="light-green-10" v-model="storeJob.selectSkill"
-                :options="storeJob.listSkill" label="Lĩnh vực">
+                :options="myStore.optionCareer" label="Lĩnh vực">
                 <template v-slot:append>
                   <q-icon name="business" color="light-green-10" />
                 </template>
@@ -29,7 +43,7 @@ const $q = useQuasar();
             </div>
             <div class="col-md-2 col-12 q-my-md">
               <q-select color="grey-3" outlined label-color="light-green-10" v-model="storeJob.selectLevel"
-                :options="storeJob.optionLevel" label="Cấp bậc">
+                :options="myStore.optionPosition" label="Cấp bậc">
                 <template v-slot:append>
                   <q-icon name="badge" color="light-green-10" />
                 </template>
@@ -37,14 +51,14 @@ const $q = useQuasar();
             </div>
             <div class="col-md-2 col-12 q-my-md">
               <q-select color="grey-3" outlined label-color="light-green-10" v-model="storeJob.selectSalary"
-                :options="storeJob.optionSalary" label="Mức lương">
+                :options="myStore.optionSalary" label="Mức lương">
                 <template v-slot:append>
                   <q-icon name="monetization_on" color="light-green-10" />
                 </template>
               </q-select>
             </div>
             <div class="col-md-2 flex flex-center">
-              <q-btn color="light-green-10" icon="search" label="Tìm kiếm" @click="() => { }" />
+              <q-btn color="light-green-10" icon="search" label="Tìm kiếm" @click="storeJob.searchJob()" />
             </div>
           </div>
 
@@ -57,7 +71,7 @@ const $q = useQuasar();
 
             <div class="col-10">
               <div class="job-title">
-                {{ storeJob.oneJobSelected.title }}
+                {{ storeJob.listDataJobDetail.tieude }}
               </div>
               <p class="company-name">{{ storeJob.oneJobSelected.companyName }}</p>
             </div>
@@ -91,7 +105,7 @@ const $q = useQuasar();
                     <div>
                       <strong>Mức lương </strong>
                       <br>
-                      <span>{{ storeJob.oneJobSelected.salary }}</span>
+                      <span>{{ storeJob.listDataJobDetail.mucluong }}</span>
                     </div>
                   </div>
 
@@ -100,7 +114,7 @@ const $q = useQuasar();
                     <div>
                       <strong>Số lượng tuyển </strong>
                       <br>
-                      <span>{{ storeJob.oneJobSelected.amount }}</span>
+                      <span>{{ storeJob.listDataJobDetail.soLuongTuyen }}</span>
                     </div>
                   </div>
 
@@ -109,7 +123,7 @@ const $q = useQuasar();
                     <div>
                       <strong>Hình thức làm việc </strong>
                       <br>
-                      <span>{{ storeJob.oneJobSelected.workingType }}</span>
+                      <span>{{ storeJob.listDataJobDetail.hinhThucLamViec }}</span>
                     </div>
                   </div>
 
@@ -118,7 +132,7 @@ const $q = useQuasar();
                     <div>
                       <strong>Cấp bậc </strong>
                       <br>
-                      <span>{{ storeJob.oneJobSelected.level }}</span>
+                      <span>{{ storeJob.listDataJobDetail.vitri }}</span>
                     </div>
                   </div>
 
@@ -127,7 +141,7 @@ const $q = useQuasar();
                     <div>
                       <strong>Giới tính </strong>
                       <br>
-                      <span>{{ storeJob.oneJobSelected.gender }}</span>
+                      <span>{{ storeJob.listDataJobDetail.gioitinh }}</span>
                     </div>
                   </div>
 
@@ -136,7 +150,7 @@ const $q = useQuasar();
                     <div>
                       <strong>Kinh nghiệm </strong>
                       <br>
-                      <span>{{ storeJob.oneJobSelected.experience }}</span>
+                      <span>{{ storeJob.listDataJobDetail.kinhNghiem }}</span>
                     </div>
                   </div>
                 </div>
@@ -144,7 +158,7 @@ const $q = useQuasar();
 
               <div class="box-info q-mt-md q-py-md">
                 <p class="p-underline">Địa điểm làm việc</p>
-                <span class="q-py-md">- {{ storeJob.oneJobSelected.address }}</span>
+                <span class="q-py-md">- {{ storeJob.listDataJobDetail.diaChi }}</span>
               </div>
 
               <div class="q-mt-md post-info">
@@ -152,7 +166,7 @@ const $q = useQuasar();
                   <h3>Mô tả công việc</h3>
                   <div>
                     <p class="q-px-md" style="white-space: pre-wrap; line-height: 25px;">{{
-                      storeJob.oneJobSelected.moTaCongViec }}</p>
+                      storeJob.listDataJobDetail.moTaCongViec }}</p>
                   </div>
                 </div>
 
@@ -160,7 +174,7 @@ const $q = useQuasar();
                   <h3>Yêu cầu ứng viên</h3>
                   <div>
                     <p class="q-px-md" style="white-space: pre-wrap; line-height: 25px;">{{
-                      storeJob.oneJobSelected.yeuCauUngVien }}</p>
+                      storeJob.listDataJobDetail.moTaYeuCau }}</p>
                   </div>
                 </div>
 
@@ -168,7 +182,7 @@ const $q = useQuasar();
                   <h3>Quyền lợi</h3>
                   <div>
                     <p class="q-px-md" style="white-space: pre-wrap; line-height: 25px;">{{
-                      storeJob.oneJobSelected.quyenLoiUngVien }}</p>
+                      storeJob.listDataJobDetail.quyenLoiUngVien }}</p>
                   </div>
                 </div>
 
@@ -186,7 +200,7 @@ const $q = useQuasar();
                 <p>Sao chép đường dẫn</p>
                 <div class="box-copy">
                   <div class="url-copy">
-                    http://localhost:3000
+                    {{ storeJob.href }}
                   </div>
                   <div class="btn-copy">
                     <q-btn color="green" class="bg-white" size="md" icon="content_copy" />

@@ -9,7 +9,7 @@
     1: Recruiter
     2: Admin
 */
-const role = localStorage.getItem('role');
+const loaiTaiKhoan = localStorage.getItem('loaiTaiKhoan');
 
 </script>
 
@@ -25,10 +25,10 @@ const role = localStorage.getItem('role');
       </div>
 
       <q-btn class="q-mt-xl" color="white" text-color="blue" unelevated to="/admin/welcome" label="Go Home" no-caps
-        v-if="role == 2" />
+        v-if="loaiTaiKhoan == 'admin'" />
 
       <q-btn class="q-mt-xl" color="white" text-color="blue" unelevated to="/recruiter" label="Go Home" no-caps
-        v-else-if="role == 1" />
+        v-else-if="loaiTaiKhoan == 'recruiter'" />
 
       <q-btn class="q-mt-xl" color="white" text-color="blue" unelevated to="/" label="Go Home" no-caps v-else />
     </div>

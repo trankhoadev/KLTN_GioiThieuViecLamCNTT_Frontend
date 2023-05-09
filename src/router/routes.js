@@ -197,6 +197,7 @@ const router = [
   {
     path: "/:catchAll(.*)*",
     component: () => import("pages/ErrorNotFound.vue"),
+    name: "NotFound",
   },
 ];
 
