@@ -105,7 +105,7 @@ function toggleLeftDrawer() {
             <q-item-label>Cài đặt</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item to="/recruiter" @click="storeAuthen.logOut" active-class="q-item-no-link-highlighting">
+        <q-item to="/recruiter" @click="storeAuthen.logOutUnique" active-class="q-item-no-link-highlighting">
           <q-item-section avatar>
             <q-icon name="logout" />
           </q-item-section>

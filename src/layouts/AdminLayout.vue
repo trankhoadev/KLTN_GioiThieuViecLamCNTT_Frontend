@@ -4,11 +4,13 @@ import Messages from "./MessageComponent.vue";
 
 import { defineComponent, ref } from 'vue'
 import { useQuasar } from "quasar";
+import { useStoreAuthentication } from "src/stores/storeAuthentication";
 
 /* Remember Delete it */
 localStorage.setItem('role', 2);
 const picture = localStorage.getItem('picture');
 const leftDrawerOpen = ref(false)
+const storeAuthen = useStoreAuthentication();
 const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value
 }
@@ -121,7 +123,7 @@ const toggleLeftDrawer = () => {
             <q-item-label>Cài đặt</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item to="/admin" active-class="q-item-no-link-highlighting">
+        <q-item to="/admin" @click="storeAuthen.logOutUnique()" active-class="q-item-no-link-highlighting">
           <q-item-section avatar>
             <q-icon name="logout" />
           </q-item-section>

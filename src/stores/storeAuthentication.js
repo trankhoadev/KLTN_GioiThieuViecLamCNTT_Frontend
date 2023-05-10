@@ -148,6 +148,20 @@ export const useStoreAuthentication = defineStore("storeAuthentication", {
       }, 500);
     },
 
+    logOutUnique() {
+      localStorage.clear();
+      Notify.create({
+        message: "Đăng xuất thành công",
+        position: "bottom",
+        timeout: 2000,
+        color: "green",
+        icon: "mood",
+      });
+      setTimeout(() => {
+        this.router.push("/dang-nhap");
+      }, 500);
+    },
+
     signUp() {
       if (this.accept !== true) {
         Notify.create({

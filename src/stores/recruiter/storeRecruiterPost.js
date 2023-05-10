@@ -133,7 +133,7 @@ export const useStoreRecruiterPost = defineStore("storeRecruiterPost", {
     },
 
     getAllPost(id) {
-      const url = "api/tintuyendung/nhatuyendung/" + id;
+      const url = "api/tintuyendung/getByNhaTuyenDung/" + id;
       try {
         api.get(url).then((res) => {
           if (res.data) {
