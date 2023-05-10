@@ -65,14 +65,14 @@ onMounted(async () => {
           </div>
 
           <div class="row q-my-lg q-px-md full-width bg-white q-py-lg">
-            <div class="col-2">
-              <div class="box-company-logo">
+            <div class="col-md-2 col-12 flex flex-center">
+              <div class="box-company-logo q-py-lg">
                 <img :src=storeJob.oneJobSelected.picture alt="">
               </div>
             </div>
 
-            <div class="col-10">
-              <div class="job-title">
+            <div class="col-md-10 col-12">
+              <div class="job-title q-pt-lg">
                 {{ storeJob.listDataJobDetail.tieude }}
               </div>
               <p class="company-name">{{ storeJob.oneJobSelected.companyName }}</p>

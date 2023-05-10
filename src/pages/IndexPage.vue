@@ -57,7 +57,6 @@ onMounted(async () => {
                   <div class="vertical-divider"></div>
 
                   <span class="btn-search">
-                    <!-- <router-link to="/search"></router-link> -->
                     <q-btn @click="storeJob.searchJob()" icon="search" />
                   </span>
                 </div>
@@ -67,7 +66,6 @@ onMounted(async () => {
               <ul class="search-results-suggestions">
                 <li class="search-results-suggestion search-results-suggestion-heading">Suggested:</li>
                 <li class="search-results-suggestion">
-                  <!-- <router-link to="/search/Java">Java</router-link> -->
                   <a href="/search/java">Java</a>
                 </li>
                 <li class="search-results-suggestion">
@@ -91,14 +89,13 @@ onMounted(async () => {
         </div>
 
 
+        <div class="flex justify-start la-align-center no-wrap q-px-lg hotjob-title" style="align-items: center;">
+          <q-icon name="star" size="lg" />
+          <h6 class="text-bold text-uppercase">Các công việc được tìm kiếm hàng đầu</h6>
+        </div>
         <div class="q-gutter-sm q-px-lg">
-          <div class="flex justify-start la-align-center no-wrap q-px-lg hotjob-title" style="align-items: center;">
-            <q-icon name="star" size="lg" />
-            <h6 class="text-bold text-uppercase">Các công việc được tìm kiếm hàng đầu</h6>
-          </div>
-
           <!-- Render Item List Hot Job -->
-          <div class="hotjob-content">
+          <div class="hotjob-content q-pt-lg">
             <div class="row flex justify-between">
               <div class="col-12 col-md-4" v-for="item in storeJob.listData.slice(0, 9)" :key="item._id">
                 <div class="box-job-item q-my-md text-dark q-mx-sm q-pa-lg" style="min-height: 250px;">
@@ -151,7 +148,7 @@ onMounted(async () => {
         </div>
 
         <div class="q-gutter-sm q-px-lg q-pt-lg" style="padding: 2em 0;">
-          <div class="flex justify-start la-align-center no-wrap q-px-lg hotjob-title" style="align-items: center;">
+          <div class="flex justify-start la-align-center no-wrap q-px-lg q-pt-lg hotjob-title" style="align-items: center;">
             <q-icon name="star" size="lg" />
             <h6 class="text-bold text-uppercase">Các ngôn ngữ lập trình đang có cơ hội làm việc hot</h6>
           </div>

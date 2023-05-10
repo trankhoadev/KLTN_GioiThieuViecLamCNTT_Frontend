@@ -154,7 +154,7 @@ const clickExpandPrize = () => {
                   label="Giới thiệu bản thân" v-model="storeHoSoCv.expandUserInfo" id="expandUserInfo">
                   <q-card>
                     <q-card-section>
-                      <div class="row">
+                      <div class="row flex flex-center">
                         <div class="col-md-3 col-sm-12 flex column flex-center">
                           <q-avatar font-size="20px" size="151px" color="yellow-2" text-color="orange"
                             class="text-weight-bold flex flex-center justify-center q-mb-lg"
@@ -162,7 +162,7 @@ const clickExpandPrize = () => {
                                                                                                                     ; flex-direction: column;"><img :src=storeAuthen.picture
                               alt=""></q-avatar>
 
-                          <div class="flex flex-center justify-between">
+                          <div class="flex flex-center justify-between q-pb-md">
                             <div class="flex flex-center justify-between">
                               <q-btn class="q-mr-sm" color="primary" icon="add_a_photo" label="Sửa" />
                             </div>
@@ -189,12 +189,12 @@ const clickExpandPrize = () => {
                             </template>
                           </q-input>
                           <div class="row flex justify-between">
-                            <div class="col-md-6 q-pr-sm">
+                            <div class="col-md-6 col-12" v-bind:style="$q.screen.lt.md ? { 'padding-right': '0' } : { 'padding-right': '0.5em' }">
                               <q-input filled square class="q-mb-md" v-model="storeHoSoCv.listData.sdt" type="number"
                                 label="Số điện thoại" />
                             </div>
 
-                            <div class="col-md-6 q-pl-sm">
+                            <div class="col-md-6 col-12" v-bind:style="$q.screen.lt.md ? { 'padding-left': '0' } : { 'padding-left': '0.5em' }">
                               <q-input filled square class="q-mb-md" v-model="storeHoSoCv.listData.email" type="text"
                                 label="Địa chỉ email" disable />
                             </div>

@@ -1,3 +1,13 @@
+<script setup>
+import { onMounted } from 'vue';
+import { useStoreAuthentication } from 'src/stores/storeAuthentication';
+
+const storeAuthen = useStoreAuthentication();
+onMounted(async () => {
+  await storeAuthen.checkCreateNhaTuyenDung()
+});
+</script>
+
 <template>
   <div class="box">
 
@@ -27,10 +37,6 @@
     </div>
   </div>
 </template>
-
-<script setup>
-
-</script>
 
 <style lang="scss" scoped>
 .box {

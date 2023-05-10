@@ -98,10 +98,10 @@ export const useStoreHoSoCv = defineStore("storeHoSoCv", {
       this.expandCertification = false;
       this.expandPrize = false;
     },
-    getDataOfUserById(id) {
+    async getDataOfUserById(id) {
       const url = "api/ungtuyenvien/" + id;
       try {
-        api.get(url).then((res) => {
+        await api.get(url).then((res) => {
           if (res.data) {
             this.listData = res.data;
             return;
@@ -111,10 +111,10 @@ export const useStoreHoSoCv = defineStore("storeHoSoCv", {
         console.log("Internal Server Error: ", err);
       }
     },
-    getListSkill() {
+    async getListSkill() {
       const url = "api/ngonngu/";
       try {
-        api.get(url).then((res) => {
+        await api.get(url).then((res) => {
           if (res.data) {
             this.listSkill = res.data;
             return;

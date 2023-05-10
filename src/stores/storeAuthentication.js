@@ -9,6 +9,7 @@ export const useStoreAuthentication = defineStore("storeAuthentication", {
       idUser: "",
       loaiTaiKhoan: localStorage.getItem("loaiTaiKhoan"),
       idUngTuyenVien: localStorage.getItem("idUngTuyenVien"),
+      idNhaTuyenDung: localStorage.getItem("idNhaTuyenDung"),
       isPwd: false,
       isAdmin: false,
       isLogin: false,
@@ -356,6 +357,65 @@ export const useStoreAuthentication = defineStore("storeAuthentication", {
                 // console.log("tao acc ne");
                 // console.log(res.data);
                 localStorage.setItem("idUngTuyenVien", res.data._id);
+                return;
+              }
+            });
+          } catch (err) {
+            console.log("Internal Server Error: ", err);
+          }
+        }
+      }
+    },
+
+    async checkExistNhaTuyenDung() {
+      let url = "api/nhatuyendung";
+      const id = localStorage.getItem("id");
+      try {
+        await api.get(url).then((res) => {
+          if (res.data) {
+            res.data.map((e) => {
+              if (id === e.taikhoan._id) {
+                localStorage.setItem("idNhaTuyenDung", e._id);
+                this.result.resultAutoCreateId = true;
+                return;
+              }
+            });
+          }
+          if (this.result.resultAutoCreateId === false) {
+            localStorage.setItem("idNhaTuyenDung", "");
+            return;
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
+      }
+    },
+
+    async checkCreateNhaTuyenDung() {
+      let loaiTaiKhoan = localStorage.getItem("loaiTaiKhoan");
+      if (loaiTaiKhoan === "recruiter") {
+        await this.checkExistNhaTuyenDung();
+        if (this.result.resultAutoCreateId === false) {
+          try {
+            let url = "api/nhatuyendung";
+            const data = {
+              tennhatuyendung: localStorage.getItem("userName"),
+              anhdaidien:
+                "https://www.nicepng.com/png/detail/202-2024922_markoja-company-profile-icon-png-company-profile-icon.png",
+              tencongty: "",
+              mota: "",
+              ngaythanhlap: "",
+              diachi: "",
+              diachiWebsite: "",
+              ngaythamgia: new Date(),
+              email: localStorage.getItem("email"),
+              loainhatuyendung: "mới tham gia",
+            };
+            api.post(url, data).then((res) => {
+              if (res.data) {
+                console.log("tao acc ne");
+                console.log(res.data);
+                localStorage.setItem("idNhaTuyenDung", res.data._id);
                 return;
               }
             });

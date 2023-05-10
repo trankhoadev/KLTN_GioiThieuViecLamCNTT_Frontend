@@ -88,6 +88,15 @@ function toggleLeftDrawer() {
           </q-item-section>
         </q-item>
 
+        <q-item to="/recruiter/company-info" active-class="q-item-no-link-highlighting">
+          <q-item-section avatar>
+            <q-icon name="business" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Thông tin công ty</q-item-label>
+          </q-item-section>
+        </q-item>
+
         <q-item to="/recruiter" active-class="q-item-no-link-highlighting">
           <q-item-section avatar>
             <q-icon name="settings" />
