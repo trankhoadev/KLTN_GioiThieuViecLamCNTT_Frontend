@@ -15,6 +15,7 @@ export const useStoreJob = defineStore("storeJob", {
       listLanguageName: [],
       listRecruiter: [],
       listDataOneRecruiter: [],
+      listPostNhaTuyenDungById: [],
       sortRadio: ref(""),
       lengthResponse: ref(0),
       panigateSelected: ref(1),
@@ -177,23 +178,23 @@ export const useStoreJob = defineStore("storeJob", {
           picture: "https://developer.apple.com/swift/images/swift-og.png",
         },
       ],
-      listCompany: [
-        {
-          id: "1",
-          name: "CÔNG TY TNHH AMARIS VIỆT NAM",
-          picture:
-            "https://cdn.topcv.vn/48/company_logos/9c7G3P3T9ax2xjTUuFrGuzERBnewqWCr_1655459515____7c02ee0971f3c131d91cb63cbdbdf588.png",
-          amount: "17",
-        },
+      // listCompany: [
+      //   {
+      //     id: "1",
+      //     name: "CÔNG TY TNHH AMARIS VIỆT NAM",
+      //     picture:
+      //       "https://cdn.topcv.vn/48/company_logos/9c7G3P3T9ax2xjTUuFrGuzERBnewqWCr_1655459515____7c02ee0971f3c131d91cb63cbdbdf588.png",
+      //     amount: "17",
+      //   },
 
-        {
-          id: "2",
-          name: "Công ty TNHH Công nghệ số Adamo",
-          picture:
-            "https://cdn.topcv.vn/48/company_logos/cong-ty-tnhh-cmc-global-1d94bf2be044cc832cd72d2f4f8fad66-5e72d0edadcfb.jpg",
-          amount: "8",
-        },
-      ],
+      //   {
+      //     id: "2",
+      //     name: "Công ty TNHH Công nghệ số Adamo",
+      //     picture:
+      //       "https://cdn.topcv.vn/48/company_logos/cong-ty-tnhh-cmc-global-1d94bf2be044cc832cd72d2f4f8fad66-5e72d0edadcfb.jpg",
+      //     amount: "8",
+      //   },
+      // ],
 
       oneJobSelected: {
         id: "1",
@@ -317,6 +318,21 @@ export const useStoreJob = defineStore("storeJob", {
             name: "NotFound",
           });
         }
+      }
+    },
+
+    async getAllPostByNhaTuyenDungId(id) {
+      const url = "api/tintuyendung/getByNhaTuyenDung/" + id;
+      try {
+        await api.get(url).then((res) => {
+          if (res.data) {
+            console.log(res.data);
+            this.listPostNhaTuyenDungById = res.data;
+          }
+        });
+      } catch (error) {
+        console.log("Internal Server Error: ", error);
+      } finally {
       }
     },
 

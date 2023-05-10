@@ -16,7 +16,7 @@ onMounted(async () => {
   storeJob.searchInput = route.params.id;
   await storeJob.reloadSearchJob(route.params.id);
   await storeJob.getListTag();
-  // await storeJob.getAllNhaTuyenDung();
+  await storeJob.getAllNhaTuyenDung();
 
   if (storeJob.listDataSearch.length > 9) {
     storeJob.listDataSearch = [...storeJob.listDataSearch].slice(0, -1);
@@ -34,10 +34,17 @@ onMounted(async () => {
     }
   }
 
+  /* Get picture and name of recruiter */
   for (let i = 0; i < storeJob.listDataSearch.length; ++i) {
     await storeJob.getNhaTuyenDungById(storeJob.listDataSearch[i].nhatuyendung);
     storeJob.listDataSearch[i].tennhatuyendung = storeJob.listDataOneRecruiter.tencongty;
     storeJob.listDataSearch[i].anhdaidien = storeJob.listDataOneRecruiter.anhdaidien;
+  }
+
+  /* Get amount job of every recruiter */
+  for (let i = 0; i < storeJob.listRecruiter.length; ++i) {
+    await storeJob.getAllPostByNhaTuyenDungId(storeJob.listRecruiter[i]._id);
+    storeJob.listRecruiter[i].amount = storeJob.listPostNhaTuyenDungById.length;
   }
 });
 
@@ -241,14 +248,14 @@ watch(() => storeJob.panigateSelected, val => {
             </div>
             <div class="col-md-4 col-12">
               <h6 class="text-bold">Top công ty nổi bật</h6>
-              <div class="list-company" v-for="item in storeJob.listCompany" :key="item.id">
+              <div class="list-company" v-for="item in storeJob.listRecruiter" :key="item._id">
                 <div class="item item-hover">
                   <div class="row full-width">
                     <div class="col-md-2">
-                      <img :src=item.picture alt="">
+                      <img :src=item.anhdaidien alt="">
                     </div>
                     <div class="col-md-10 flex column justify-between">
-                      <b class="text-uppercase">{{ item.name }}</b>
+                      <b class="text-uppercase">{{ item.tencongty }}</b>
                       <p class="count">{{ item.amount }} việc làm</p>
                     </div>
                   </div>
