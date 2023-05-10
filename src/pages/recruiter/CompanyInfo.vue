@@ -17,8 +17,7 @@ onMounted(async () => {
 <template>
   <q-card style="min-height: 94vh;">
     <q-card-section>
-      <q-form>
-
+      <q-form @submit="storeCompanyInfo.updateThongTinCongTyNhaTuyenDung()">
         <div>
           <div class="row">
             <div class="col-12 flex" style="align-items: center;">
