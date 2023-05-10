@@ -27,7 +27,7 @@ const loaiTaiKhoan = localStorage.getItem('loaiTaiKhoan');
       <q-btn class="q-mt-xl" color="white" text-color="blue" unelevated to="/admin/welcome" label="Go Home" no-caps
         v-if="loaiTaiKhoan == 'admin'" />
 
-      <q-btn class="q-mt-xl" color="white" text-color="blue" unelevated to="/recruiter" label="Go Home" no-caps
+      <q-btn class="q-mt-xl" color="white" text-color="blue" unelevated to="/recruiter/welcome" label="Go Home" no-caps
         v-else-if="loaiTaiKhoan == 'recruiter'" />
 
       <q-btn class="q-mt-xl" color="white" text-color="blue" unelevated to="/" label="Go Home" no-caps v-else />
