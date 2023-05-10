@@ -12,6 +12,7 @@ const route = useRoute();
 
 onMounted(async () => {
   await storeJob.getDataJobDetail(route.params.id);
+  await storeJob.getListTag();
   console.log(storeJob.listDataJobDetail);
   storeJob.listDataJobDetail.moTaCongViec = storeJob.listDataJobDetail.moTaCongViec.replace(/\n/gi, "\n - ");
   storeJob.listDataJobDetail.moTaYeuCau = storeJob.listDataJobDetail.moTaYeuCau.replace(/\n/gi, "\n - ");
@@ -37,7 +38,7 @@ onMounted(async () => {
             </div>
             <div class="col-md-2 col-12 q-my-md">
               <q-select color="grey-3" outlined label-color="light-green-10" v-model="storeJob.selectSkill"
-                :options="myStore.optionCareer" label="Lĩnh vực">
+                :options="storeJob.listSkill" label="Lĩnh vực" option-value="_id" option-label="ngonngu">
                 <template v-slot:append>
                   <q-icon name="business" color="light-green-10" />
                 </template>

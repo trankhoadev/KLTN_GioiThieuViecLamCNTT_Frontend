@@ -15,8 +15,29 @@ const $q = useQuasar();
 onMounted(async () => {
   storeJob.searchInput = route.params.id;
   await storeJob.reloadSearchJob(route.params.id);
+  await storeJob.getListTag();
+  // await storeJob.getAllNhaTuyenDung();
+
   if (storeJob.listDataSearch.length > 9) {
     storeJob.listDataSearch = [...storeJob.listDataSearch].slice(0, -1);
+  }
+
+  /* Note: Because cant get data directly from server so need using that. Have some problem like object promise before */
+  /* Handle get data of tag from server */
+  for (let i = 0; i < storeJob.listDataSearch.length; ++i) {
+    for (let j = 0; j < storeJob.listDataSearch[i].ngonngu.length; ++j) {
+      storeJob.listSkill.map((e) => {
+        if (storeJob.listDataSearch[i].ngonngu[j] === e._id) {
+          storeJob.listDataSearch[i].ngonngu[j] = e.ngonngu;
+        }
+      });
+    }
+  }
+
+  for (let i = 0; i < storeJob.listDataSearch.length; ++i) {
+    await storeJob.getNhaTuyenDungById(storeJob.listDataSearch[i].nhatuyendung);
+    storeJob.listDataSearch[i].tennhatuyendung = storeJob.listDataOneRecruiter.tencongty;
+    storeJob.listDataSearch[i].anhdaidien = storeJob.listDataOneRecruiter.anhdaidien;
   }
 });
 
@@ -84,7 +105,7 @@ watch(() => storeJob.panigateSelected, val => {
             </div>
             <div class="col-md-2 col-12 q-my-md">
               <q-select color="grey-3" outlined label-color="light-green-10" v-model="storeJob.selectSkill"
-                :options="myStore.optionCareer" label="Lĩnh vực">
+                :options="storeJob.listSkill" label="Lĩnh vực" option-value="_id" option-label="ngonngu">
                 <template v-slot:append>
                   <q-icon name="business" color="light-green-10" />
                 </template>
@@ -137,25 +158,28 @@ watch(() => storeJob.panigateSelected, val => {
             </div>
           </div>
 
+          <!-- {{ storeJob.getLanguageName(storeJob.listDataSearch[0].ngonngu[0]) }} -->
+
           <div class="row bg-white full-width q-px-md justify-evenly">
             <div class="col-md-7 col-12">
               <div class="item highlight q-pa-none q" v-for="item in storeJob.listDataSearch" :key="item._id">
                 <div class="row q-my-md">
                   <div class="col-md-2 col-12">
                     <div class="avatar">
-                      <img class="" style="max-width: 100px; max-height: 100px;" :src=item.picture alt="">
+                      <img class="" style="max-width: 100px; max-height: 100px;" :src=item.anhdaidien alt="">
                     </div>
                   </div>
                   <div class="col-md-7 col-12">
                     <div class="title">
                       <router-link :to="`/search/job/${item._id}`" target="_blank">{{ item.tieude }}</router-link>
                     </div>
-                    <div class="q-pt-sm">{{ item.companyName }}</div>
-                    <div class="q-pt-sm"> {{ new Date(item.createdAt).toLocaleDateString('en-GB') }}</div>
+                    <div class="q-pt-sm">{{ item.tennhatuyendung }}</div>
+                    <div class="q-pt-sm"> <b>Ngày đăng:</b> {{ new Date(item.createdAt).toLocaleDateString('en-GB') }}
+                    </div>
                     <div class="q-pt-sm">
                       <div class="skills">
                         <label class="item" v-for="tag in item.ngonngu" :key="tag">
-                          {{ storeJob.getLanguageName(tag) }}
+                          {{ tag }}
                         </label>
                       </div>
                     </div>
@@ -197,7 +221,7 @@ watch(() => storeJob.panigateSelected, val => {
                     <div class="row column flex-right justify-between full-height">
                       <div class="salary text-right">
                         <span class="title-salary">
-                          {{ item.salary }}
+                          {{ item.mucluong }}
                         </span>
                       </div>
                       <div class="function flex text-right flex-right justify-end">

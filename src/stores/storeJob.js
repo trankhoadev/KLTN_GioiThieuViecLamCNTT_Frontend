@@ -8,9 +8,13 @@ import { copyToClipboard } from "quasar";
 export const useStoreJob = defineStore("storeJob", {
   state: () => {
     return {
+      test: "",
       listData: [],
       listDataSearch: [],
       listDataJobDetail: [],
+      listLanguageName: [],
+      listRecruiter: [],
+      listDataOneRecruiter: [],
       sortRadio: ref(""),
       lengthResponse: ref(0),
       panigateSelected: ref(1),
@@ -37,37 +41,7 @@ export const useStoreJob = defineStore("storeJob", {
         resultJobDetail: false,
       }),
       /* step 3 */
-      listSkill: [
-        "Python",
-        "Java",
-        "JavaScript",
-        "C#",
-        "Ruby",
-        "Swift",
-        "Kotlin",
-        "Go",
-        "TypeScript",
-        "SQL",
-        "C++",
-        "Rust",
-        ".Net",
-        "Scala",
-        "Objective-C",
-        "Lua",
-        "R",
-        "Assembly",
-        "MATLAB",
-        "Visual Basic",
-        "Dart",
-        "DevOps",
-        "VueJs",
-        "ReactJs",
-        "AngularJs",
-        "HTML",
-        "CSS",
-        "Linux",
-        "Designer",
-      ],
+      listSkill: [],
       /* step 4 */
       nganhHoc: "",
       tenTruong: "",
@@ -271,7 +245,7 @@ export const useStoreJob = defineStore("storeJob", {
 
     getDataFromNhaTuyenDungId() {},
 
-    searchJob() {
+    async searchJob() {
       Loading.show({
         spinner: QSpinnerFacebook,
         spinnerColor: "purple-13",
@@ -282,13 +256,16 @@ export const useStoreJob = defineStore("storeJob", {
       });
       const url = "api/tintuyendung/search/" + this.searchInput;
       try {
-        api.get(url).then((res) => {
+        await api.get(url).then((res) => {
           if (res.data.length === 0) {
             setTimeout(() => {
               this.listDataSearch = [];
               Loading.hide();
               this.router.push("/search/" + this.searchInput);
-            }, 1500);
+            }, 1000);
+            setTimeout(() => {
+              window.location.reload();
+            }, 1050);
           }
           if (res.data.length !== 0) {
             this.listDataSearch = [];
@@ -297,7 +274,10 @@ export const useStoreJob = defineStore("storeJob", {
               this.lengthResponse = this.listDataSearch.length;
               Loading.hide();
               this.router.push("/search/" + this.searchInput);
-            }, 1500);
+            }, 1000);
+            setTimeout(() => {
+              window.location.reload();
+            }, 1050);
           }
         });
       } catch (err) {
@@ -312,19 +292,6 @@ export const useStoreJob = defineStore("storeJob", {
           if (res.data.length !== 0) {
             this.listDataSearch = res.data;
             this.lengthResponse = this.listDataSearch.length;
-          }
-        });
-      } catch (err) {
-        console.log("Internal Server Error: ", err);
-      }
-    },
-
-    async getLanguageName(id) {
-      const url = "api/ngonngu/" + id;
-      try {
-        await api.get(url).then((res) => {
-          if (res.data) {
-            return res.data.ngonngu;
           }
         });
       } catch (err) {
@@ -350,6 +317,66 @@ export const useStoreJob = defineStore("storeJob", {
             name: "NotFound",
           });
         }
+      }
+    },
+
+    async getLanguageName(id) {
+      const url = "api/ngonngu/" + id;
+      try {
+        await api.get(url).then((res) => {
+          if (res.data) {
+            return res.data.ngonngu;
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
+      }
+    },
+
+    returnNameTag(data) {
+      this.listSkill.map((e) => {
+        if (e._id === data) {
+          return e.ngonngu;
+        }
+      });
+    },
+
+    async getListTag() {
+      const url = "api/ngonngu";
+      try {
+        await api.get(url).then((res) => {
+          if (res.data) {
+            this.listSkill = res.data;
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
+      }
+    },
+
+    async getAllNhaTuyenDung() {
+      const url = "api/nhatuyendung";
+      try {
+        await api.get(url).then((res) => {
+          if (res.data) {
+            this.listRecruiter = res.data;
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
+      }
+    },
+
+    async getNhaTuyenDungById(id) {
+      const url = "api/nhatuyendung/" + id;
+      try {
+        await api.get(url).then((res) => {
+          if (res.data) {
+            this.listDataOneRecruiter = res.data;
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
       }
     },
 
