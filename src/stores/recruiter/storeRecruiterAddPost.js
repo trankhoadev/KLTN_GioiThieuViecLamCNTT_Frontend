@@ -107,7 +107,7 @@ export const useStoreRecruiterAddPost = defineStore("storeRecruiterAddPost", {
       //   date.getFullYear(),
       // ].join("/"));
 
-      let userId = localStorage.getItem("id");
+      let userId = localStorage.getItem("idNhaTuyenDung");
 
       try {
         const url = "api/tintuyendung/";
@@ -134,7 +134,7 @@ export const useStoreRecruiterAddPost = defineStore("storeRecruiterAddPost", {
           ngayHetHan: new Date(this.dateExpired),
           ngonngu: this.listTagId,
           trangthai: "đang chờ",
-          nhatuyendung: "6454fbfcc3d0f475d8cdaadc",
+          nhatuyendung: userId,
         };
 
         api.post(url, data).then((res) => {

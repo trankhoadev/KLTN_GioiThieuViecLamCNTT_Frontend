@@ -8,6 +8,10 @@ export const useStoreRecruiterPost = defineStore("storeRecruiterPost", {
     return {
       filter: "",
       listData: [],
+      listOnePost: ref[""],
+      dialogDenyOne: ref(false),
+      isSeeDetail: ref(false),
+      seeDetailSelect: "",
       getDataSuccessfully: false,
       listSelectRecruiter: ref(),
       tinTuyenDung: 0,
@@ -15,6 +19,12 @@ export const useStoreRecruiterPost = defineStore("storeRecruiterPost", {
       tinTuyenDungDangTuyen: 0,
       tinTuyenDungDungTuyen: 0,
       tinTuyenDungTuChoi: 0,
+      onePostSelectTitle: "",
+      onePostSelectDateCreated: "",
+      dialogViewPost: false,
+      resultExecuted: reactive({
+        resultPostById: false,
+      }),
       columnRecruiterAccount: [
         {
           name: "stt",
@@ -110,17 +120,23 @@ export const useStoreRecruiterPost = defineStore("storeRecruiterPost", {
       }
     },
 
-    checkDenyOne(name, email) {
-      this.dialogDenyOne = true;
-      this.oneAccountSelectName = name;
-      this.oneAccountSelectEmail = email;
+    async seeDetail(data) {
+      this.isSeeDetail = true;
+      this.seeDetailSelect = data;
+      await this.getPostById(data);
     },
 
-    getAllPost() {
-      const url = "api/tintuyendung";
+    checkDenyOne(title, dateCreated) {
+      this.onePostSelectTitle = title;
+      this.onePostSelectDateCreated = dateCreated;
+      this.dialogDenyOne = true;
+    },
+
+    getAllPost(id) {
+      const url = "api/tintuyendung/nhatuyendung/" + id;
       try {
         api.get(url).then((res) => {
-          if (res) {
+          if (res.data) {
             this.listData = res.data;
             this.getDataSuccessfully = true;
           }
@@ -128,6 +144,24 @@ export const useStoreRecruiterPost = defineStore("storeRecruiterPost", {
       } catch (error) {
         console.log("Internal Server Error: ", error);
       } finally {
+      }
+    },
+
+    async getPostById(id) {
+      const url = "api/tintuyendung/" + id;
+      try {
+        await api.get(url).then((res) => {
+          if (res.data) {
+            this.listOnePost = res.data;
+            this.resultExecuted.resultPostById = true;
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
+      } finally {
+        if (this.resultExecuted.resultPostById) {
+          this.dialogViewPost = true;
+        }
       }
     },
   },

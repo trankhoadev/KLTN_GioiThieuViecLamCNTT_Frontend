@@ -9,7 +9,7 @@ const $q = useQuasar();
   <div>
     <q-table title="HỒ SƠ ỨNG TUYỂN" virtual-scroll :columns="storeRecruiterApplyJob.columnRecruiterAccount"
       :rows="storeRecruiterApplyJob.rowDataRecruiterAccount" style="height: 90vh" row-key="email"
-      :rows-per-page-options="[0]" class="q-my-lg q-mx-md my-sticky-header-table" rows-per-page-label="Số dòng mỗi trang"
+      :rows-per-page-options="[10]" class="q-my-lg q-mx-md my-sticky-header-table" rows-per-page-label="Số dòng mỗi trang"
       v-model:selected="storeRecruiterApplyJob.listSelectRecruiterAccount" selection="multiple"
       :filter="storeRecruiterApplyJob.filter">
 
@@ -31,6 +31,10 @@ const $q = useQuasar();
               <q-tab class="text-indigo" icon="directions_run"
                 :label="'Đã ứng tuyển ' + '(' + storeRecruiterApplyJob.tinTuyenDungDaDuyet + ')'"
                 @click="storeRecruiterApplyJob.filter = 'đã ứng tuyển'"
+                v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
+              <q-tab class="text-red" icon="cancel"
+                :label="'Đã từ chối ' + '(' + storeRecruiterApplyJob.tinTuyenDungDaDuyet + ')'"
+                @click="storeRecruiterApplyJob.filter = 'đã từ chối'"
                 v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
             </q-tabs>
           </div>
