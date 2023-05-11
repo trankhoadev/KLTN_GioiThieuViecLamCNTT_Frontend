@@ -438,6 +438,7 @@ export const useStoreJob = defineStore("storeJob", {
         spinnerColor: "primary",
       });
       const url = "api/donungtuyen/";
+      let check = true;
       const data = {
         trangthai: "đang chờ",
 
@@ -446,22 +447,40 @@ export const useStoreJob = defineStore("storeJob", {
         tintuyendung: id,
       };
       try {
-        // this.listDonUngTuyen.filter((e) => {
-        //   console.log(e.tintuyendung);
-        //   console.log(e.ungtuyenvien);
-        // });
-        await api.post(url, data).then((res) => {
-          if (res.data) {
-            console.log(res.data);
-            this.resultExecuted.resultUngTuyen = true;
+        await this.getAllDonUngTuyen();
+        console.log(this.listDonUngTuyen);
+        this.listDonUngTuyen.filter((e) => {
+          if (
+            e.tintuyendung._id === id &&
+            e.ungtuyenvien._id === localStorage.getItem("idUngTuyenVien")
+          ) {
+            Notify.create({
+              message: "Bạn đã ứng tuyển tin này rồi",
+              timeout: 2000,
+              position: "bottom",
+              color: "negative",
+              icon: "mood_bad",
+            });
+            setTimeout(() => {
+              Loading.hide();
+            }, 1000);
+            return (check = false);
           }
         });
+        if (check) {
+          await api.post(url, data).then((res) => {
+            if (res.data) {
+              this.resultExecuted.resultUngTuyen = true;
+            }
+          });
+        }
       } catch (err) {
         console.log("Internal Server Error: ", err);
       } finally {
         if (this.resultExecuted.resultUngTuyen) {
           setTimeout(() => {
             Loading.hide();
+            window.location.reload();
           }, 1000);
           Notify.create({
             message: "Ứng tuyển thành công",
@@ -471,16 +490,18 @@ export const useStoreJob = defineStore("storeJob", {
             icon: "mood",
           });
         } else {
-          setTimeout(() => {
-            Loading.hide();
-          }, 1000);
-          Notify.create({
-            message: "Ứng tuyển thất bại",
-            timeout: 2000,
-            position: "bottom",
-            color: "negative",
-            icon: "mood_bad",
-          });
+          if (check) {
+            setTimeout(() => {
+              Loading.hide();
+            }, 1000);
+            Notify.create({
+              message: "Ứng tuyển thất bại",
+              timeout: 2000,
+              position: "bottom",
+              color: "negative",
+              icon: "mood_bad",
+            });
+          }
         }
       }
     },
