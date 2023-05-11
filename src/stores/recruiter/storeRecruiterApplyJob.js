@@ -76,43 +76,6 @@ export const useStoreRecruiterApplyJob = defineStore("storeRecruiterApplyJob", {
     _init() {},
 
     logOut() {},
-    /* For recruiter User */
-    acceptOne(inputData) {
-      let data = inputData;
-      Loading.show({
-        message: "Đang xử lí...",
-        boxClass: "bg-grey-2 text-grey-9",
-        spinnerColor: "primary",
-      });
-      console.log(data);
-      try {
-        this.resultImplement.acceptOne = true;
-      } catch (error) {
-      } finally {
-        setTimeout(() => {
-          if (this.resultImplement.acceptOne) {
-            Loading.hide();
-            Notify.create({
-              message: "Thao tác thành công",
-              position: "bottom",
-              timeout: 2000,
-              color: "green",
-              icon: "mood",
-            });
-            setTimeout(() => {
-              return window.location.reload();
-            }, 1500);
-          } else {
-            Loading.hide();
-            Dialog.create({
-              message: "Thao tác thất bại! Vui lòng thử lại.",
-              title: "Thông báo",
-              color: "red",
-            });
-          }
-        }, 1000);
-      }
-    },
 
     checkDenyOne(name, email) {
       this.dialogDenyOne = true;
@@ -137,6 +100,51 @@ export const useStoreRecruiterApplyJob = defineStore("storeRecruiterApplyJob", {
         });
       } catch (err) {
         console.log("Internal Server Error: ", err);
+      }
+    },
+
+    /* For recruiter User */
+    async duyetDonTuyenDung(id) {
+      Loading.show({
+        message: "Đang xử lí...",
+        boxClass: "bg-grey-2 text-grey-9",
+        spinnerColor: "primary",
+      });
+      const url = "api/donungtuyen/update/";
+      const data = {
+        donUngTuyenId: id,
+        trangthai: "đã ứng tuyển",
+      };
+      try {
+        api.put(url, data).then((res) => {
+          if (res.data) {
+            this.resultImplement.acceptOne = true;
+          }
+        });
+      } catch (error) {
+      } finally {
+        setTimeout(() => {
+          if (this.resultImplement.acceptOne) {
+            Loading.hide();
+            Notify.create({
+              message: "Thao tác thành công",
+              position: "bottom",
+              timeout: 2000,
+              color: "green",
+              icon: "mood",
+            });
+            setTimeout(() => {
+              return window.location.reload();
+            }, 1500);
+          } else {
+            Loading.hide();
+            Dialog.create({
+              message: "Thao tác thất bại! Vui lòng thử lại.",
+              title: "Thông báo",
+              color: "red",
+            });
+          }
+        }, 1000);
       }
     },
   },

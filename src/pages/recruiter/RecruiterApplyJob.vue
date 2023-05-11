@@ -128,7 +128,7 @@ const getCount = () => {
           <td class="text-left" key="action" :props="props">
             <div v-if="props.row.trangthai === 'đang chờ'">
               <q-btn color="light-green" icon="check" label="Duyệt"
-                @click="storeRecruiterApplyJob.acceptOne(props.row._id)" />
+                @click="storeRecruiterApplyJob.duyetDonTuyenDung(props.row._id)" />
               <!-- <q-btn class="q-ml-lg" color="pink" icon="cancel" label="Dừng tuyển"
                 @click="storeRecruiterApplyJob.checkDenyOne(props.row.name, props.row.email)" /> -->
             </div>
