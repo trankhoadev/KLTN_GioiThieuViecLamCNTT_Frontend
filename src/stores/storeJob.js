@@ -347,6 +347,24 @@ export const useStoreJob = defineStore("storeJob", {
       }
     },
 
+    async getAllPostDangTuyenDungByNhaTuyenDungId(id) {
+      const url = "api/tintuyendung/getByNhaTuyenDung/" + id;
+      try {
+        await api.get(url).then((res) => {
+          if (res.data) {
+            this.listPostNhaTuyenDungById = res.data.filter((e) => {
+              if (e.trangthai === "đang tuyển") {
+                return e;
+              }
+            });
+          }
+        });
+      } catch (error) {
+        console.log("Internal Server Error: ", error);
+      } finally {
+      }
+    },
+
     async getLanguageName(id) {
       const url = "api/ngonngu/" + id;
       try {

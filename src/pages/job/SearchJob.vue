@@ -43,7 +43,7 @@ onMounted(async () => {
 
   /* Get amount job of every recruiter */
   for (let i = 0; i < storeJob.listRecruiter.length; ++i) {
-    await storeJob.getAllPostByNhaTuyenDungId(storeJob.listRecruiter[i]._id);
+    await storeJob.getAllPostDangTuyenDungByNhaTuyenDungId(storeJob.listRecruiter[i]._id);
     storeJob.listRecruiter[i].amount = storeJob.listPostNhaTuyenDungById.length;
   }
 });
