@@ -29,7 +29,7 @@ const getCount = () => {
   storeRecruiterApplyJob.listData.map(e => {
     e.trangthai === 'đang chờ' ? storeRecruiterApplyJob.donUngTuyenDangCho++ : void (0);
     e.trangthai === 'đã ứng tuyển' ? storeRecruiterApplyJob.donUngTuyenDaDuyet++ : void (0);
-    e.trangthai === 'từ chối' ? storeRecruiterApplyJob.donUngTuyenTuChoi++ : void (0);
+    e.trangthai === 'đã từ chối' ? storeRecruiterApplyJob.donUngTuyenTuChoi++ : void (0);
   })
 }
 </script>
@@ -37,9 +37,9 @@ const getCount = () => {
 <template>
   <div>
     <q-table title="HỒ SƠ ỨNG TUYỂN" virtual-scroll :columns="storeRecruiterApplyJob.columnRecruiterAccount"
-      :rows="storeRecruiterApplyJob.listData" style="height: 90vh" row-key="email" :rows-per-page-options="[10]"
+      :rows="storeRecruiterApplyJob.listData" style="height: 90vh" row-key="_id" :rows-per-page-options="[10]"
       class="q-my-lg q-mx-md my-sticky-header-table" rows-per-page-label="Số dòng mỗi trang"
-      v-model:selected="storeRecruiterApplyJob.listSelectRecruiterAccount" selection="multiple"
+      v-model:selected="storeRecruiterApplyJob.listSelectDonUngTuyen" selection="multiple"
       :filter="storeRecruiterApplyJob.filter">
 
       <template v-slot:top-left>
@@ -129,8 +129,8 @@ const getCount = () => {
             <div v-if="props.row.trangthai === 'đang chờ'">
               <q-btn color="light-green" icon="check" label="Duyệt"
                 @click="storeRecruiterApplyJob.duyetDonTuyenDung(props.row._id)" />
-              <!-- <q-btn class="q-ml-lg" color="pink" icon="cancel" label="Dừng tuyển"
-                @click="storeRecruiterApplyJob.checkDenyOne(props.row.name, props.row.email)" /> -->
+              <q-btn class="q-ml-lg" color="pink" icon="cancel" label="Từ chối"
+                @click="storeRecruiterApplyJob.tuChoiDonUngTuyen(props.row._id)" />
             </div>
           </td>
         </tr>

@@ -87,7 +87,7 @@ const getCount = () => {
             <q-checkbox v-model="props.selected" color="primary" />
           </td>
           <td class="text-left" key="stt" :props="props" style="width: 5%;">
-            {{ props.rowIndex }}
+            {{ props.rowIndex + 1 }}
           </td>
           <td class="text-left" key="tieude" :props="props" style="width: 30%;">
             <b style="font-size: 1.2em;"><span style="white-space: pre-wrap;">{{ props.row.tieude }}</span></b>

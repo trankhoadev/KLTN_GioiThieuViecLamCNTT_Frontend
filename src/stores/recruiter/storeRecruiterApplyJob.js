@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { api } from "src/boot/axios";
 import { ref, reactive } from "vue";
-import { Loading, Notify } from "quasar";
+import { Dialog, Loading, Notify } from "quasar";
 
 export const useStoreRecruiterApplyJob = defineStore("storeRecruiterApplyJob", {
   state: () => {
@@ -9,6 +9,7 @@ export const useStoreRecruiterApplyJob = defineStore("storeRecruiterApplyJob", {
       filter: "",
       listData: [],
       listSelectRecruiter: ref(),
+      listSelectDonUngTuyen: ref(),
       donUngTuyen: 0,
       donUngTuyenDangCho: 0,
       donUngTuyenDaDuyet: 0,
@@ -146,6 +147,68 @@ export const useStoreRecruiterApplyJob = defineStore("storeRecruiterApplyJob", {
           }
         }, 1000);
       }
+    },
+
+    /* For recruiter User */
+    async tuChoiDonUngTuyen(id) {
+      Dialog.create({
+        dark: true,
+        title: "Cảnh báo",
+        message: "Vui lòng nhập lí do từ chối ?",
+        prompt: {
+          model: "",
+          type: "text",
+        },
+        cancel: true,
+      })
+        .onOk((reason) => {
+          Loading.show({
+            message: "Đang xử lí...",
+            boxClass: "bg-grey-2 text-grey-9",
+            spinnerColor: "primary",
+          });
+          const url = "api/donungtuyen/update/";
+          const data = {
+            donUngTuyenId: id,
+            trangthai: "đã từ chối",
+          };
+
+          try {
+            api.put(url, data).then((res) => {
+              if (res.data) {
+                this.resultImplement.acceptOne = true;
+              }
+            });
+          } catch (error) {
+          } finally {
+            setTimeout(() => {
+              if (this.resultImplement.acceptOne) {
+                Loading.hide();
+                Notify.create({
+                  message: "Thao tác thành công",
+                  position: "bottom",
+                  timeout: 2000,
+                  color: "green",
+                  icon: "mood",
+                });
+                setTimeout(() => {
+                  return window.location.reload();
+                }, 1500);
+              } else {
+                Loading.hide();
+                Dialog.create({
+                  message: "Thao tác thất bại! Vui lòng thử lại.",
+                  title: "Thông báo",
+                  color: "red",
+                });
+              }
+            }, 1000);
+          }
+        })
+        .onCancel(() => {})
+        .onDismiss(() => {
+          // console.log('I am triggered on both OK and Cancel')
+        });
     },
   },
 });
