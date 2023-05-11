@@ -6,7 +6,7 @@ import { Loading, Notify, Dialog } from "quasar";
 export const useStoreManagePost = defineStore("storeManagePost", {
   state: () => {
     return {
-      listData: "",
+      listData: [],
       loadData: false,
       listSelectManagePost: ref(),
       tinDangCho: 0,
@@ -88,7 +88,6 @@ export const useStoreManagePost = defineStore("storeManagePost", {
           headerStyle: "font-size: 1.1em; font-weight: bold",
         },
       ],
-      rowDataManagePost: [],
     };
   },
   getters: {},
@@ -323,7 +322,7 @@ export const useStoreManagePost = defineStore("storeManagePost", {
       try {
         await api.get(url).then((res) => {
           if (res) {
-            this.rowDataManagePost = res.data;
+            this.listData = res.data;
           }
         });
       } catch (error) {
