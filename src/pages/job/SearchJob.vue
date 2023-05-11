@@ -5,10 +5,12 @@ import { useMyStore } from 'src/stores/myStore';
 import { useRoute } from 'vue-router';
 import { onMounted, onUpdated, watch } from 'vue';
 import { Loading } from 'quasar';
+import { useStoreAuthentication } from 'src/stores/storeAuthentication';
 
 const route = useRoute();
 const myStore = useMyStore();
 const storeJob = useStoreJob();
+const storeAuthen = useStoreAuthentication();
 const $q = useQuasar();
 
 
@@ -17,6 +19,7 @@ onMounted(async () => {
   await storeJob.reloadSearchJob(route.params.id);
   await storeJob.getListTag();
   await storeJob.getAllNhaTuyenDung();
+  await storeJob.getAllDonUngTuyen();
 
   if (storeJob.listDataSearch.length > 9) {
     storeJob.listDataSearch = [...storeJob.listDataSearch].slice(0, -1);
@@ -232,7 +235,8 @@ watch(() => storeJob.panigateSelected, val => {
                         </span>
                       </div>
                       <div class="function flex text-right flex-right justify-end">
-                        <q-btn class="apply-now q-mr-md" color="green-7" label="Ứng tuyển" />
+                        <q-btn class="apply-now q-mr-md" color="green-7" label="Ứng tuyển"
+                          @click="storeJob.seeDetail({ _id: item._id, tieude: item.tieude })" />
                         <q-btn class="favorite" icon="favorite_border" />
                       </div>
                     </div>
@@ -264,6 +268,19 @@ watch(() => storeJob.panigateSelected, val => {
             </div>
           </div>
         </div>
+
+        <q-dialog v-model="storeJob.isSeeDetail">
+          <q-card>
+            <q-card-section class="row items-center">
+              Bạn có chắc chắn muốn ứng tuyển tin "{{ storeJob.ungTuyenSelectedData.tieude }}" không ?
+            </q-card-section>
+
+            <q-card-actions align="right">
+              <q-btn flat label="Đồng ý" color="primary" v-close-popup @click="storeJob.ungTuyenTinTuyenDung(storeJob.ungTuyenSelectedData._id)" />
+              <q-btn flat label="Hủy" color="primary" v-close-popup />
+            </q-card-actions>
+          </q-card>
+        </q-dialog>
       </q-page>
     </q-page-container>
   </q-layout>

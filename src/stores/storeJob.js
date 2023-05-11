@@ -16,15 +16,20 @@ export const useStoreJob = defineStore("storeJob", {
       listRecruiter: [],
       listDataOneRecruiter: [],
       listPostNhaTuyenDungById: [],
+      ungTuyenSelectedData: [],
+      listDonUngTuyen: [],
       sortRadio: ref(""),
       lengthResponse: ref(0),
       panigateSelected: ref(1),
       tabJobDetail: ref("news"),
+      /* optional */
       href: "",
       defaultShareFacebookUrl: "https://www.facebook.com/sharer/sharer.php?u=",
       defaultShareTwitterUrl: "https://twitter.com/intent/tweet?url=",
       defaultShareLinkedinUrl:
         "https://www.linkedin.com/uas/login?session_redirect=",
+      isSeeDetail: ref(false),
+      seeDetailSelect: "",
       /* step 1 */
       chucVu: "",
       ngaySinh: ref(""),
@@ -40,6 +45,7 @@ export const useStoreJob = defineStore("storeJob", {
       resultExecuted: reactive({
         resultSearchJob: false,
         resultJobDetail: false,
+        resultUngTuyen: false,
       }),
       /* step 3 */
       listSkill: [],
@@ -425,6 +431,74 @@ export const useStoreJob = defineStore("storeJob", {
       }
     },
 
+    async ungTuyenTinTuyenDung(id) {
+      Loading.show({
+        message: "Đang xử lí...",
+        boxClass: "bg-grey-2 text-grey-9",
+        spinnerColor: "primary",
+      });
+      const url = "api/donungtuyen/";
+      const data = {
+        trangthai: "đang chờ",
+
+        ungtuyenvien: localStorage.getItem("idUngTuyenVien"),
+
+        tintuyendung: id,
+      };
+      try {
+        // this.listDonUngTuyen.filter((e) => {
+        //   console.log(e.tintuyendung);
+        //   console.log(e.ungtuyenvien);
+        // });
+        await api.post(url, data).then((res) => {
+          if (res.data) {
+            console.log(res.data);
+            this.resultExecuted.resultUngTuyen = true;
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
+      } finally {
+        if (this.resultExecuted.resultUngTuyen) {
+          setTimeout(() => {
+            Loading.hide();
+          }, 1000);
+          Notify.create({
+            message: "Ứng tuyển thành công",
+            position: "bottom",
+            timeout: 2000,
+            color: "green",
+            icon: "mood",
+          });
+        } else {
+          setTimeout(() => {
+            Loading.hide();
+          }, 1000);
+          Notify.create({
+            message: "Ứng tuyển thất bại",
+            timeout: 2000,
+            position: "bottom",
+            color: "negative",
+            icon: "mood_bad",
+          });
+        }
+      }
+    },
+
+    getAllDonUngTuyen() {
+      const url = "api/donungtuyen/";
+      try {
+        api.get(url).then((res) => {
+          if (res.data) {
+            this.listDonUngTuyen = res.data;
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
+      }
+    },
+
+    /* Optional Function */
     copyToClipBoard(data) {
       copyToClipboard(data)
         .then(() => {
@@ -443,6 +517,11 @@ export const useStoreJob = defineStore("storeJob", {
 
     openUrl(defaultUrl, path) {
       window.open(defaultUrl + path);
+    },
+
+    seeDetail(data) {
+      this.isSeeDetail = true;
+      this.ungTuyenSelectedData = data;
     },
   },
 });

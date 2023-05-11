@@ -13,7 +13,7 @@ export const useStoreAuthentication = defineStore("storeAuthentication", {
       isPwd: false,
       isAdmin: false,
       isLogin: localStorage.getItem("isLoggedIn"),
-      email: "",
+      email: localStorage.getItem("email"),
       userName: "",
       password: "",
       rePassword: "",
