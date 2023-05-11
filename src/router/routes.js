@@ -11,6 +11,7 @@ import SearchJob from "pages/job/SearchJob.vue";
 import JobDetail from "pages/job/JobDetail.vue";
 import HoSoCV from "pages/employee/HoSoCV.vue";
 import PreviewCV from "src/pages/employee/PreviewCV.vue";
+import ViecLamCuaToi from "src/pages/employee/ViecLamCuaToi.vue";
 
 /* layout */
 import MainLayout from "layouts/MainLayout.vue";
@@ -61,6 +62,14 @@ const router = [
       {
         path: "/ho-so-cv",
         component: HoSoCV,
+        beforeEnter: requireAuth,
+        meta: {
+          permission: "employee",
+        },
+      },
+      {
+        path: "/viec-lam-cua-toi",
+        component: ViecLamCuaToi,
         beforeEnter: requireAuth,
         meta: {
           permission: "employee",

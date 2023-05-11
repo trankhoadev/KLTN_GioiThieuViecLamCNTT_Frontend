@@ -110,10 +110,12 @@ const clickToTop = () => {
                         <q-item-section @click="storeAuthen.checkCreateUngTuyenVien()">Hồ sơ và CV</q-item-section>
                       </router-link>
                     </q-item>
-                    <q-item clickable class="flex flex-center justify-center">
-                      <q-icon size="sm" name="work_outline" />
-                      &nbsp;
-                      <q-item-section>Việc làm của tôi</q-item-section>
+                    <q-item clickable>
+                      <router-link to="/viec-lam-cua-toi" class="flex flex-center justify-center">
+                        <q-icon size="sm" name="work_outline" />
+                        &nbsp;
+                        <q-item-section>Việc làm của tôi</q-item-section>
+                      </router-link>
                     </q-item>
                     <q-item clickable class="flex flex-center justify-center">
                       <q-icon size="sm" name="settings" />
