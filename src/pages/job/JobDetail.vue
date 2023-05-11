@@ -11,12 +11,29 @@ const $q = useQuasar();
 const route = useRoute();
 
 onMounted(async () => {
+  /* get tin tuyen dung */
   await storeJob.getDataJobDetail(route.params.id);
+  /* get nha tuyen dung */
+  await storeJob.getNhaTuyenDungById(storeJob.listDataJobDetail.nhatuyendung._id);
   await storeJob.getListTag();
-  console.log(storeJob.listDataJobDetail);
+  await storeJob.getAllPost();
+  // console.log(storeJob.listDataJobDetail);
   storeJob.listDataJobDetail.moTaCongViec = storeJob.listDataJobDetail.moTaCongViec.replace(/\n/gi, "\n - ");
   storeJob.listDataJobDetail.moTaYeuCau = storeJob.listDataJobDetail.moTaYeuCau.replace(/\n/gi, "\n - ");
   storeJob.listDataJobDetail.quyenLoiUngVien = storeJob.listDataJobDetail.quyenLoiUngVien.replace(/\n/gi, "\n - ");
+
+  /* Hide "Ứng tuyển" button */
+  await storeJob.getAllDonUngTuyen();
+  storeJob.listDonUngTuyen.filter((e) => {
+    if (e.tintuyendung._id === storeJob.listDataJobDetail._id &&
+      e.ungtuyenvien._id === localStorage.getItem("idUngTuyenVien")) {
+      storeJob.listDataJobDetail.isUngTuyen = true;
+    }
+    else {
+      storeJob.listDataJobDetail.isUngTuyen = false;
+    }
+  });
+
 });
 </script>
 <template>
@@ -68,7 +85,7 @@ onMounted(async () => {
           <div class="row q-my-lg q-px-md full-width bg-white q-py-lg">
             <div class="col-md-2 col-12 flex flex-center">
               <div class="box-company-logo q-py-lg">
-                <img :src=storeJob.oneJobSelected.picture alt="">
+                <img :src=storeJob.listDataOneRecruiter.anhdaidien alt="">
               </div>
             </div>
 
@@ -76,7 +93,7 @@ onMounted(async () => {
               <div class="job-title q-pt-lg">
                 {{ storeJob.listDataJobDetail.tieude }}
               </div>
-              <p class="company-name">{{ storeJob.oneJobSelected.companyName }}</p>
+              <p class="company-name">{{ storeJob.listDataOneRecruiter.tencongty }}</p>
             </div>
           </div>
 
@@ -192,7 +209,8 @@ onMounted(async () => {
                 <div class="post-item">
                   <h3>Cách thức ứng tuyển</h3>
                   <div>
-                    <q-btn color="green-7" label="Ứng tuyển ngay" />
+                    <q-btn v-if="!storeJob.listDataJobDetail.isUngTuyen" color="green-7" label="Ứng tuyển ngay" />
+                    <q-btn v-else class="apply-now q-mr-md" color="grey" label="Đã ứng tuyển" icon="done" disable />
                   </div>
                 </div>
               </div>
@@ -206,13 +224,14 @@ onMounted(async () => {
                     {{ storeJob.href }}
                   </div>
                   <div class="btn-copy">
-                    <q-btn color="green" class="bg-white" size="md" icon="content_copy" @click="storeJob.copyToClipBoard(storeJob.href)" />
+                    <q-btn color="green" class="bg-white" size="md" icon="content_copy"
+                      @click="storeJob.copyToClipBoard(storeJob.href)" />
                   </div>
                 </div>
                 <p>Chia sẻ qua mạng xã hội</p>
                 <div class="box-share flex">
                   <div class="q-mx-sm" @click="storeJob.openUrl(storeJob.defaultShareFacebookUrl, storeJob.href)">
-                    <img src="https://www.topcv.vn/v4/image/job-detail/share/facebook.png" alt=""/>
+                    <img src="https://www.topcv.vn/v4/image/job-detail/share/facebook.png" alt="" />
                   </div>
                   <div class="q-mx-sm" @click="storeJob.openUrl(storeJob.defaultShareTwitterUrl, storeJob.href)">
                     <img src="https://www.topcv.vn/v4/image/job-detail/share/twitter.png" alt="">
@@ -228,7 +247,7 @@ onMounted(async () => {
           <div class="row bg-white full-width q-px-lg justify-evenly q-mt-md q-pb-lg q-pt-md" id="tab-info-company">
             <div class="col-12 q-my-md q-mx-lg">
               <div class="flex justify-between">
-                <h6 class="box-title">Thông tin {{ storeJob.oneJobSelected.companyName }}</h6>
+                <h6 class="box-title">Thông tin {{ storeJob.listDataOneRecruiter.tencongty }}</h6>
                 <a class="open-link" href="" target="_blank">Xem trang công ty
                   <q-icon name="north_east" />
                 </a>
@@ -244,11 +263,7 @@ onMounted(async () => {
                       <div>
                         <p class="q-mb-none text-bold">Giới thiệu</p>
                         <span class="content">
-                          <p class="q-pr-lg">Là doanh nghiệp tiên phong trong phát triển nền tảng thương mại điện tử du
-                            lịch B2B. Travel
-                            Connect cung cấp nền tảng kết nối, mua bán giao dịch và phân phối dịch vụ cho tất cả các đơn
-                            vị
-                            kinh doanh du lịch trong nước và quốc tế. </p>
+                          <p class="q-pr-lg">{{ storeJob.listDataOneRecruiter.mota }} </p>
                         </span>
                       </div>
                     </div>
@@ -263,9 +278,9 @@ onMounted(async () => {
                     </div>
                     <div class="col-11">
                       <div>
-                        <p class="q-mb-none text-bold">Quy mô</p>
+                        <p class="q-mb-none text-bold">Website</p>
                         <span class="content">
-                          <p class="q-pr-lg">10-24 nhân viên.</p>
+                          <p class="q-pr-lg">{{ storeJob.listDataOneRecruiter.diachiWebsite }}</p>
                         </span>
                       </div>
                     </div>
@@ -281,7 +296,24 @@ onMounted(async () => {
                       <div>
                         <p class="q-mb-none text-bold">Địa điểm</p>
                         <span class="content">
-                          <p class="q-pr-lg">{{ storeJob.oneJobSelected.address }}</p>
+                          <p class="q-pr-lg">{{ storeJob.listDataOneRecruiter.diachi }}</p>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="box-item q-mt-md">
+                  <div class="row">
+                    <div class="col-1 flex flex-center">
+                      <q-icon name="calendar_month" size="md" color="green-7" />
+                    </div>
+                    <div class="col-11">
+                      <div>
+                        <p class="q-mb-none text-bold">Ngày thành lập</p>
+                        <span class="content">
+                          <p class="q-pr-lg">{{ new
+                            Date(storeJob.listDataOneRecruiter.ngaythanhlap).toLocaleDateString('en-GB') }}</p>
                         </span>
                       </div>
                     </div>
@@ -348,13 +380,13 @@ onMounted(async () => {
                     </div>
                   </div>
                   <div>
-                    <div class="q-pa-lg flex flex-center">
-                      <q-pagination color="green-7" v-model="storeJob.panigateSelected" :max="5" direction-links />
+                    <div v-if="storeJob.listData.length" class="q-pa-lg flex flex-center">
+                      <q-pagination color="green-7" v-model="storeJob.panigateSelected"
+                        :max="storeJob.lengthResponse / 10 + 1" :max-pages="6" direction-links />
                     </div>
                   </div>
                 </div>
               </div>
-
             </div>
           </div>
 

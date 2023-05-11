@@ -52,7 +52,6 @@ onMounted(async () => {
 
   /* Hide "Ứng tuyển" button */
   await storeJob.getAllDonUngTuyen();
-  console.log("hi: ", storeJob.listDonUngTuyen);
   storeJob.listDonUngTuyen.filter((e) => {
     for (let i = 0; i < storeJob.listDataSearch.length; ++i) {
       if (e.tintuyendung._id === storeJob.listDataSearch[i]._id &&

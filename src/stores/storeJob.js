@@ -448,7 +448,6 @@ export const useStoreJob = defineStore("storeJob", {
       };
       try {
         await this.getAllDonUngTuyen();
-        console.log(this.listDonUngTuyen);
         this.listDonUngTuyen.filter((e) => {
           if (
             e.tintuyendung._id === id &&
@@ -506,10 +505,10 @@ export const useStoreJob = defineStore("storeJob", {
       }
     },
 
-    getAllDonUngTuyen() {
+    async getAllDonUngTuyen() {
       const url = "api/donungtuyen/";
       try {
-        api.get(url).then((res) => {
+        await api.get(url).then((res) => {
           if (res.data) {
             this.listDonUngTuyen = res.data;
           }
