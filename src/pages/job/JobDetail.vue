@@ -17,13 +17,14 @@ onMounted(async () => {
   await storeJob.getNhaTuyenDungById(storeJob.listDataJobDetail.nhatuyendung._id);
   await storeJob.getListTag();
   await storeJob.getAllPost();
-  // console.log(storeJob.listDataJobDetail);
+  await storeJob.getAllNhaTuyenDung();
+  await storeJob.getAllDonUngTuyen();
+
   storeJob.listDataJobDetail.moTaCongViec = storeJob.listDataJobDetail.moTaCongViec.replace(/\n/gi, "\n - ");
   storeJob.listDataJobDetail.moTaYeuCau = storeJob.listDataJobDetail.moTaYeuCau.replace(/\n/gi, "\n - ");
   storeJob.listDataJobDetail.quyenLoiUngVien = storeJob.listDataJobDetail.quyenLoiUngVien.replace(/\n/gi, "\n - ");
 
   /* Hide "Ứng tuyển" button */
-  await storeJob.getAllDonUngTuyen();
   storeJob.listDonUngTuyen.filter((e) => {
     if (e.tintuyendung._id === storeJob.listDataJobDetail._id &&
       e.ungtuyenvien._id === localStorage.getItem("idUngTuyenVien")) {
@@ -34,7 +35,59 @@ onMounted(async () => {
     }
   });
 
+
+  /* New code */
+  if (storeJob.listData.length > 9) {
+    storeJob.listData = [...storeJob.listData].slice(0, -1);
+  }
+
+  /* Note: Because cant get data directly from server so need using that. Have some problem like object promise before */
+  /* Handle get data of tag from server */
+  for (let i = 0; i < storeJob.listData.length; ++i) {
+    for (let j = 0; j < storeJob.listData[i].ngonngu.length; ++j) {
+      storeJob.listSkill.map((e) => {
+        // console.log(storeJob.listData[i].ngonngu[j]._id === e._id);
+        if (storeJob.listData[i].ngonngu[j]._id === e._id) {
+          storeJob.listData[i].ngonngu[j] = e.ngonngu;
+        }
+      });
+    }
+  }
+
+  /* Get picture and name of recruiter */
+  for (let i = 0; i < storeJob.listData.length; ++i) {
+    await storeJob.getNhaTuyenDungById(storeJob.listData[i].nhatuyendung);
+    storeJob.listData[i].tennhatuyendung = storeJob.listDataOneRecruiter.tencongty;
+    storeJob.listData[i].anhdaidien = storeJob.listDataOneRecruiter.anhdaidien;
+  }
+
+  /* Hide "Ứng tuyển" button */
+  await storeJob.getAllDonUngTuyen();
+  storeJob.listDonUngTuyen.filter((e) => {
+    for (let i = 0; i < storeJob.listData.length; ++i) {
+      if (e.tintuyendung._id === storeJob.listData[i]._id &&
+        e.ungtuyenvien._id === localStorage.getItem("idUngTuyenVien")) {
+        storeJob.listData[i].isUngTuyen = true;
+      }
+    }
+  });
+
 });
+
+const clickScrollTinTuyenDung = () => {
+  var id = document.getElementById('tab-info');
+  id.scrollIntoView();
+}
+
+const clickScrollThongTinCongTy = () => {
+  var id = document.getElementById('tab-info-company');
+  id.scrollIntoView();
+}
+
+const clickScrollViecLamLienQuan = () => {
+  var id = document.getElementById('tab-job');
+  id.scrollIntoView();
+}
 </script>
 <template>
   <q-layout>
@@ -100,15 +153,17 @@ onMounted(async () => {
           <div class="row q-py-lg q-px-md full-width">
             <q-tabs v-model="storeJob.tabJobDetail" narrow-indicator dense align="justify"
               class="text-black text-green-7">
-              <a href="#tab-info">
-                <q-tab :ripple="false" name="news" icon="mail" label="Tin tuyển dụng" />
-              </a>
-              <a href="#tab-info-company">
-                <q-tab :ripple="false" name="info" icon="alarm" label="Thông tin công ty" />
-              </a>
-              <a href="#tab-job">
-                <q-tab :ripple="false" name="relate" icon="movie" label="Việc làm liên quan" />
-              </a>
+
+              <q-tab :ripple="false" name="news" icon="mail" label="Tin tuyển dụng" @click="clickScrollTinTuyenDung()" />
+
+
+              <q-tab :ripple="false" name="info" icon="alarm" label="Thông tin công ty"
+                @click="clickScrollThongTinCongTy()" />
+
+
+              <q-tab :ripple="false" name="relate" icon="movie" label="Việc làm liên quan"
+                @click="clickScrollViecLamLienQuan()" />
+
             </q-tabs>
           </div>
 
@@ -329,50 +384,57 @@ onMounted(async () => {
               <div class="flex justify-between">
                 <h6 class="box-title">Việc làm liên quan</h6>
               </div>
-
               <div class="q-mt-md q-px-lg">
                 <div class="col-12">
-                  <div class="item highlight q-pa-none q" v-for="item in storeJob.listRecruiter" :key="item.id">
+                  <div class="item highlight q-pa-none q" v-for="item in storeJob.listData" :key="item.id">
                     <div class="row q-my-md default">
                       <div class="col-md-2 col-12">
                         <div class="avatar">
-                          <img class="" style="max-width: 100px; max-height: 100px;" :src=item.picture alt="">
+                          <img class="" style="max-width: 100px; max-height: 100px;" :src=item.anhdaidien alt="">
                         </div>
                       </div>
                       <div class="col-md-7 col-12">
                         <div class="title">
-                          <a>{{ item.title }}</a>
+                          <router-link :to="`/search/job/${item._id}`" target="_blank">
+                            <h6 class="text-weight-bold">{{ item.tieude }}</h6>
+                          </router-link>
                         </div>
-                        <div class="q-pt-sm">{{ item.companyName }}</div>
-                        <div class="q-pt-sm"> {{ item.datePost }}</div>
+                        <div class="q-pt-sm text-uppercase">{{ item.tennhatuyendung }}</div>
+                        <div class="q-pt-sm">Ngày đăng: {{ new Date(item.createdAt).toLocaleDateString('en-GB') }}</div>
                         <div class="q-pt-sm">
                           <div class="skills">
-                            <label class="item" v-for="tag in item.tag" :key="tag">
+                            <label class="item" v-for="tag in item.ngonngu" :key="tag">
                               {{ tag }}
                             </label>
                           </div>
                         </div>
-                        <div class="flex">
-                          <div>
+                        <div class="flex justify-between">
+                          <div class="col-md-6 col-12 q-my-sm">
                             <q-icon name="location_on" size="sm" class="text-green-7" />
-                            <span class="q-ml-sm">{{ item.address }}</span>
+                            <span class="q-ml-sm">{{ item.diaChi }}</span>
                           </div>
 
-                          <div class="q-ml-md">
+                          <div class="col-md-6 col-12 q-my-sm">
                             <q-icon name="access_time_filled" size="sm" class="text-green-7" />
-                            <span class="q-ml-sm">Còn <b>{{ 25 }}</b> ngày để ứng tuyển</span>
+                            <span>Còn <b>{{ ((new Date(item.ngayHetHan).getTime() - new Date().getTime()) / (1000 * 60
+                              * 60 * 24)).toFixed(0) > 0 ? ((new Date(item.ngayHetHan).getTime() - new
+                                Date().getTime())
+                                / (1000 * 60
+                                  * 60 * 24)).toFixed(0) : 0 }}</b> ngày để ứng tuyển</span>
                           </div>
                         </div>
                       </div>
                       <div class="col-md-3">
                         <div class="row column flex-right justify-between full-height">
                           <div class="salary text-right">
-                            <span class="title-salary">
-                              {{ item.salary }}
+                            <span class="title-salary text-weight-bold text-green-7">
+                              {{ item.mucluong }}
                             </span>
                           </div>
                           <div class="function flex text-right flex-right justify-end">
-                            <q-btn class="apply-now q-mr-md" color="green-7" label="Ứng tuyển" />
+                            <q-btn v-if="!item.isUngTuyen" class="apply-now q-mr-md" color="green-7" label="Ứng tuyển"
+                              @click="storeJob.seeDetail({ _id: item._id, tieude: item.tieude })" />
+                            <q-btn v-else class="apply-now q-mr-md" color="grey" label="Đã ứng tuyển" disable />
                             <q-btn class="favorite" icon="favorite_border" />
                           </div>
                         </div>
@@ -389,9 +451,20 @@ onMounted(async () => {
               </div>
             </div>
           </div>
-
-
         </div>
+        <q-dialog v-model="storeJob.isSeeDetail">
+          <q-card>
+            <q-card-section class="row items-center">
+              Bạn có chắc chắn muốn ứng tuyển tin "{{ storeJob.ungTuyenSelectedData.tieude }}" không ?
+            </q-card-section>
+
+            <q-card-actions align="right">
+              <q-btn flat label="Đồng ý" color="primary" v-close-popup
+                @click="storeJob.ungTuyenTinTuyenDung(storeJob.ungTuyenSelectedData._id)" />
+              <q-btn flat label="Hủy" color="primary" v-close-popup />
+            </q-card-actions>
+          </q-card>
+        </q-dialog>
       </q-page>
     </q-page-container>
   </q-layout>
@@ -546,6 +619,27 @@ a.open-link {
     color: #000;
     font-size: 18px;
     font-weight: 700;
+  }
+}
+
+.skills {
+  margin-bottom: 12px;
+  margin-top: 0;
+  display: flex;
+
+  label.item {
+    background: #e5f7ed;
+    border-radius: 20px;
+    color: #00b14f;
+    font-weight: 400;
+    padding: 4px 8px;
+  }
+}
+
+.item {
+  &.item-hover {
+    box-shadow: -1px 1px 2px rgba(0, 0, 0, .01);
+    transition: all .3s;
   }
 }
 </style>

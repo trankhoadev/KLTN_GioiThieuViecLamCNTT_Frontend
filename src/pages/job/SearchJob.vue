@@ -194,7 +194,7 @@ watch(() => storeJob.panigateSelected, val => {
                     <div class="title">
                       <router-link :to="`/search/job/${item._id}`" target="_blank">{{ item.tieude }}</router-link>
                     </div>
-                    <div class="q-pt-sm">{{ item.tennhatuyendung }}</div>
+                    <div class="q-pt-sm text-uppercase">{{ item.tennhatuyendung }}</div>
                     <div class="q-pt-sm"> <b>Ngày đăng:</b> {{ new Date(item.createdAt).toLocaleDateString('en-GB') }}
                     </div>
                     <div class="q-pt-sm">
