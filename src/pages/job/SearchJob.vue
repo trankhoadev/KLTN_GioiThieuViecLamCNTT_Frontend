@@ -49,6 +49,18 @@ onMounted(async () => {
     await storeJob.getAllPostDangTuyenDungByNhaTuyenDungId(storeJob.listRecruiter[i]._id);
     storeJob.listRecruiter[i].amount = storeJob.listPostNhaTuyenDungById.length;
   }
+
+  /* Hide "Ứng tuyển" button */
+  await storeJob.getAllDonUngTuyen();
+  console.log("hi: ", storeJob.listDonUngTuyen);
+  storeJob.listDonUngTuyen.filter((e) => {
+    for (let i = 0; i < storeJob.listDataSearch.length; ++i) {
+      if (e.tintuyendung._id === storeJob.listDataSearch[i]._id &&
+        e.ungtuyenvien._id === localStorage.getItem("idUngTuyenVien")) {
+        storeJob.listDataSearch[i].isUngTuyen = true;
+      }
+    }
+  });
 });
 
 watch(() => storeJob.panigateSelected, val => {
@@ -235,8 +247,9 @@ watch(() => storeJob.panigateSelected, val => {
                         </span>
                       </div>
                       <div class="function flex text-right flex-right justify-end">
-                        <q-btn class="apply-now q-mr-md" color="green-7" label="Ứng tuyển"
+                        <q-btn v-if="!item.isUngTuyen" class="apply-now q-mr-md" color="green-7" label="Ứng tuyển"
                           @click="storeJob.seeDetail({ _id: item._id, tieude: item.tieude })" />
+                        <q-btn v-else class="apply-now q-mr-md" color="grey" label="Đã ứng tuyển" disable />
                         <q-btn class="favorite" icon="favorite_border" />
                       </div>
                     </div>
@@ -276,7 +289,8 @@ watch(() => storeJob.panigateSelected, val => {
             </q-card-section>
 
             <q-card-actions align="right">
-              <q-btn flat label="Đồng ý" color="primary" v-close-popup @click="storeJob.ungTuyenTinTuyenDung(storeJob.ungTuyenSelectedData._id)" />
+              <q-btn flat label="Đồng ý" color="primary" v-close-popup
+                @click="storeJob.ungTuyenTinTuyenDung(storeJob.ungTuyenSelectedData._id)" />
               <q-btn flat label="Hủy" color="primary" v-close-popup />
             </q-card-actions>
           </q-card>
