@@ -2,13 +2,13 @@
 import { onMounted } from 'vue';
 import { useStoreAuthentication } from "src/stores/storeAuthentication";
 import { useStoreHoSoCv } from "src/stores/storeHoSoCv";
+import { useRoute } from 'vue-router';
 
 const storeAuthen = useStoreAuthentication();
 const storeHoSoCv = useStoreHoSoCv();
-onMounted(() => {
-  if (storeAuthen.loaiTaiKhoan === 'user') {
-    storeHoSoCv.getDataOfUserById(storeAuthen.idUngTuyenVien);
-  }
+const route = useRoute();
+onMounted(async () => {
+  await storeHoSoCv.getDataOfUserById(route.params.id);
 });
 </script>
 
@@ -70,7 +70,9 @@ onMounted(() => {
                 </div>
 
                 <div class="col-5 flex justify-end">
-                  <b style="font-size: 1.1em; color: #07a88f;">{{ new Date(storeHoSoCv.listData.tungayHocVan).toLocaleDateString('en-GB') }} - {{ new Date(storeHoSoCv.listData.denngayHocVan).toLocaleDateString('en-GB') }}</b>
+                  <b style="font-size: 1.1em; color: #07a88f;">{{ new
+                    Date(storeHoSoCv.listData.tungayHocVan).toLocaleDateString('en-GB') }} - {{ new
+    Date(storeHoSoCv.listData.denngayHocVan).toLocaleDateString('en-GB') }}</b>
                 </div>
               </div>
 
@@ -85,7 +87,9 @@ onMounted(() => {
                 </div>
 
                 <div class="col-5 flex justify-end">
-                  <b style="font-size: 1.1em; color: #07a88f;">{{ new Date(storeHoSoCv.listData.tungayKinhNghiemLV).toLocaleDateString('en-GB') }} - {{ new Date(storeHoSoCv.listData.denngayKinhNghiemLV).toLocaleDateString('en-GB') }}</b>
+                  <b style="font-size: 1.1em; color: #07a88f;">{{ new
+                    Date(storeHoSoCv.listData.tungayKinhNghiemLV).toLocaleDateString('en-GB') }} - {{ new
+    Date(storeHoSoCv.listData.denngayKinhNghiemLV).toLocaleDateString('en-GB') }}</b>
                 </div>
               </div>
 
@@ -101,7 +105,8 @@ onMounted(() => {
 
                 <div class="col-5 flex justify-end">
                   <b style="font-size: 1.1em; color: #07a88f;">{{ new Date(storeHoSoCv.listData.ngaycap
-).toLocaleDateString('en-GB') }} - {{ new Date(storeHoSoCv.listData.ngayhethan).toLocaleDateString('en-GB') }}</b>
+                  ).toLocaleDateString('en-GB') }} - {{ new
+  Date(storeHoSoCv.listData.ngayhethan).toLocaleDateString('en-GB') }}</b>
                 </div>
               </div>
 
@@ -116,7 +121,8 @@ onMounted(() => {
                 </div>
 
                 <div class="col-5 flex justify-end">
-                  <b style="font-size: 1.1em; color: #07a88f;">{{ storeHoSoCv.listData.thang }} - {{ storeHoSoCv.listData.nam }}</b>
+                  <b style="font-size: 1.1em; color: #07a88f;">{{ storeHoSoCv.listData.thang }} - {{
+                    storeHoSoCv.listData.nam }}</b>
                 </div>
               </div>
 
@@ -131,7 +137,6 @@ onMounted(() => {
         </div>
       </q-page>
     </q-page-container>
-  </q-layout>
-</template>
+</q-layout></template>
 
 <style lang="scss" scoped></style>

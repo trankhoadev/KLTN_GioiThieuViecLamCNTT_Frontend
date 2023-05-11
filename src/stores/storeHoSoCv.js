@@ -101,6 +101,7 @@ export const useStoreHoSoCv = defineStore("storeHoSoCv", {
     async getDataOfUserById(id) {
       const url = "api/ungtuyenvien/" + id;
       try {
+        this.listData = [];
         await api.get(url).then((res) => {
           if (res.data) {
             this.listData = res.data;

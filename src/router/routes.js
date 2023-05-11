@@ -89,7 +89,7 @@ const router = [
     ],
   },
   {
-    path: "/preview-cv",
+    path: "/preview-cv/:id",
     component: PreviewCV,
     beforeEnter: requireAuth,
     meta: {
