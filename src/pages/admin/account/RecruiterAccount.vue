@@ -74,7 +74,7 @@ const $q = useQuasar();
             <q-checkbox v-model="props.selected" color="primary" />
           </td>
           <td class="text-left" key="stt" :props="props" style="width: 5%;">
-            {{ props.rowIndex }}
+            {{ props.rowIndex + 1 }}
           </td>
           <td class="text-left" key="name" :props="props" style="width: 25%;">
             <span style="white-space: pre-wrap;">{{ props.row.name }}</span>

@@ -7,11 +7,18 @@ export const useStoreRecruiterApplyJob = defineStore("storeRecruiterApplyJob", {
   state: () => {
     return {
       filter: "",
+      listData: [],
       listSelectRecruiter: ref(),
-      tinTuyenDung: 0,
-      tinTuyenDungDangCho: 0,
-      tinTuyenDungDaDuyet: 0,
-      tinTuyenDungTuChoi: 0,
+      donUngTuyen: 0,
+      donUngTuyenDangCho: 0,
+      donUngTuyenDaDuyet: 0,
+      donUngTuyenTuChoi: 0,
+      resultImplement: reactive({
+        acceptOne: false,
+        acceptAll: false,
+        denyOne: false,
+        denyAll: false,
+      }),
       columnRecruiterAccount: [
         {
           name: "stt",
@@ -24,30 +31,30 @@ export const useStoreRecruiterApplyJob = defineStore("storeRecruiterApplyJob", {
         },
 
         {
-          name: "info",
+          name: "hovaten",
           required: true,
           label: "Thông tin ứng viên",
-          field: "info",
+          field: "hovaten",
           align: "left",
           sortable: true,
           headerStyle: "font-size: 1.1em; font-weight: bold",
         },
 
         {
-          name: "post",
+          name: "tieude",
           required: true,
           label: "Tin tuyển dụng",
-          field: "post",
+          field: "tieude",
           align: "left",
           sortable: true,
           headerStyle: "font-size: 1.1em; font-weight: bold",
         },
 
         {
-          name: "state",
+          name: "trangthai",
           required: true,
           label: "Trạng thái",
-          field: "state",
+          field: "trangthai",
           align: "left",
           sortable: true,
           headerStyle: "font-size: 1.1em; font-weight: bold",
@@ -60,184 +67,6 @@ export const useStoreRecruiterApplyJob = defineStore("storeRecruiterApplyJob", {
           field: "action",
           align: "left",
           headerStyle: "font-size: 1.1em; font-weight: bold",
-        },
-      ],
-      /*
-        state: {
-          0： từ chối
-          1: đang tuyển
-          2: đang chờ
-        }
-      */
-      rowDataRecruiterAccount: [
-        {
-          contactName: "Tran Anh Khoa",
-          contactPhone: "0495364898",
-          contactEmail: "yonnon@gmail.com",
-          dateSend: "05-06-2012",
-          name: "Nhân viên thực tập nodejs",
-          address: "tỉnh Hà nội, huyện Ba Vì",
-          profile: "/",
-          dateCreate: "22-10-2001",
-          dateExpired: "22-10-2001",
-          state: "đang chờ",
-        },
-        {
-          contactName: "Tran Anh Khoa",
-          contactPhone: "0495364898",
-          contactEmail: "yonnon@gmail.com",
-          dateSend: "05-06-2012",
-          name: "Nhân viên thực tập nodejs",
-          address: "tỉnh Hà nội, huyện Ba Vì",
-          profile: "/",
-          dateCreate: "22-10-2001",
-          dateExpired: "22-10-2001",
-          state: "đang chờ",
-        },
-        {
-          contactName: "Tran Anh Khoa",
-          contactPhone: "0495364898",
-          contactEmail: "yonnon@gmail.com",
-          dateSend: "05-06-2012",
-          name: "Nhân viên thực tập nodejs",
-          address: "tỉnh Hà nội, huyện Ba Vì",
-          profile: "/",
-          dateCreate: "22-10-2001",
-          dateExpired: "22-10-2001",
-          state: "đang tuyển",
-        },
-        {
-          contactName: "Tran Anh Khoa",
-          contactPhone: "0495364898",
-          contactEmail: "yonnon@gmail.com",
-          dateSend: "05-06-2012",
-          name: "Nhân viên thực tập nodejs",
-          address: "tỉnh Hà nội, huyện Ba Vì",
-          profile: "/",
-          dateCreate: "22-10-2001",
-          dateExpired: "22-10-2001",
-          state: "dừng tuyển",
-        },
-        {
-          contactName: "Tran Anh Khoa",
-          contactPhone: "0495364898",
-          contactEmail: "yonnon@gmail.com",
-          dateSend: "05-06-2012",
-          name: "Nhân viên thực tập nodejs",
-          address: "tỉnh Hà nội, huyện Ba Vì",
-          profile: "/",
-          dateCreate: "22-10-2001",
-          dateExpired: "22-10-2001",
-          state: "đang chờ",
-        },
-        {
-          contactName: "Tran Anh Khoa",
-          contactPhone: "0495364898",
-          contactEmail: "yonnon@gmail.com",
-          dateSend: "05-06-2012",
-          name: "Nhân viên thực tập nodejs",
-          address: "tỉnh Hà nội, huyện Ba Vì",
-          profile: "/",
-          dateCreate: "22-10-2001",
-          dateExpired: "22-10-2001",
-          state: "đang tuyển",
-        },
-        {
-          contactName: "Tran Anh Khoa",
-          contactPhone: "0495364898",
-          contactEmail: "yonnon@gmail.com",
-          dateSend: "05-06-2012",
-          name: "Nhân viên thực tập nodejs",
-          address: "tỉnh Hà nội, huyện Ba Vì",
-          profile: "/",
-          dateCreate: "22-10-2001",
-          dateExpired: "22-10-2001",
-          state: "đang chờ",
-        },
-        {
-          contactName: "Tran Anh Khoa",
-          contactPhone: "0495364898",
-          contactEmail: "yonnon@gmail.com",
-          dateSend: "05-06-2012",
-          name: "Nhân viên thực tập nodejs",
-          address: "tỉnh Hà nội, huyện Ba Vì",
-          profile: "/",
-          dateCreate: "22-10-2001",
-          dateExpired: "22-10-2001",
-          state: "dừng tuyển",
-        },
-        {
-          contactName: "Tran Anh Khoa",
-          contactPhone: "0495364898",
-          contactEmail: "yonnon@gmail.com",
-          dateSend: "05-06-2012",
-          name: "Nhân viên thực tập nodejs",
-          address: "tỉnh Hà nội, huyện Ba Vì",
-          profile: "/",
-          dateCreate: "22-10-2001",
-          dateExpired: "22-10-2001",
-          state: "đang tuyển",
-        },
-        {
-          contactName: "Tran Anh Khoa",
-          contactPhone: "0495364898",
-          contactEmail: "yonnon@gmail.com",
-          dateSend: "05-06-2012",
-          name: "Nhân viên thực tập nodejs",
-          address: "tỉnh Hà nội, huyện Ba Vì",
-          profile: "/",
-          dateCreate: "22-10-2001",
-          dateExpired: "22-10-2001",
-          state: "đang chờ",
-        },
-        {
-          contactName: "Tran Anh Khoa",
-          contactPhone: "0495364898",
-          contactEmail: "yonnon@gmail.com",
-          dateSend: "05-06-2012",
-          name: "Nhân viên thực tập nodejs",
-          address: "tỉnh Hà nội, huyện Ba Vì",
-          profile: "/",
-          dateCreate: "22-10-2001",
-          dateExpired: "22-10-2001",
-          state: "dừng tuyển",
-        },
-        {
-          contactName: "Tran Anh Khoa",
-          contactPhone: "0495364898",
-          contactEmail: "yonnon@gmail.com",
-          dateSend: "05-06-2012",
-          name: "Nhân viên thực tập nodejs",
-          address: "tỉnh Hà nội, huyện Ba Vì",
-          profile: "/",
-          dateCreate: "22-10-2001",
-          dateExpired: "22-10-2001",
-          state: "đang chờ",
-        },
-        {
-          contactName: "Tran Anh Khoa",
-          contactPhone: "0495364898",
-          contactEmail: "yonnon@gmail.com",
-          dateSend: "05-06-2012",
-          name: "Nhân viên thực tập nodejs",
-          address: "tỉnh Hà nội, huyện Ba Vì",
-          profile: "/",
-          dateCreate: "22-10-2001",
-          dateExpired: "22-10-2001",
-          state: "đang chờ",
-        },
-
-        {
-          contactName: "Tran Anh Khoa",
-          contactPhone: "0495364898",
-          contactEmail: "yonnon@gmail.com",
-          dateSend: "05-06-2012",
-          name: "Nhân viên thực tập nodejs",
-          address: "tỉnh Hà nội, huyện Ba Vì",
-          profile: "/",
-          dateCreate: "22-10-2001",
-          dateExpired: "22-10-2001",
-          state: "đã xóa",
         },
       ],
     };
@@ -255,7 +84,7 @@ export const useStoreRecruiterApplyJob = defineStore("storeRecruiterApplyJob", {
         boxClass: "bg-grey-2 text-grey-9",
         spinnerColor: "primary",
       });
-
+      console.log(data);
       try {
         this.resultImplement.acceptOne = true;
       } catch (error) {
@@ -289,6 +118,26 @@ export const useStoreRecruiterApplyJob = defineStore("storeRecruiterApplyJob", {
       this.dialogDenyOne = true;
       this.oneAccountSelectName = name;
       this.oneAccountSelectEmail = email;
+    },
+
+    async getAllDonUngTuyen() {
+      const url = "api/donungtuyen/nhatuyendung/";
+      try {
+        await api.get(url).then((res) => {
+          if (res.data) {
+            this.listData = res.data.filter((e) => {
+              if (
+                e.tintuyendung.nhatuyendung ===
+                localStorage.getItem("idNhaTuyenDung")
+              ) {
+                return e;
+              }
+            });
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
+      }
     },
   },
 });

@@ -1,15 +1,44 @@
 <script setup>
+import { onMounted, onUpdated } from 'vue';
 import { useQuasar } from 'quasar'
 import { useStoreRecruiterApplyJob } from 'src/stores/recruiter/storeRecruiterApplyJob';
+import { useStoreAuthentication } from 'src/stores/storeAuthentication';
+
 const storeRecruiterApplyJob = useStoreRecruiterApplyJob();
+const storeAuthen = useStoreAuthentication();
 const $q = useQuasar();
+
+onMounted(async () => {
+  await storeRecruiterApplyJob.getAllDonUngTuyen();
+
+  storeRecruiterApplyJob.listData.map(e => {
+    e.tieude = e.tintuyendung.tieude;
+    e.hovaten = e.ungtuyenvien.hovaten
+  })
+
+});
+
+onUpdated(() => {
+  getCount();
+});
+
+const getCount = () => {
+  storeRecruiterApplyJob.donUngTuyenDangCho = 0;
+  storeRecruiterApplyJob.donUngTuyenDaDuyet = 0;
+  storeRecruiterApplyJob.donUngTuyenTuChoi = 0;
+  storeRecruiterApplyJob.listData.map(e => {
+    e.trangthai === 'đang chờ' ? storeRecruiterApplyJob.donUngTuyenDangCho++ : void (0);
+    e.trangthai === 'đã ứng tuyển' ? storeRecruiterApplyJob.donUngTuyenDaDuyet++ : void (0);
+    e.trangthai === 'từ chối' ? storeRecruiterApplyJob.donUngTuyenTuChoi++ : void (0);
+  })
+}
 </script>
 
 <template>
   <div>
     <q-table title="HỒ SƠ ỨNG TUYỂN" virtual-scroll :columns="storeRecruiterApplyJob.columnRecruiterAccount"
-      :rows="storeRecruiterApplyJob.rowDataRecruiterAccount" style="height: 90vh" row-key="email"
-      :rows-per-page-options="[10]" class="q-my-lg q-mx-md my-sticky-header-table" rows-per-page-label="Số dòng mỗi trang"
+      :rows="storeRecruiterApplyJob.listData" style="height: 90vh" row-key="email" :rows-per-page-options="[10]"
+      class="q-my-lg q-mx-md my-sticky-header-table" rows-per-page-label="Số dòng mỗi trang"
       v-model:selected="storeRecruiterApplyJob.listSelectRecruiterAccount" selection="multiple"
       :filter="storeRecruiterApplyJob.filter">
 
@@ -22,18 +51,18 @@ const $q = useQuasar();
           <div class="header-tabs flex justify-between" style="width: 90%;">
             <q-tabs align="center" class="text-teal" dense>
               <q-tab class="text-cyan" icon="select_all"
-                :label="'Tất cả ' + '(' + storeRecruiterApplyJob.tinTuyenDung + ')'"
+                :label="'Tất cả ' + '(' + storeRecruiterApplyJob.listData.length + ')'"
                 @click="storeRecruiterApplyJob.filter = ''" v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
               <q-tab class="text-primary" icon="reply_all"
-                :label="'Đang ứng tuyển ' + '(' + storeRecruiterApplyJob.tinTuyenDungDangCho + ')'"
-                @click="storeRecruiterApplyJob.filter = 'đang ứng tuyển'"
+                :label="'Đang chờ ' + '(' + storeRecruiterApplyJob.donUngTuyenDangCho + ')'"
+                @click="storeRecruiterApplyJob.filter = 'đang chờ'"
                 v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
               <q-tab class="text-indigo" icon="directions_run"
-                :label="'Đã ứng tuyển ' + '(' + storeRecruiterApplyJob.tinTuyenDungDaDuyet + ')'"
+                :label="'Đã ứng tuyển ' + '(' + storeRecruiterApplyJob.donUngTuyenDaDuyet + ')'"
                 @click="storeRecruiterApplyJob.filter = 'đã ứng tuyển'"
                 v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
               <q-tab class="text-red" icon="cancel"
-                :label="'Đã từ chối ' + '(' + storeRecruiterApplyJob.tinTuyenDungDaDuyet + ')'"
+                :label="'Đã từ chối ' + '(' + storeRecruiterApplyJob.donUngTuyenTuChoi + ')'"
                 @click="storeRecruiterApplyJob.filter = 'đã từ chối'"
                 v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
             </q-tabs>
@@ -58,40 +87,50 @@ const $q = useQuasar();
             <q-checkbox v-model="props.selected" color="primary" />
           </td>
           <td class="text-left" key="stt" :props="props" style="width: 5%;">
-            {{ props.rowIndex }}
+            {{ props.rowIndex + 1 }}
           </td>
-          <td class="text-left" key="info" :props="props" style="width: 30%;">
-            <b style="font-size: 1.2em;"><span style="white-space: pre-wrap;">{{ props.row.contactName }}</span></b>
+          <td class="text-left" key="hovaten" :props="props" style="width: 30%;">
+            <b style="font-size: 1.2em;"><span style="white-space: pre-wrap;">{{ props.row.hovaten
+            }}</span></b>
             <br>
-            <span>Phone: {{ props.row.contactPhone }}</span>
+            <span>Phone: {{ props.row.ungtuyenvien.sdt }}</span>
             <br>
-            <span>Email: {{ props.row.contactEmail }}</span>
+            <span>Email: {{ props.row.ungtuyenvien.email }}</span>
             <br>
-            <span>Ngày nộp: {{ props.row.dateSend }}</span>
-            <br>
-            <br>
-            <a href="#" class="text-blue-5">Xem chi tiết thông tin ứng viên</a>
-          </td>
-
-          <td class="text-left cursor-pointer" key="post" :props="props" style="width: 25%;">
-            <b style="font-size: 1.2em;"><span style="white-space: pre-wrap;">{{ props.row.name }}</span></b>
+            <span>Ngày nộp: {{ new Date(props.row.createdAt).toLocaleDateString('en-GB') }}</span>
             <br>
             <br>
-            <span>Địa chỉ: {{ props.row.address }}</span>
-            <br>
-            <span>Ngày tạo: {{ props.row.dateCreate }}</span>
-            <br>
-            <span>Ngày dừng tuyển: {{ props.row.dateExpired }}</span>
+            <q-icon class="text-blue-5" name="open_in_new" size="sm" />
+            <router-link class="text-blue-5 hover-underline" :to="`/preview-cv/${props.row.ungtuyenvien._id}`"
+              target="_blank">Xem hồ sơ ứng tuyển viên</router-link>
           </td>
 
-          <td class="text-left" key="state" :props="props">
-            {{ props.row.state }}
+          <td class="text-left cursor-pointer" key="tieude" :props="props" style="width: 25%;">
+            <b style="font-size: 1.2em;"><span style="white-space: pre-wrap;">{{ props.row.tieude
+            }}</span></b>
+            <br>
+            <br>
+            <span>Địa chỉ: {{ props.row.tintuyendung.diaChi }}</span>
+            <br>
+            <span>Ngày tạo: {{ new Date(props.row.tintuyendung.createdAt).toLocaleDateString('en-GB') }}</span>
+            <br>
+            <span>Ngày dừng tuyển: {{ new Date(props.row.tintuyendung.ngayHetHan).toLocaleDateString('en-GB') }}</span>
+            <br>
+            <q-icon class="text-blue-5" name="open_in_new" size="sm" />
+            <router-link class="text-blue-5 hover-underline" :to="`/search/job/${props.row.tintuyendung._id}`"
+              target="_blank">Xem chi tiết tin tuyển dụng</router-link>
+          </td>
+
+          <td class="text-left" key="trangthai" :props="props">
+            {{ props.row.trangthai }}
           </td>
 
           <td class="text-left" key="action" :props="props">
-            <div v-if="props.row.state === 'đang tuyển'">
-              <q-btn class="q-ml-lg" color="pink" icon="cancel" label="Dừng tuyển"
-                @click="storeRecruiterApplyJob.checkDenyOne(props.row.name, props.row.email)" />
+            <div v-if="props.row.trangthai === 'đang chờ'">
+              <q-btn color="light-green" icon="check" label="Duyệt"
+                @click="storeRecruiterApplyJob.acceptOne(props.row._id)" />
+              <!-- <q-btn class="q-ml-lg" color="pink" icon="cancel" label="Dừng tuyển"
+                @click="storeRecruiterApplyJob.checkDenyOne(props.row.name, props.row.email)" /> -->
             </div>
           </td>
         </tr>
