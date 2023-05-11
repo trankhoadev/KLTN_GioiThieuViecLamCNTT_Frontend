@@ -235,7 +235,11 @@ export const useStoreJob = defineStore("storeJob", {
       try {
         await api.get(url).then((res) => {
           if (res.data) {
-            this.listData = res.data;
+            this.listData = res.data.filter((e) => {
+              if (e.trangthai === "đang tuyển") {
+                return e;
+              }
+            });
           }
         });
       } catch (error) {
@@ -271,7 +275,11 @@ export const useStoreJob = defineStore("storeJob", {
           if (res.data.length !== 0) {
             this.listDataSearch = [];
             setTimeout(() => {
-              this.listDataSearch = res.data;
+              this.listDataSearch = res.data.filter((e) => {
+                if (e.trangthai === "đang tuyển") {
+                  return e;
+                }
+              });
               this.lengthResponse = this.listDataSearch.length;
               Loading.hide();
               this.router.push("/search/" + this.searchInput);
@@ -291,7 +299,11 @@ export const useStoreJob = defineStore("storeJob", {
       try {
         await api.get(url).then((res) => {
           if (res.data.length !== 0) {
-            this.listDataSearch = res.data;
+            this.listDataSearch = res.data.filter((e) => {
+              if (e.trangthai === "đang tuyển") {
+                return e;
+              }
+            });
             this.lengthResponse = this.listDataSearch.length;
           }
         });
@@ -326,7 +338,6 @@ export const useStoreJob = defineStore("storeJob", {
       try {
         await api.get(url).then((res) => {
           if (res.data) {
-            console.log(res.data);
             this.listPostNhaTuyenDungById = res.data;
           }
         });
