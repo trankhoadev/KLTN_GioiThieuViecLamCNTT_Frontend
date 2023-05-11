@@ -2,13 +2,21 @@
 import { onMounted } from 'vue';
 import { useStoreAuthentication } from "src/stores/storeAuthentication";
 import { useStoreHoSoCv } from "src/stores/storeHoSoCv";
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
+import { Dialog } from 'quasar';
 
 const storeAuthen = useStoreAuthentication();
 const storeHoSoCv = useStoreHoSoCv();
 const route = useRoute();
 onMounted(async () => {
   await storeHoSoCv.getDataOfUserById(route.params.id);
+  if (storeHoSoCv.listData._id === undefined) {
+    Dialog.create({
+      title: "Thông báo",
+      message: "Vui lòng kiểm tra lại dữ liệu!",
+      persistent: true,
+    })
+  }
 });
 </script>
 
@@ -137,6 +145,7 @@ onMounted(async () => {
         </div>
       </q-page>
     </q-page-container>
-</q-layout></template>
+  </q-layout>
+</template>
 
 <style lang="scss" scoped></style>
