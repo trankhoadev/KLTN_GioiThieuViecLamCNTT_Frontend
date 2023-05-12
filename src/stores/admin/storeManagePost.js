@@ -133,14 +133,13 @@ export const useStoreManagePost = defineStore("storeManagePost", {
       const url = "api/tintuyendung/duyet";
       const data = {
         postId: id,
-        trangthai: "đã duyệt",
+        trangthai: "đang tuyển",
       };
 
       try {
-        await api.put(data, url).then((res) => {
-          if (res) {
+        await api.put(url, data).then((res) => {
+          if (res.data) {
             this.resultImplement.acceptOne = true;
-            return res.data;
           }
         });
       } catch (error) {

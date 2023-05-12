@@ -49,10 +49,10 @@ const $q = useQuasar();
                 @click="storeManagePost.filter = ''" v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
               <q-tab class="text-orange" icon="reply_all" :label="'Đang chờ ' + '(' + storeManagePost.tinDangCho + ')'"
                 @click="storeManagePost.filter = 'đang chờ'" v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
-              <q-tab class="text-teal" icon="done" :label="'Đang tuyển ' + '(' + storeManagePost.tinDaDuyet + ')'"
-                @click="storeManagePost.filter = ' tuyển'" v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
+              <q-tab class="text-teal" icon="done" :label="'Đồng ý ' + '(' + storeManagePost.tinDaDuyet + ')'"
+                @click="storeManagePost.filter = 'đang tuyển'" v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
               <q-tab class="text-red" icon="close" :label="'Từ chối ' + '(' + storeManagePost.tinTuChoi + ')'"
-                @click="storeManagePost.filter = 'đã hủy'" v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
+                @click="storeManagePost.filter = 'đã xóa'" v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
             </q-tabs>
           </div>
         </div>
