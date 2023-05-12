@@ -12,15 +12,16 @@ export const useStoreManagePost = defineStore("storeManagePost", {
       tinDangCho: 0,
       tinDaDuyet: 0,
       tinTuChoi: 0,
+      tinDaXoa: 0,
       isSeeDetail: ref(false),
       seeDetailSelect: "",
       dialogDenyOne: ref(false),
       confirmDenyOne: ref(false),
       dialogDenyAll: ref(false),
       confirmDenyAll: ref(false),
-      oneAccountSelectName: "",
-      oneAccountSelectId: "",
-      oneAccountSelectEmail: "",
+      onePostSelectName: "",
+      onePostSelectTitle: "",
+      onePostSelectId: "",
       filter: "",
       resultImplement: reactive({
         acceptOne: false,
@@ -40,7 +41,7 @@ export const useStoreManagePost = defineStore("storeManagePost", {
         },
 
         {
-          name: "title",
+          name: "tieude",
           required: true,
           label: "Tin tuyển dụng",
           field: "tieude",
@@ -50,17 +51,17 @@ export const useStoreManagePost = defineStore("storeManagePost", {
         },
 
         {
-          name: "name",
+          name: "tencongty",
           required: true,
           label: "Nhà tuyển dụng",
-          field: "name",
+          field: "tencongty",
           align: "left",
           sortable: true,
           headerStyle: "font-size: 1.1em; font-weight: bold",
         },
 
         {
-          name: "date",
+          name: "createdAt",
           required: true,
           label: "Ngày đăng tuyển",
           field: "createdAt",
@@ -70,7 +71,7 @@ export const useStoreManagePost = defineStore("storeManagePost", {
         },
 
         {
-          name: "state",
+          name: "trangthai",
           required: true,
           label: "Trạng thái",
           field: "trangthai",
@@ -95,10 +96,11 @@ export const useStoreManagePost = defineStore("storeManagePost", {
     _init() {},
 
     logOut() {},
-    checkDenyOne(name, id) {
+    checkDenyOne(id, title, name) {
       this.dialogDenyOne = true;
-      this.oneAccountSelectName = name;
-      this.oneAccountSelectId = id;
+      this.onePostSelectId = id;
+      this.onePostSelectTitle = title;
+      this.onePostSelectName = name;
     },
 
     checkDenyAll() {
@@ -234,17 +236,13 @@ export const useStoreManagePost = defineStore("storeManagePost", {
       const url = "api/tintuyendung/duyet";
       const data = {
         postId: id,
-        trangthai: "từ chối",
+        trangthai: "đã hủy",
       };
 
-      console.log(data);
-      return;
-
       try {
-        await api.put(data, url).then((res) => {
-          if (res) {
+        await api.put(url, data).then((res) => {
+          if (res.data) {
             this.resultImplement.denyOne = true;
-            return res.data;
           }
         });
       } catch (error) {

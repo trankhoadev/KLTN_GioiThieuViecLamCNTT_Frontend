@@ -24,8 +24,10 @@ const getCount = () => {
     e.trangthai === 'đang chờ' ? storeManagePost.tinDangCho++ : void (0);
     e.trangthai === 'đang tuyển' ? storeManagePost.tinDaDuyet++ : void (0);
     e.trangthai === 'đã hủy' ? storeManagePost.tinTuChoi++ : void (0);
+    e.trangthai === 'đã xóa' ? storeManagePost.tinDaXoa++ : void (0);
   })
 }
+
 
 const $q = useQuasar();
 </script>
@@ -33,7 +35,7 @@ const $q = useQuasar();
 <template>
   <div>
     <q-table title="QUẢN LÝ TIN ĐĂNG TUYỂN" virtual-scroll :columns="storeManagePost.columnManagePost"
-      :rows="storeManagePost.listData" :loading="storeManagePost.loadData" style="height: 90vh" row-key="name"
+      :rows="storeManagePost.listData" :loading="storeManagePost.loadData" style="height: 90vh" row-key="_id"
       :rows-per-page-options="[10]" class="q-my-lg q-mx-md" rows-per-page-label="Số dòng mỗi trang"
       v-model:selected="storeManagePost.listSelectManagePost" selection="multiple" :filter="storeManagePost.filter">
 
@@ -45,13 +47,15 @@ const $q = useQuasar();
         <div class="row">
           <div class="header-tabs flex justify-between">
             <q-tabs align="center" class="text-teal" dense>
-              <q-tab class="text-cyan" icon="select_all" :label="'Tất cả ' + '(' + storeManagePost.listData.length + ')'"
+              <q-tab class="text-orange" icon="select_all" :label="'Tất cả ' + '(' + storeManagePost.listData.length + ')'"
                 @click="storeManagePost.filter = ''" v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
-              <q-tab class="text-orange" icon="reply_all" :label="'Đang chờ ' + '(' + storeManagePost.tinDangCho + ')'"
+              <q-tab class="text-cyan" icon="reply_all" :label="'Đang chờ ' + '(' + storeManagePost.tinDangCho + ')'"
                 @click="storeManagePost.filter = 'đang chờ'" v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
               <q-tab class="text-teal" icon="done" :label="'Đồng ý ' + '(' + storeManagePost.tinDaDuyet + ')'"
                 @click="storeManagePost.filter = 'đang tuyển'" v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
-              <q-tab class="text-red" icon="close" :label="'Từ chối ' + '(' + storeManagePost.tinTuChoi + ')'"
+              <q-tab class="text-pink-4" icon="close" :label="'Từ chối ' + '(' + storeManagePost.tinTuChoi + ')'"
+                @click="storeManagePost.filter = 'đã hủy'" v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
+                <q-tab class="text-red" icon="delete" :label="'Đã xóa ' + '(' + storeManagePost.tinDaXoa + ')'"
                 @click="storeManagePost.filter = 'đã xóa'" v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
             </q-tabs>
           </div>
@@ -104,7 +108,7 @@ const $q = useQuasar();
               tiết</span>
           </td>
 
-          <td class="text-left" key="name" :props="props" style="width: 20%;">
+          <td class="text-left" key="tencongty" :props="props" style="width: 20%;">
             <p class="text-weight-bold" style="font-size: 1.1em; white-space: pre-wrap;">{{ props.row.tencongty }}</p>
             <b>Ngày tham gia: </b> <span>{{ new Date(props.row.nhatuyendung.ngaythamgia).toLocaleDateString('en-GB')
             }}</span>
@@ -115,11 +119,11 @@ const $q = useQuasar();
               tiết</span>
           </td>
 
-          <td class="text-left" key="date" :props="props" style="width: 10%;">
+          <td class="text-left" key="createdAt" :props="props" style="width: 10%;">
             <span>{{ new Date(props.row.createdAt).toLocaleDateString('en-GB') }}</span>
           </td>
 
-          <td class="text-left" key="state" :props="props" style="width: 10%;">
+          <td class="text-left" key="trangthai" :props="props" style="width: 10%;">
             <span style="white-space: pre-wrap;">{{ props.row.trangthai }}</span>
           </td>
 
@@ -127,7 +131,7 @@ const $q = useQuasar();
             <div v-if="props.row.trangthai === 'đang chờ'">
               <q-btn color="light-green" icon="check" label="Duyệt" @click="storeManagePost.acceptOne(props.row._id)" />
               <q-btn class="q-ml-lg" color="pink" icon="cancel" label="Từ chối"
-                @click="storeManagePost.checkDenyOne(props.row.tieude, props.row._id)" />
+                @click="storeManagePost.checkDenyOne(props.row._id, props.row.tieude, props.row.tencongty)" />
             </div>
           </td>
         </tr>
@@ -141,8 +145,7 @@ const $q = useQuasar();
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn flat label="Đồng ý" color="primary" v-close-popup
-            @click="storeManagePost.denyOne(storeManagePost.oneAccountSelectId)" />
+          <q-btn flat label="Đồng ý" color="primary" v-close-popup />
           <q-btn flat label="Hủy" color="primary" v-close-popup />
         </q-card-actions>
       </q-card>
@@ -153,13 +156,13 @@ const $q = useQuasar();
         <q-card-section class="row items-center">
           <q-avatar icon="warning" color="primary" text-color="white" />
           <span style="max-width: 400px;" class="q-ml-sm">Bạn có thực sự muốn từ chối tin tuyển dụng "{{
-            storeManagePost.oneAccountSelectName }}" của nhà tuyển dụng: "{{
-    storeManagePost.oneAccountSelectId }}" ?</span>
+            storeManagePost.onePostSelectTitle }}" của nhà tuyển dụng: "{{
+    storeManagePost.onePostSelectName }}" ?</span>
         </q-card-section>
 
         <q-card-actions align="right">
           <q-btn flat label="Đồng ý" color="primary" v-close-popup
-            @click="storeManagePost.denyOne(storeManagePost.oneAccountSelectId)" />
+            @click="storeManagePost.denyOne(storeManagePost.onePostSelectId)" />
           <q-btn flat label="Hủy" color="primary" v-close-popup />
         </q-card-actions>
       </q-card>
