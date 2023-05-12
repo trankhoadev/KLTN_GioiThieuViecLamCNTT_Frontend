@@ -175,7 +175,7 @@ export const useStoreManagePost = defineStore("storeManagePost", {
       }
     },
 
-    acceptAll() {
+    async acceptAll() {
       if (
         !this.listSelectManagePost ||
         this.listSelectManagePost.length === 0
@@ -199,8 +199,22 @@ export const useStoreManagePost = defineStore("storeManagePost", {
           spinnerColor: "primary",
         });
 
+        const url = "api/tintuyendung/duyet";
+
         try {
-          this.resultImplement.acceptAll = true;
+          this.listSelectManagePost.map(async (e) => {
+            if (e.trangthai === "đang chờ") {
+              const data = {
+                postId: e._id,
+                trangthai: "đang tuyển",
+              };
+              await api.put(url, data).then((res) => {
+                if (res.data) {
+                  this.resultImplement.acceptAll = true;
+                }
+              });
+            }
+          });
         } catch (error) {
         } finally {
           setTimeout(() => {
