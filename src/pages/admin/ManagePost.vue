@@ -6,6 +6,7 @@ const storeManagePost = useStoreManagePost();
 
 onMounted(async () => {
   await storeManagePost.getAllPost();
+  const $q = useQuasar();
   storeManagePost.listData.map(e => {
     // e.tieude = e.tintuyendung.tieude;
     e.tencongty = e.nhatuyendung.tencongty
@@ -20,6 +21,7 @@ const getCount = () => {
   storeManagePost.tinDangCho = 0;
   storeManagePost.tinDaDuyet = 0;
   storeManagePost.tinTuChoi = 0;
+  storeManagePost.tinDaXoa = 0;
   storeManagePost.listData.map(e => {
     e.trangthai === 'đang chờ' ? storeManagePost.tinDangCho++ : void (0);
     e.trangthai === 'đang tuyển' ? storeManagePost.tinDaDuyet++ : void (0);
@@ -27,9 +29,6 @@ const getCount = () => {
     e.trangthai === 'đã xóa' ? storeManagePost.tinDaXoa++ : void (0);
   })
 }
-
-
-const $q = useQuasar();
 </script>
 
 <template>
@@ -47,15 +46,17 @@ const $q = useQuasar();
         <div class="row">
           <div class="header-tabs flex justify-between">
             <q-tabs align="center" class="text-teal" dense>
-              <q-tab class="text-orange" icon="select_all" :label="'Tất cả ' + '(' + storeManagePost.listData.length + ')'"
-                @click="storeManagePost.filter = ''" v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
+              <q-tab class="text-orange" icon="select_all"
+                :label="'Tất cả ' + '(' + storeManagePost.listData.length + ')'" @click="storeManagePost.filter = ''"
+                v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
               <q-tab class="text-cyan" icon="reply_all" :label="'Đang chờ ' + '(' + storeManagePost.tinDangCho + ')'"
                 @click="storeManagePost.filter = 'đang chờ'" v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
               <q-tab class="text-teal" icon="done" :label="'Đồng ý ' + '(' + storeManagePost.tinDaDuyet + ')'"
-                @click="storeManagePost.filter = 'đang tuyển'" v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
+                @click="storeManagePost.filter = 'đang tuyển'"
+                v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
               <q-tab class="text-pink-4" icon="close" :label="'Từ chối ' + '(' + storeManagePost.tinTuChoi + ')'"
                 @click="storeManagePost.filter = 'đã hủy'" v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
-                <q-tab class="text-red" icon="delete" :label="'Đã xóa ' + '(' + storeManagePost.tinDaXoa + ')'"
+              <q-tab class="text-red" icon="delete" :label="'Đã xóa ' + '(' + storeManagePost.tinDaXoa + ')'"
                 @click="storeManagePost.filter = 'đã xóa'" v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
             </q-tabs>
           </div>
@@ -104,8 +105,18 @@ const $q = useQuasar();
             <br>
             <b>Lượt đánh giá: </b> <span>{{ 0 }}</span>
             <br>
-            <span class="text-primary cursor-pointer q-pt-lg" @click="storeManagePost.seeDetail(props.row._id)">Xem chi
-              tiết</span>
+            <div class="row">
+              <div class="col-6">
+                <span class="text-primary cursor-pointer q-pt-lg" @click="storeManagePost.seeDetail(props.row._id)">Xem
+                  thông
+                  tin</span>
+              </div>
+              <div v-if="props.row.trangthai === 'đang tuyển'" class="col-6">
+                <q-icon class="text-blue-5" name="open_in_new" size="sm" />
+                <router-link class="text-primary cursor-pointer q-pt-lg hover-underline"
+                  :to="`/search/job/${props.row._id}`" target="_blank">Mở trang tin tuyển dụng</router-link>
+              </div>
+            </div>
           </td>
 
           <td class="text-left" key="tencongty" :props="props" style="width: 20%;">
@@ -132,6 +143,11 @@ const $q = useQuasar();
               <q-btn color="light-green" icon="check" label="Duyệt" @click="storeManagePost.acceptOne(props.row._id)" />
               <q-btn class="q-ml-lg" color="pink" icon="cancel" label="Từ chối"
                 @click="storeManagePost.checkDenyOne(props.row._id, props.row.tieude, props.row.tencongty)" />
+            </div>
+
+            <div v-if="props.row.trangthai === 'đang tuyển'">
+              <q-btn class="q-ml-lg" color="pink" icon="delete" label="Xóa tin"
+                @click="storeManagePost.checkDeleteOne(props.row._id, props.row.tieude, props.row.tencongty)" />
             </div>
           </td>
         </tr>
@@ -163,6 +179,23 @@ const $q = useQuasar();
         <q-card-actions align="right">
           <q-btn flat label="Đồng ý" color="primary" v-close-popup
             @click="storeManagePost.denyOne(storeManagePost.onePostSelectId)" />
+          <q-btn flat label="Hủy" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
+    <q-dialog v-model="storeManagePost.dialogDeleteOne" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar icon="warning" color="primary" text-color="white" />
+          <span style="max-width: 400px;" class="q-ml-sm">Bạn có thực sự muốn xóa tin tuyển dụng "{{
+            storeManagePost.onePostSelectTitle }}" của nhà tuyển dụng: "{{
+    storeManagePost.onePostSelectName }}" ?</span>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Đồng ý" color="primary" v-close-popup
+            @click="storeManagePost.deleteOne(storeManagePost.onePostSelectId)" />
           <q-btn flat label="Hủy" color="primary" v-close-popup />
         </q-card-actions>
       </q-card>

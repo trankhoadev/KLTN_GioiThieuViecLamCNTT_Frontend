@@ -16,6 +16,7 @@ export const useStoreManagePost = defineStore("storeManagePost", {
       isSeeDetail: ref(false),
       seeDetailSelect: "",
       dialogDenyOne: ref(false),
+      dialogDeleteOne: ref(false),
       confirmDenyOne: ref(false),
       dialogDenyAll: ref(false),
       confirmDenyAll: ref(false),
@@ -28,6 +29,7 @@ export const useStoreManagePost = defineStore("storeManagePost", {
         acceptAll: false,
         denyOne: false,
         denyAll: false,
+        deleteOne: false,
       }),
       columnManagePost: [
         {
@@ -308,6 +310,61 @@ export const useStoreManagePost = defineStore("storeManagePost", {
         }, 1000);
       }
     },
+
+    checkDeleteOne(id, title, name) {
+      this.dialogDeleteOne = true;
+      this.onePostSelectId = id;
+      this.onePostSelectTitle = title;
+      this.onePostSelectName = name;
+    },
+
+    async deleteOne(id) {
+      Loading.show({
+        message: "Đang xử lí...",
+        boxClass: "bg-grey-2 text-grey-9",
+        spinnerColor: "primary",
+      });
+
+      const url = "api/tintuyendung/duyet";
+      const data = {
+        postId: id,
+        trangthai: "đã xóa",
+      };
+
+      try {
+        await api.put(url, data).then((res) => {
+          if (res.data) {
+            this.resultImplement.deleteOne = true;
+          }
+        });
+      } catch (error) {
+        console.log("Internal Server Error: ", error);
+      } finally {
+        setTimeout(() => {
+          if (this.resultImplement.deleteOne) {
+            Loading.hide();
+            Notify.create({
+              message: "Thao tác thành công",
+              position: "bottom",
+              timeout: 2000,
+              color: "green",
+              icon: "mood",
+            });
+            setTimeout(() => {
+              return window.location.reload();
+            }, 1500);
+          } else {
+            Loading.hide();
+            Dialog.create({
+              message: "Thao tác thất bại! Vui lòng thử lại.",
+              title: "Thông báo",
+              color: "red",
+            });
+          }
+        }, 1000);
+      }
+    },
+
     seeDetail(data) {
       this.isSeeDetail = true;
       this.seeDetailSelect = data;
