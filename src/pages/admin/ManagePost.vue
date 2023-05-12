@@ -1,8 +1,11 @@
 <script setup>
 import { useQuasar } from 'quasar'
 import { useStoreManagePost } from 'src/stores/admin/storeManagePost.js';
+import { useStoreRecruiterPost } from 'src/stores/recruiter/storeRecruiterPost';
 import { onMounted, onUpdated, onBeforeUpdate } from 'vue';
+
 const storeManagePost = useStoreManagePost();
+const storeRecruiterPost = useStoreRecruiterPost();
 
 onMounted(async () => {
   await storeManagePost.getAllPost();
@@ -29,6 +32,7 @@ const getCount = () => {
     e.trangthai === 'đã xóa' ? storeManagePost.tinDaXoa++ : void (0);
   })
 }
+console.log(storeManagePost.listData);
 </script>
 
 <template>
@@ -107,9 +111,8 @@ const getCount = () => {
             <br>
             <div class="row">
               <div class="col-6">
-                <span class="text-primary cursor-pointer q-pt-lg" @click="storeManagePost.seeDetail(props.row._id)">Xem
-                  thông
-                  tin</span>
+                <span class="text-primary cursor-pointer q-pt-lg" @click="storeRecruiterPost.seeDetail(props.row._id)">Xem
+                  thông tin</span>
               </div>
               <div v-if="props.row.trangthai === 'đang tuyển'" class="col-6">
                 <q-icon class="text-blue-5" name="open_in_new" size="sm" />
@@ -126,7 +129,8 @@ const getCount = () => {
             <br>
             <b>Loại Nhà Tuyển Dụng: </b> <span>{{ props.row.nhatuyendung.loainhatuyendung }}</span>
             <br>
-            <span class="text-primary cursor-pointer q-pt-lg" @click="storeManagePost.seeDetail(props.row._id)">Xem chi
+            <span class="text-primary cursor-pointer q-pt-lg"
+              @click="storeManagePost.seeDetail(props.row.nhatuyendung._id)">Xem chi
               tiết</span>
           </td>
 
@@ -154,19 +158,71 @@ const getCount = () => {
       </template>
     </q-table>
 
-    <q-dialog v-model="storeManagePost.isSeeDetail" persistent>
+    <!-- Xem chi tiết thông tin nhà tuyển dụng -->
+    <q-dialog v-model="storeManagePost.isSeeDetail">
       <q-card>
         <q-card-section class="row items-center">
-          {{ storeManagePost.seeDetailSelect }}
-        </q-card-section>
+          <!-- {{ storeManagePost.listDataOneRecruiter }} -->
+          <div class="col-md-3">
+            <img :src=storeManagePost.listDataOneRecruiter.anhdaidien style="width: 100%;" alt="">
+          </div>
+          <div class="col-md-9 flex flex-center text-justify q-px-md text-weight-bold">
+            <h6>{{ storeManagePost.listDataOneRecruiter.tencongty }}</h6>
+          </div>
 
+          <div class="col-12">
+            <p><b>Địa chỉ: </b> {{ storeManagePost.listDataOneRecruiter.diachi }}</p>
+          </div>
+
+          <div class="col-12">
+            <p><b>Địa chỉ website: </b> {{ storeManagePost.listDataOneRecruiter.diachiWebsite }}</p>
+          </div>
+
+          <div class="col-12">
+            <p><b>Tên người tạo: </b> {{ storeManagePost.listDataOneRecruiter.tennhatuyendung }}</p>
+          </div>
+
+          <div class="col-12">
+            <p><b>Email: </b> {{ storeManagePost.listDataOneRecruiter.email }}</p>
+          </div>
+
+          <div class="col-12">
+            <p><b>Loại nhà tuyển dụng: </b> {{ storeManagePost.listDataOneRecruiter.loainhatuyendung }}</p>
+          </div>
+
+          <div class="row">
+            <div class="col-6 flex flex-center">
+              <q-input color="teal" filled v-model="storeManagePost.listDataOneRecruiter.dateCreate"
+                label="Ngày thành lập">
+                <template v-slot:prepend>
+                  <q-icon name="event" />
+                </template>
+              </q-input>
+            </div>
+
+            <div class="col-6 flex justify-end q-pl-md">
+              <q-input color="teal" filled v-model="storeManagePost.listDataOneRecruiter.dateJoin" label="Ngày tham gia">
+                <template v-slot:prepend>
+                  <q-icon name="event" />
+                </template>
+              </q-input>
+            </div>
+          </div>
+
+          <div class="row q-pt-md">
+            <div class="col-12">
+              <h6 class="text-weight-bold text-uppercase">Mô tả công ty</h6>
+              <p class="text-justify q-pr-sm">{{ storeManagePost.listDataOneRecruiter.mota }}</p>
+            </div>
+          </div>
+        </q-card-section>
         <q-card-actions align="right">
-          <q-btn flat label="Đồng ý" color="primary" v-close-popup />
-          <q-btn flat label="Hủy" color="primary" v-close-popup />
+          <q-btn flat label="Cancel" color="primary" v-close-popup />
         </q-card-actions>
       </q-card>
     </q-dialog>
 
+    <!-- Check từ chối tin tuyển dụng -->
     <q-dialog v-model="storeManagePost.dialogDenyOne" persistent>
       <q-card>
         <q-card-section class="row items-center">
@@ -184,6 +240,7 @@ const getCount = () => {
       </q-card>
     </q-dialog>
 
+    <!-- Check xóa tin tuyển dụng -->
     <q-dialog v-model="storeManagePost.dialogDeleteOne" persistent>
       <q-card>
         <q-card-section class="row items-center">
@@ -197,6 +254,96 @@ const getCount = () => {
           <q-btn flat label="Đồng ý" color="primary" v-close-popup
             @click="storeManagePost.deleteOne(storeManagePost.onePostSelectId)" />
           <q-btn flat label="Hủy" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
+    <!-- Xem nhanh tin tuyển dụng -->
+    <q-dialog v-model="storeRecruiterPost.dialogViewPost" class="q-pa-md q-gutter-sm">
+      <!-- {{ storeRecruiterPost.listData.map(e => e._id === storeRecruiterPost.seeDetailSelect) }} -->
+      <q-card style="min-width: 80vw;">
+        <q-card-section>
+          <div>
+            <label class="text-weight-bold">Tiêu đề: </label>
+            <q-input filled v-model="storeRecruiterPost.listOnePost.tieude" disable readonly />
+          </div>
+
+          <div class="q-pt-md">
+            <label class="text-weight-bold">Địa chỉ tuyển dụng: </label>
+            <q-input filled v-model="storeRecruiterPost.listOnePost.diaChi" disable readonly />
+          </div>
+
+          <div class="q-pt-md">
+            <label class="text-weight-bold">Nhà tuyển dụng: </label>
+            <q-input filled v-model="storeRecruiterPost.listOnePost.nhatuyendung.tencongty" disable readonly />
+          </div>
+
+          <div class="row q-pt-md">
+            <div class="col-12 col-md-6"
+              v-bind:style="$q.screen.lt.md ? { 'padding-right': '0' } : { 'padding-right': '1em' }">
+              <label class="text-weight-bold">Vị trí: </label>
+              <q-input filled v-model="storeRecruiterPost.listOnePost.vitri" disable readonly />
+            </div>
+
+            <div class="col-12 col-md-6"
+              v-bind:style="$q.screen.lt.md ? { 'padding-left': '0' } : { 'padding-left': '1em' }">
+              <label class="text-weight-bold">Số lượng tuyển: </label>
+              <q-input filled v-model="storeRecruiterPost.listOnePost.soLuongTuyen" disable readonly />
+            </div>
+          </div>
+
+          <div class="row q-pt-md">
+            <div class="col-12 col-md-6"
+              v-bind:style="$q.screen.lt.md ? { 'padding-right': '0' } : { 'padding-right': '1em' }">
+              <label class="text-weight-bold">Hình thức làm việc: </label>
+              <q-input filled v-model="storeRecruiterPost.listOnePost.hinhThucLamViec" disable readonly />
+            </div>
+
+            <div class="col-12 col-md-6"
+              v-bind:style="$q.screen.lt.md ? { 'padding-left': '0' } : { 'padding-left': '1em' }">
+              <label class="text-weight-bold">Mức lương: </label>
+              <q-input filled v-model="storeRecruiterPost.listOnePost.mucluong" disable readonly />
+            </div>
+          </div>
+
+          <div class="row q-pt-md">
+            <div class="col-12 col-md-4">
+              <label class="text-weight-bold">Tên liên hệ: </label>
+              <q-input filled v-model="storeRecruiterPost.listOnePost.tenNguoiLienHe" disable readonly />
+            </div>
+
+            <div class="col-12 col-md-4"
+              v-bind:style="$q.screen.lt.md ? { 'padding': '0' } : { 'padding': '0 1em 0 1em' }">
+              <label class="text-weight-bold">Số điện thoại: </label>
+              <q-input filled v-model="storeRecruiterPost.listOnePost.soDienThoaiLienHe" disable readonly />
+            </div>
+
+            <div class="col-12 col-md-4">
+              <label class="text-weight-bold">Email: </label>
+              <q-input filled v-model="storeRecruiterPost.listOnePost.emailLienHe" disable readonly />
+            </div>
+          </div>
+
+          <div class="q-pt-md">
+            <label class="text-weight-bold">Mô tả công việc: </label>
+            <p class="q-px-md" style="white-space: pre-wrap; line-height: 35px;"> - {{
+              storeRecruiterPost.listOnePost.moTaCongViec.replace(/\n/gi, "\n - ") }}</p>
+          </div>
+
+          <div class="q-pt-md">
+            <label class="text-weight-bold">Mô tả yêu cầu: </label>
+            <p class="q-px-md" style="white-space: pre-wrap; line-height: 35px;"> - {{
+              storeRecruiterPost.listOnePost.moTaYeuCau.replace(/\n/gi, "\n - ") }}</p>
+          </div>
+
+          <div class="q-pt-md">
+            <label class="text-weight-bold">Quyền lợi ứng viên: </label>
+            <p class="q-px-md" style="white-space: pre-wrap; line-height: 35px;"> - {{
+              storeRecruiterPost.listOnePost.quyenLoiUngVien.replace(/\n/gi, "\n - ") }}</p>
+          </div>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="Cancel" color="primary" v-close-popup />
         </q-card-actions>
       </q-card>
     </q-dialog>

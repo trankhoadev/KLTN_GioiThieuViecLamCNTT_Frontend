@@ -7,6 +7,7 @@ export const useStoreManagePost = defineStore("storeManagePost", {
   state: () => {
     return {
       listData: [],
+      listDataOneRecruiter: [],
       loadData: false,
       listSelectManagePost: ref(),
       tinDangCho: 0,
@@ -365,9 +366,30 @@ export const useStoreManagePost = defineStore("storeManagePost", {
       }
     },
 
-    seeDetail(data) {
+    async getNhaTuyenDungById(id) {
+      const url = "api/nhatuyendung/" + id;
+      try {
+        await api.get(url).then((res) => {
+          if (res.data) {
+            this.listDataOneRecruiter = res.data;
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
+      } finally {
+        this.listDataOneRecruiter.dateCreate = new Date(
+          this.listDataOneRecruiter.ngaythanhlap
+        ).toLocaleDateString("en-GB");
+        this.listDataOneRecruiter.dateJoin = new Date(
+          this.listDataOneRecruiter.ngaythamgia
+        ).toLocaleDateString("en-GB");
+      }
+    },
+
+    async seeDetail(data) {
       this.isSeeDetail = true;
-      this.seeDetailSelect = data;
+      await this.getNhaTuyenDungById(data);
+      // this.seeDetailSelect = data;
     },
 
     async getAllPost() {
