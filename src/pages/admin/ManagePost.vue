@@ -149,6 +149,10 @@ console.log(storeManagePost.listData);
                 @click="storeManagePost.checkDenyOne(props.row._id, props.row.tieude, props.row.tencongty)" />
             </div>
 
+            <div v-if="props.row.trangthai === 'đã hủy'">
+              <q-btn color="light-green" icon="check" label="Khôi phục" @click="storeManagePost.acceptOne(props.row._id)" />
+            </div>
+
             <div v-if="props.row.trangthai === 'đang tuyển'">
               <q-btn class="q-ml-lg" color="pink" icon="delete" label="Xóa tin"
                 @click="storeManagePost.checkDeleteOne(props.row._id, props.row.tieude, props.row.tencongty)" />
