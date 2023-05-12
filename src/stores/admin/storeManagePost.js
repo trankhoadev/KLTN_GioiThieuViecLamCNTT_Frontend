@@ -297,8 +297,22 @@ export const useStoreManagePost = defineStore("storeManagePost", {
         spinnerColor: "primary",
       });
 
+      const url = "api/tintuyendung/duyet";
+
       try {
-        this.resultImplement.denyAll = true;
+        this.listSelectManagePost.map(async (e) => {
+          if (e.trangthai === "đang chờ") {
+            const data = {
+              postId: e._id,
+              trangthai: "đã hủy",
+            };
+            await api.put(url, data).then((res) => {
+              if (res.data) {
+                this.resultImplement.denyAll = true;
+              }
+            });
+          }
+        });
       } catch (error) {
       } finally {
         setTimeout(() => {
