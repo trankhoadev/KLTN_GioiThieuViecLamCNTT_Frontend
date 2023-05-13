@@ -143,7 +143,7 @@ const clickExpandPrize = () => {
                 </li>
               </ul>
 
-              <router-link to="preview-cv" target='_blank'> <q-btn color="red" class="q-mt-lg q-ml-md"
+              <router-link :to="`/preview-cv/${storeAuthen.idUngTuyenVien}`" target='_blank'> <q-btn color="red" class="q-mt-lg q-ml-md"
                   label="Xem và Tải CV" /></router-link>
             </div>
 
