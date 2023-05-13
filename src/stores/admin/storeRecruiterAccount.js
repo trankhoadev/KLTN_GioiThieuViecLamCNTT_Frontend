@@ -391,7 +391,6 @@ export const useStoreRecruiterAccount = defineStore("storeRecruiterAccount", {
         await api.get(url).then((res) => {
           if (res.data) {
             this.listData = res.data.filter((e) => {
-              console.log(e);
               if (e.loaitaikhoan === "recruiter") {
                 return e;
               }

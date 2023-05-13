@@ -9,10 +9,9 @@ export const useStoreEmployeeAccount = defineStore("storeEmployeeAccount", {
       filter: "",
       listData: [],
       listSelectEmployeeAccount: ref(),
-      taiKhoanUtv: 0,
-      taiKhoanUtvDangCho: 0,
-      taiKhoanUtvDaDuyet: 0,
-      taiKhoanUtvTuChoi: 0,
+      taiKhoanUtvDangHoatDong: 0,
+      taiKhoanUtvDaKhoa: 0,
+      dialogResetOne: ref(false),
       dialogDenyOne: ref(false),
       confirmDenyOne: ref(false),
       dialogDenyAll: ref(false),
@@ -24,6 +23,9 @@ export const useStoreEmployeeAccount = defineStore("storeEmployeeAccount", {
         acceptAll: false,
         denyOne: false,
         denyAll: false,
+        resetOne: false,
+        blockOne: false,
+        unblockOne: false,
       }),
       columnEmployeeAccount: [
         {
@@ -37,10 +39,10 @@ export const useStoreEmployeeAccount = defineStore("storeEmployeeAccount", {
         },
 
         {
-          name: "name",
+          name: "username",
           required: true,
-          label: "Tên ứng tuyển viên",
-          field: "name",
+          label: "Tên nhà tuyển dụng",
+          field: "username",
           align: "left",
           sortable: true,
           headerStyle: "font-size: 1.1em; font-weight: bold",
@@ -57,20 +59,20 @@ export const useStoreEmployeeAccount = defineStore("storeEmployeeAccount", {
         },
 
         {
-          name: "date",
+          name: "createdAt",
           required: true,
           label: "Ngày đăng ký",
-          field: "date",
+          field: "createdAt",
           align: "left",
           sortable: true,
           headerStyle: "font-size: 1.1em; font-weight: bold",
         },
 
         {
-          name: "state",
+          name: "statusOnline",
           required: true,
           label: "Trạng thái",
-          field: "state",
+          field: "statusOnline",
           align: "left",
           sortable: true,
           headerStyle: "font-size: 1.1em; font-weight: bold",
@@ -85,94 +87,6 @@ export const useStoreEmployeeAccount = defineStore("storeEmployeeAccount", {
           headerStyle: "font-size: 1.1em; font-weight: bold",
         },
       ],
-      /*
-        state: {
-          0： từ chối
-          1: đã duyệt
-          2: đang chờ
-        }
-      */
-      rowDataEmployeeAccount: [
-        {
-          name: "yonnon1 ayonnon@gmail.com ayonnon@gmail.com ayonnon@gmail.com ayonnon@gmail.com",
-          email:
-            "ayonnon@gmail.com ayonnon@gmail.com ayonnon@gmail.com ayonnon@gmail.com",
-          date: "22-10-2001",
-          state: "đang chờ",
-        },
-        {
-          name: "yonnon2",
-          email: "byonnon@gmail.com",
-          date: "22-10-2004",
-          state: "đang chờ",
-        },
-        {
-          name: "yonnon3",
-          email: "cyonnon@gmail.com",
-          date: "22-10-2004",
-          state: "đã duyệt",
-        },
-        {
-          name: "yonnon4",
-          email: "dyonnon@gmail.com",
-          date: "22-10-2004",
-          state: "đã hủy",
-        },
-        {
-          name: "yonnon5",
-          email: "dawdawyonnon@gmail.com",
-          date: "22-10-2004",
-          state: "đang chờ",
-        },
-        {
-          name: "yonnon6",
-          email: "byfawfwaonnon@gmail.com",
-          date: "22-10-2004",
-          state: "đã duyệt",
-        },
-        {
-          name: "yonnon7",
-          email: "byofafannon@gmail.com",
-          date: "22-10-2004",
-          state: "đang chờ",
-        },
-        {
-          name: "yonnon8",
-          email: "byonwdnon@gmail.com",
-          date: "22-10-2004",
-          state: "đã hủy",
-        },
-        {
-          name: "yonnon9",
-          email: "byonnfawfawon@gmail.com",
-          date: "22-10-2004",
-          state: "đã duyệt",
-        },
-        {
-          name: "yonnon10",
-          email: "byonnofda awfawn@gmail.com",
-          date: "22-10-2004",
-          state: "đang chờ",
-        },
-        {
-          name: "yonnon11",
-          email: "byonnofawfawn@gmail.com",
-          date: "22-10-2004",
-          state: "đã hủy",
-        },
-        {
-          name: "yonnon12",
-          email: "byofawnnon@gmail.com",
-          date: "22-10-2004",
-          state: "đang chờ",
-        },
-        {
-          name: "yonnon13",
-          email: "byonfawnon@gmail.com",
-          date: "22-10-2004",
-          state: "đang chờ",
-        },
-      ],
     };
   },
   getters: {},
@@ -183,6 +97,20 @@ export const useStoreEmployeeAccount = defineStore("storeEmployeeAccount", {
     /* For Employee User */
     checkDenyOne(name, email) {
       this.dialogDenyOne = true;
+      this.oneAccountSelectName = name;
+      this.oneAccountSelectEmail = email;
+    },
+
+    checkDenyOne(id, name, email) {
+      this.dialogDenyOne = true;
+      this.oneAccountSelectId = id;
+      this.oneAccountSelectName = name;
+      this.oneAccountSelectEmail = email;
+    },
+
+    checkResetOne(id, name, email) {
+      this.dialogResetOne = true;
+      this.oneAccountSelectId = id;
       this.oneAccountSelectName = name;
       this.oneAccountSelectEmail = email;
     },
@@ -372,16 +300,155 @@ export const useStoreEmployeeAccount = defineStore("storeEmployeeAccount", {
       }
     },
 
-    getAllData() {
+    /* get all tai khoan ung tuyen vien */
+    async getAllData() {
       const url = "api/user";
       try {
-        api.get(url).then((res) => {
+        await api.get(url).then((res) => {
           if (res.data) {
-            this.listData = res.data;
+            this.listData = res.data.filter((e) => {
+              if (e.loaitaikhoan === "user") {
+                return e;
+              }
+            });
           }
         });
       } catch (err) {
         console.log("Internal Server Error: ", err);
+      }
+    },
+
+    /* reset passwork */
+    async resetPasswork(id) {
+      Loading.show({
+        message: "Đang xử lí...",
+        boxClass: "bg-grey-2 text-grey-9",
+        spinnerColor: "primary",
+      });
+
+      const url = "api/user/forgot-password/" + id + "/reset";
+      const data = {
+        password: "123456",
+      };
+
+      try {
+        api.post(url, data).then((res) => {
+          if (res.data) {
+            this.resultImplement.resetOne = true;
+          }
+        });
+      } catch (error) {
+      } finally {
+        setTimeout(() => {
+          if (this.resultImplement.resetOne) {
+            Loading.hide();
+            Notify.create({
+              message: "Thao tác thành công",
+              position: "bottom",
+              timeout: 2000,
+              color: "green",
+              icon: "mood",
+            });
+            setTimeout(() => {
+              return window.location.reload();
+            }, 1500);
+          } else {
+            Loading.hide();
+            Dialog.create({
+              message: "Thao tác thất bại! Vui lòng thử lại.",
+              title: "Thông báo",
+              color: "red",
+            });
+          }
+        }, 1000);
+      }
+    },
+
+    /* reset passwork */
+    async voHieuHoaTaiKhoan(id) {
+      Loading.show({
+        message: "Đang xử lí...",
+        boxClass: "bg-grey-2 text-grey-9",
+        spinnerColor: "primary",
+      });
+
+      const url = "api/user/" + id;
+
+      try {
+        api.put(url).then((res) => {
+          if (res.data) {
+            this.resultImplement.blockOne = true;
+          }
+        });
+      } catch (error) {
+      } finally {
+        setTimeout(() => {
+          if (this.resultImplement.blockOne) {
+            Loading.hide();
+            Notify.create({
+              message: "Thao tác thành công",
+              position: "bottom",
+              timeout: 2000,
+              color: "green",
+              icon: "mood",
+            });
+            setTimeout(() => {
+              return window.location.reload();
+            }, 1500);
+          } else {
+            Loading.hide();
+            Dialog.create({
+              message: "Thao tác thất bại! Vui lòng thử lại.",
+              title: "Thông báo",
+              color: "red",
+            });
+          }
+        }, 1000);
+      }
+    },
+
+    /* reset passwork */
+    async khoiPhucTaiKhoan(id) {
+      Loading.show({
+        message: "Đang xử lí...",
+        boxClass: "bg-grey-2 text-grey-9",
+        spinnerColor: "primary",
+      });
+
+      const url = "api/user/unblockuser/" + id;
+      console.log(url);
+      console.log(id);
+
+      try {
+        api.put(url).then((res) => {
+          if (res.data) {
+            this.resultImplement.unblockOne = true;
+          }
+        });
+      } catch (error) {
+      } finally {
+        setTimeout(() => {
+          if (this.resultImplement.unblockOne) {
+            Loading.hide();
+            Notify.create({
+              message: "Thao tác thành công",
+              position: "bottom",
+              timeout: 2000,
+              color: "green",
+              icon: "mood",
+            });
+            setTimeout(() => {
+              return window.location.reload();
+            }, 1500);
+          } else {
+            Loading.hide();
+            Dialog.create({
+              message: "Thao tác thất bại! Vui lòng thử lại.",
+              title: "Thông báo",
+              color: "red",
+            });
+          }
+        }, 1000);
       }
     },
   },

@@ -2,6 +2,7 @@
 import { useQuasar } from 'quasar'
 import { useStoreEmployeeAccount } from 'src/stores/admin/storeEmployeeAccount.js';
 import { onMounted } from 'vue';
+import { onBeforeUpdate } from 'vue';
 const storeEmployeeAccount = useStoreEmployeeAccount();
 const $q = useQuasar();
 
@@ -9,38 +10,47 @@ onMounted(() => {
   storeEmployeeAccount.getAllData();
 });
 
+onBeforeUpdate(() => {
+  getCount();
+});
+
+const getCount = () => {
+  storeEmployeeAccount.taiKhoanUtvDangHoatDong = 0;
+  storeEmployeeAccount.taiKhoanUtvDaKhoa = 0;
+  storeEmployeeAccount.listData.map(e => {
+    e.statusOnline === true ? storeEmployeeAccount.taiKhoanUtvDangHoatDong++ : void (0);
+    e.statusOnline === false ? storeEmployeeAccount.taiKhoanUtvDaKhoa++ : void (0);
+  })
+}
+
 </script>
 
 <template>
   <div>
-    <q-table title="DUYỆT TÀI KHOẢN ỨNG TUYỂN VIÊN" virtual-scroll :columns="storeEmployeeAccount.columnEmployeeAccount"
-      :rows="storeEmployeeAccount.rowDataEmployeeAccount" style="height: 90vh" row-key="email"
-      :rows-per-page-options="[0]" class="q-my-lg q-mx-md" rows-per-page-label="Số dòng mỗi trang"
+    <q-table title="QUẢN LÝ TÀI KHOẢN ỨNG TUYỂN VIÊN" virtual-scroll :columns="storeEmployeeAccount.columnEmployeeAccount"
+      :rows="storeEmployeeAccount.listData" style="height: 90vh" row-key="_id" :rows-per-page-options="[10]"
+      class="q-my-lg q-mx-md" rows-per-page-label="Số dòng mỗi trang"
       v-model:selected="storeEmployeeAccount.listSelectEmployeeAccount" selection="multiple"
       :filter="storeEmployeeAccount.filter">
 
       <template v-slot:top-left>
         <div class="row">
-          <h5 class="q-py-md">DUYỆT TÀI KHOẢN ỨNG TUYỂN VIÊN</h5>
-          <pre>{{ storeEmployeeAccount.listData }}</pre>
+          <h5 class="q-py-md">QUẢN LÝ TÀI KHOẢN ỨNG TUYỂN VIÊN</h5>
         </div>
 
         <div class="row">
           <div class="header-tabs flex justify-between">
             <q-tabs align="center" class="text-teal" dense>
-              <q-tab class="text-cyan" icon="select_all" :label="'Tất cả ' + '(' + storeEmployeeAccount.taiKhoanUtv + ')'"
+              <q-tab class="text-orange" icon="select_all"
+                :label="'Tất cả ' + '(' + storeEmployeeAccount.listData.length + ')'"
                 @click="storeEmployeeAccount.filter = ''" v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
-              <q-tab class="text-orange" icon="reply_all"
-                :label="'Đang chờ ' + '(' + storeEmployeeAccount.taiKhoanUtvDangCho + ')'"
-                @click="storeEmployeeAccount.filter = 'đang chờ'"
-                v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
               <q-tab class="text-teal" icon="done"
-                :label="'Đã duyệt ' + '(' + storeEmployeeAccount.taiKhoanUtvDaDuyet + ')'"
-                @click="storeEmployeeAccount.filter = 'đã duyệt'"
+                :label="'Đang hoạt động ' + '(' + storeEmployeeAccount.taiKhoanUtvDangHoatDong + ')'"
+                @click="storeEmployeeAccount.filter = 'true'"
                 v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
               <q-tab class="text-red" icon="close"
-                :label="'Từ chối ' + '(' + storeEmployeeAccount.taiKhoanUtvTuChoi + ')'"
-                @click="storeEmployeeAccount.filter = 'đã hủy'"
+                :label="'Đã khóa ' + '(' + storeEmployeeAccount.taiKhoanUtvDaKhoa + ')'"
+                @click="storeEmployeeAccount.filter = 'false'"
                 v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
             </q-tabs>
           </div>
@@ -56,8 +66,8 @@ onMounted(() => {
               <q-btn flat round color="primary" icon="search" />
             </template>
           </q-input>
-          <q-btn color="primary" icon="check" label="Duyệt tất cả" @click="storeEmployeeAccount.acceptAll" />
-          <q-btn color="red" icon="close" label="Từ chối tất cả" @click="storeEmployeeAccount.checkDenyAll" />
+          <!-- <q-btn color="primary" icon="check" label="Duyệt tất cả" @click="storeEmployeeAccount.acceptAll" />
+          <q-btn color="red" icon="close" label="Từ chối tất cả" @click="storeEmployeeAccount.checkDenyAll" /> -->
 
           <q-dialog v-model="storeEmployeeAccount.dialogDenyAll" persistent>
             <q-card>
@@ -82,28 +92,33 @@ onMounted(() => {
           <td class="text-left" key="stt" :props="props" style="width: 5%;">
             {{ props.rowIndex + 1 }}
           </td>
-          <td class="text-left" key="name" :props="props" style="width: 25%;">
-            <span style="white-space: pre-wrap;">{{ props.row.name }}</span>
+          <td class="text-left" key="username" :props="props">
+            <span style="white-space: pre-wrap;">{{ props.row.username }}</span>
           </td>
 
-          <td class="text-left" key="email" :props="props" style="width: 20%;">
+          <td class="text-left" key="email" :props="props">
             <span style="white-space: pre-wrap;">{{ props.row.email }}</span>
           </td>
 
-          <td class="text-left" key="date" :props="props">
-            {{ props.row.date }}
+          <td class="text-left" key="createdAt" :props="props">
+            {{ new Date(props.row.createdAt).toLocaleDateString('en-GB') }}
           </td>
 
-          <td class="text-left" key="date" :props="props">
-            {{ props.row.state }}
+          <td class="text-left" key="statusOnline" :props="props">
+            {{ props.row.statusOnline ? "đang hoạt động" : "đã khóa" }}
           </td>
 
           <td class="text-left" key="action" :props="props">
-            <div v-if="props.row.state === 'đang chờ'">
-              <q-btn color="light-green" icon="check" label="Duyệt"
-                @click="storeEmployeeAccount.acceptOne(props.row.email)" />
-              <q-btn class="q-ml-lg" color="pink" icon="cancel" label="Từ chối"
-                @click="storeEmployeeAccount.checkDenyOne(props.row.name, props.row.email)" />
+            <div v-if="props.row.statusOnline === true">
+              <q-btn color="secondary" icon="restart_alt" label="Reset mật khẩu"
+                @click="storeEmployeeAccount.checkResetOne(props.row._id, props.row.username, props.row.email)" />
+              <q-btn class="q-ml-lg" color="pink" icon="lock" label="Vô hiệu hóa"
+                @click="storeEmployeeAccount.checkDenyOne(props.row._id, props.row.username, props.row.email)" />
+            </div>
+
+            <div v-else>
+              <q-btn color="light-green" icon="restore" label="Khôi phục"
+                @click="storeEmployeeAccount.khoiPhucTaiKhoan(props.row._id)" />
             </div>
           </td>
         </tr>
@@ -114,13 +129,30 @@ onMounted(() => {
       <q-card>
         <q-card-section class="row items-center">
           <q-avatar icon="warning" color="primary" text-color="white" />
-          <span style="max-width: 400px;" class="q-ml-sm">Bạn có thực sự muốn từ chối người dùng "{{
-            storeEmployeeAccount.oneAccountSelectName }}" với email đăng ký là: "{{
-    storeEmployeeAccount.oneAccountSelectEmail }}" ?</span>
+          <span style="max-width: 400px;" class="q-ml-sm text-justify">Bạn có thực sự muốn vô hiệu hóa tài khoản "{{
+            storeEmployeeAccount.oneAccountSelectEmail }}" của người dùng: "{{
+    storeEmployeeAccount.oneAccountSelectName }}" ?</span>
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn flat label="Đồng ý" color="primary" v-close-popup @click="storeEmployeeAccount.denyOne" />
+          <q-btn flat label="Đồng ý" color="primary" v-close-popup
+            @click="storeEmployeeAccount.voHieuHoaTaiKhoan(storeEmployeeAccount.oneAccountSelectId)" />
+          <q-btn flat label="Hủy" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
+    <q-dialog v-model="storeEmployeeAccount.dialogResetOne">
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar icon="warning" color="primary" text-color="white" />
+          <span style="max-width: 400px;" class="q-ml-sm">Bạn có chắc muốn reset mật khẩu cho tài khoản "{{
+            storeEmployeeAccount.oneAccountSelectEmail }}" này không" ?</span>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Đồng ý" color="primary" v-close-popup
+            @click="storeEmployeeAccount.resetPasswork(storeEmployeeAccount.oneAccountSelectId)" />
           <q-btn flat label="Hủy" color="primary" v-close-popup />
         </q-card-actions>
       </q-card>
