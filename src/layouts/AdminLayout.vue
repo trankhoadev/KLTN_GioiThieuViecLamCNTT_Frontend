@@ -72,8 +72,6 @@ onMounted(() => {
             </q-item-section>
           </q-item>
 
-
-
           <q-expansion-item icon="manage_accounts" label="Quản lý tài khoản">
             <q-list class="q-pl-lg">
               <!-- <router-link to=""></router-link> -->
@@ -91,6 +89,27 @@ onMounted(() => {
                 </q-item-section>
                 <q-item-section>
                   <q-item-label>Tài khoản ứng tuyển viên</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-expansion-item>
+
+          <q-expansion-item icon="playlist_add" label="Thêm">
+            <q-list class="q-pl-lg">
+              <q-item to="/add-job" active-class="q-item-no-link-highlighting">
+                <q-item-section avatar>
+                  <q-icon name="work_outline" />
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>Thêm ngành nghề</q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item to="/add-tag" active-class="q-item-no-link-highlighting">
+                <q-item-section avatar>
+                  <q-icon name="g_translate" />
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>Thêm ngôn ngữ</q-item-label>
                 </q-item-section>
               </q-item>
             </q-list>

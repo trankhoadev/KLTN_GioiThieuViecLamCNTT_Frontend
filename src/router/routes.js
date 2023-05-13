@@ -23,6 +23,7 @@ import RecruiterAccount from "pages/admin/account/RecruiterAccount.vue";
 import EmployeAccount from "pages/admin/account/EmployeAccount.vue";
 import ManagePost from "pages/admin/ManagePost.vue";
 import AdminPage from "src/pages/admin/AdminPage.vue";
+import AddJob from "src/pages/admin/AddJob.vue";
 
 /* recruiter page */
 import RecruiterPage from "pages/recruiter/RecruiterPage.vue";
@@ -206,6 +207,22 @@ const router = [
       {
         path: "/account/employee",
         component: EmployeAccount,
+        beforeEnter: requireAuth,
+        meta: {
+          permission: "admin",
+        },
+      },
+      {
+        path: "/add-job",
+        component: AddJob,
+        beforeEnter: requireAuth,
+        meta: {
+          permission: "admin",
+        },
+      },
+      {
+        path: "/add-tag",
+        component: AddJob,
         beforeEnter: requireAuth,
         meta: {
           permission: "admin",
