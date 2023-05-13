@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { api } from "src/boot/axios";
 import { ref, reactive } from "vue";
-import { Loading, Notify } from "quasar";
+import { Loading, Notify, Dialog } from "quasar";
 
 export const useStoreRecruiterAccount = defineStore("storeRecruiterAccount", {
   state: () => {
@@ -26,6 +26,7 @@ export const useStoreRecruiterAccount = defineStore("storeRecruiterAccount", {
         denyOne: false,
         denyAll: false,
         resetOne: false,
+        blockOne: false,
       }),
       columnRecruiterAccount: [
         {
@@ -274,8 +275,9 @@ export const useStoreRecruiterAccount = defineStore("storeRecruiterAccount", {
       }
     },
 
-    checkDenyOne(name, email) {
+    checkDenyOne(id, name, email) {
       this.dialogDenyOne = true;
+      this.oneAccountSelectId = id;
       this.oneAccountSelectName = name;
       this.oneAccountSelectEmail = email;
     },
@@ -423,6 +425,49 @@ export const useStoreRecruiterAccount = defineStore("storeRecruiterAccount", {
       } finally {
         setTimeout(() => {
           if (this.resultImplement.resetOne) {
+            Loading.hide();
+            Notify.create({
+              message: "Thao tác thành công",
+              position: "bottom",
+              timeout: 2000,
+              color: "green",
+              icon: "mood",
+            });
+            setTimeout(() => {
+              return window.location.reload();
+            }, 1500);
+          } else {
+            Loading.hide();
+            Dialog.create({
+              message: "Thao tác thất bại! Vui lòng thử lại.",
+              title: "Thông báo",
+              color: "red",
+            });
+          }
+        }, 1000);
+      }
+    },
+
+    /* reset passwork */
+    async voHieuHoaTaiKhoan(id) {
+      Loading.show({
+        message: "Đang xử lí...",
+        boxClass: "bg-grey-2 text-grey-9",
+        spinnerColor: "primary",
+      });
+
+      const url = "api/user/" + id;
+
+      try {
+        api.put(url).then((res) => {
+          if (res.data) {
+            this.resultImplement.blockOne = true;
+          }
+        });
+      } catch (error) {
+      } finally {
+        setTimeout(() => {
+          if (this.resultImplement.blockOne) {
             Loading.hide();
             Notify.create({
               message: "Thao tác thành công",

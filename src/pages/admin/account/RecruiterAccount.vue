@@ -18,8 +18,8 @@ const getCount = () => {
   storeRecruiterAccount.taiKhoanNtdDangHoatDong = 0;
   storeRecruiterAccount.taiKhoanNtdDaKhoa = 0;
   storeRecruiterAccount.listData.map(e => {
-    e.verify === true ? storeRecruiterAccount.taiKhoanNtdDangHoatDong++ : void (0);
-    e.verify === false ? storeRecruiterAccount.taiKhoanNtdDaKhoa++ : void (0);
+    e.statusOnline === true ? storeRecruiterAccount.taiKhoanNtdDangHoatDong++ : void (0);
+    e.statusOnline === false ? storeRecruiterAccount.taiKhoanNtdDaKhoa++ : void (0);
   })
 }
 
@@ -105,15 +105,15 @@ const getCount = () => {
           </td>
 
           <td class="text-left" key="date" :props="props">
-            {{ props.row.verify ? "đang hoạt động" : "đã khóa" }}
+            {{ props.row.statusOnline ? "đang hoạt động" : "đã khóa" }}
           </td>
 
           <td class="text-left" key="action" :props="props">
-            <div v-if="props.row.verify === true">
+            <div v-if="props.row.statusOnline === true">
               <q-btn color="secondary" icon="restart_alt" label="Reset mật khẩu"
                 @click="storeRecruiterAccount.checkResetOne(props.row._id, props.row.username, props.row.email)" />
               <q-btn class="q-ml-lg" color="pink" icon="lock" label="Vô hiệu hóa"
-                @click="storeRecruiterAccount.checkDenyOne(props.row.username, props.row.email)" />
+                @click="storeRecruiterAccount.checkDenyOne(props.row._id, props.row.username, props.row.email)" />
             </div>
 
             <div v-else>
@@ -135,7 +135,7 @@ const getCount = () => {
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn flat label="Đồng ý" color="primary" v-close-popup @click="storeRecruiterAccount.denyOne" />
+          <q-btn flat label="Đồng ý" color="primary" v-close-popup @click="storeRecruiterAccount.voHieuHoaTaiKhoan(storeRecruiterAccount.oneAccountSelectId)" />
           <q-btn flat label="Hủy" color="primary" v-close-popup />
         </q-card-actions>
       </q-card>
