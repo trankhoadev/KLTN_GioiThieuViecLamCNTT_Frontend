@@ -22,10 +22,12 @@ const getCount = () => {
   storeRecruiterPost.tinTuyenDungDangCho = 0;
   storeRecruiterPost.tinTuyenDungDangTuyen = 0;
   storeRecruiterPost.tinTuyenDungDungTuyen = 0;
+  storeRecruiterPost.tinTuyenDungTuChoi = 0;
   storeRecruiterPost.listData.map(e => {
     e['trangthai'] === 'đang chờ' ? storeRecruiterPost.tinTuyenDungDangCho++ : void (0);
     e['trangthai'] === 'đang tuyển' ? storeRecruiterPost.tinTuyenDungDangTuyen++ : void (0);
-    e['trangthai'] === 'dừng tuyển' ? storeRecruiterPost.tinTuyenDungDungTuyen++ : void (0);
+    e['trangthai'] === 'đã xóa' ? storeRecruiterPost.tinTuyenDungDungTuyen++ : void (0);
+    e['trangthai'] === 'đã hủy' ? storeRecruiterPost.tinTuyenDungTuChoi++ : void (0);
   })
 }
 
@@ -58,11 +60,12 @@ const getCount = () => {
                 :label="'Đang tuyển ' + '(' + storeRecruiterPost.tinTuyenDungDangTuyen + ')'"
                 @click="storeRecruiterPost.filter = 'đang tuyển'"
                 v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
-              <q-tab class="text-blue-10" icon="done"
-                :label="'Dừng tuyển ' + '(' + storeRecruiterPost.tinTuyenDungDungTuyen + ')'"
-                @click="storeRecruiterPost.filter = 'dừng tuyển'"
+              <q-tab class="text-pink" icon="cancel"
+                :label="'Từ chối ' + '(' + storeRecruiterPost.tinTuyenDungTuChoi + ')'"
+                @click="storeRecruiterPost.filter = 'đã hủy'"
                 v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
-              <q-tab class="text-red" icon="delete" :label="'Đã xóa ' + '(' + storeRecruiterPost.tinTuyenDungTuChoi + ')'"
+              <q-tab class="text-red" icon="delete"
+                :label="'Đã xóa ' + '(' + storeRecruiterPost.tinTuyenDungDungTuyen + ')'"
                 @click="storeRecruiterPost.filter = 'đã xóa'"
                 v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
             </q-tabs>
@@ -100,7 +103,8 @@ const getCount = () => {
             <span>Ngày dừng tuyển: {{ new Date(props.row.ngayHetHan).toLocaleDateString('en-GB') }}</span>
             <br>
             <br>
-            <a href="#" class="text-blue-5" @click="storeRecruiterPost.seeDetail(props.row._id)">Xem nhanh tin tuyển dụng</a>
+            <a href="#" class="text-blue-5" @click="storeRecruiterPost.seeDetail(props.row._id)">Xem nhanh tin tuyển
+              dụng</a>
           </td>
 
           <td class="text-left cursor-pointer" key="link" :props="props" style="width: 25%;">
@@ -116,8 +120,8 @@ const getCount = () => {
 
           <td class="text-left" key="action" :props="props">
             <div v-if="props.row.trangthai === 'đang tuyển' || props.row.trangthai === 'đang chờ'">
-              <q-btn class="q-ml-lg" color="pink" icon="cancel" label="Dừng tuyển"
-                @click="storeRecruiterPost.checkDenyOne(props.row.tieude, props.row.createdAt)" />
+              <q-btn class="q-ml-lg" color="pink" icon="delete" label="Xóa tin"
+                @click="storeRecruiterPost.checkDenyOne(props.row._id, props.row.tieude, props.row.createdAt)" />
             </div>
           </td>
         </tr>
@@ -217,12 +221,14 @@ const getCount = () => {
       <q-card>
         <q-card-section class="row items-center">
           <q-avatar icon="warning" color="primary" text-color="white" />
-          <span style="max-width: 400px;" class="q-ml-sm">Bạn có thực sự muốn xóa tin "{{ storeRecruiterPost.onePostSelectTitle }}" đã đăng
+          <span style="max-width: 400px;" class="q-ml-sm">Bạn có thực sự muốn xóa tin "{{
+            storeRecruiterPost.onePostSelectTitle }}" đã đăng
             ngày "{{ new Date(storeRecruiterPost.onePostSelectDateCreated).toLocaleDateString('en-GB') }}"</span>
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn flat label="Đồng ý" color="primary" v-close-popup @click="storeRecruiterPost.denyOne" />
+          <q-btn flat label="Đồng ý" color="primary" v-close-popup
+            @click="storeRecruiterPost.deleteOne(storeRecruiterPost.onePostSelectId)" />
           <q-btn flat label="Hủy" color="primary" v-close-popup />
         </q-card-actions>
       </q-card>
@@ -234,5 +240,4 @@ const getCount = () => {
 span,
 a {
   font-size: 1.1em;
-}
-</style>
+}</style>

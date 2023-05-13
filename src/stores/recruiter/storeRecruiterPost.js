@@ -19,11 +19,13 @@ export const useStoreRecruiterPost = defineStore("storeRecruiterPost", {
       tinTuyenDungDangTuyen: 0,
       tinTuyenDungDungTuyen: 0,
       tinTuyenDungTuChoi: 0,
+      onePostSelectId: "",
       onePostSelectTitle: "",
       onePostSelectDateCreated: "",
       dialogViewPost: false,
       resultExecuted: reactive({
         resultPostById: false,
+        deleteOne: false,
       }),
       columnRecruiterAccount: [
         {
@@ -82,43 +84,6 @@ export const useStoreRecruiterPost = defineStore("storeRecruiterPost", {
     _init() {},
 
     logOut() {},
-    /* For recruiter User */
-    acceptOne(inputData) {
-      let data = inputData;
-      Loading.show({
-        message: "Đang xử lí...",
-        boxClass: "bg-grey-2 text-grey-9",
-        spinnerColor: "primary",
-      });
-
-      try {
-        this.resultImplement.acceptOne = true;
-      } catch (error) {
-      } finally {
-        setTimeout(() => {
-          if (this.resultImplement.acceptOne) {
-            Loading.hide();
-            Notify.create({
-              message: "Thao tác thành công",
-              position: "bottom",
-              timeout: 2000,
-              color: "green",
-              icon: "mood",
-            });
-            setTimeout(() => {
-              return window.location.reload();
-            }, 1500);
-          } else {
-            Loading.hide();
-            Dialog.create({
-              message: "Thao tác thất bại! Vui lòng thử lại.",
-              title: "Thông báo",
-              color: "red",
-            });
-          }
-        }, 1000);
-      }
-    },
 
     async seeDetail(data) {
       this.isSeeDetail = true;
@@ -126,7 +91,8 @@ export const useStoreRecruiterPost = defineStore("storeRecruiterPost", {
       await this.getPostById(data);
     },
 
-    checkDenyOne(title, dateCreated) {
+    checkDenyOne(id, title, dateCreated) {
+      this.onePostSelectId = id;
       this.onePostSelectTitle = title;
       this.onePostSelectDateCreated = dateCreated;
       this.dialogDenyOne = true;
@@ -162,6 +128,53 @@ export const useStoreRecruiterPost = defineStore("storeRecruiterPost", {
         if (this.resultExecuted.resultPostById) {
           this.dialogViewPost = true;
         }
+      }
+    },
+
+    async deleteOne(id) {
+      Loading.show({
+        message: "Đang xử lí...",
+        boxClass: "bg-grey-2 text-grey-9",
+        spinnerColor: "primary",
+      });
+
+      const url = "api/tintuyendung/duyet";
+      const data = {
+        postId: id,
+        trangthai: "đã xóa",
+      };
+
+      try {
+        await api.put(url, data).then((res) => {
+          if (res.data) {
+            this.resultExecuted.deleteOne = true;
+          }
+        });
+      } catch (error) {
+        console.log("Internal Server Error: ", error);
+      } finally {
+        setTimeout(() => {
+          if (this.resultExecuted.deleteOne) {
+            Loading.hide();
+            Notify.create({
+              message: "Thao tác thành công",
+              position: "bottom",
+              timeout: 2000,
+              color: "green",
+              icon: "mood",
+            });
+            setTimeout(() => {
+              return window.location.reload();
+            }, 1500);
+          } else {
+            Loading.hide();
+            Dialog.create({
+              message: "Thao tác thất bại! Vui lòng thử lại.",
+              title: "Thông báo",
+              color: "red",
+            });
+          }
+        }, 1000);
       }
     },
   },

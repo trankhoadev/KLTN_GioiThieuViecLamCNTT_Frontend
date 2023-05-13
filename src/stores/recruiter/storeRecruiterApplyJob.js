@@ -105,12 +105,31 @@ export const useStoreRecruiterApplyJob = defineStore("storeRecruiterApplyJob", {
     },
 
     /* For recruiter User */
-    async duyetDonTuyenDung(id) {
+    async duyetDonTuyenDung(id, email, title) {
       Loading.show({
         message: "Đang xử lí...",
         boxClass: "bg-grey-2 text-grey-9",
         spinnerColor: "primary",
       });
+
+      const urlSendEmail = "api/tintuyendung/emailfeedback";
+      const dataSendEmail = {
+        email: email,
+        content:
+          'Chúc mừng bạn đã trúng tuyển tin tuyển dụng "' +
+          title +
+          ". Vui lòng liên hệ nhà tuyển dụng để biết thêm chi tiết!",
+      };
+
+      try {
+        await api.post(urlSendEmail, dataSendEmail).then((res) => {
+          if (res.data) {
+          }
+        });
+      } catch (err) {
+        console.log("Send email error: ", err);
+      }
+
       const url = "api/donungtuyen/update/";
       const data = {
         donUngTuyenId: id,
