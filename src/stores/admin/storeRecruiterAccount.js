@@ -7,15 +7,17 @@ export const useStoreRecruiterAccount = defineStore("storeRecruiterAccount", {
   state: () => {
     return {
       filter: "",
+      listData: [],
       listSelectRecruiterAccount: ref(),
       taiKhoanNtd: 0,
-      taiKhoanNtdDangCho: 0,
-      taiKhoanNtdDaDuyet: 0,
-      taiKhoanNtdTuChoi: 0,
+      taiKhoanNtdDangHoatDong: 0,
+      taiKhoanNtdDaKhoa: 0,
+      dialogResetOne: ref(false),
       dialogDenyOne: ref(false),
       confirmDenyOne: ref(false),
       dialogDenyAll: ref(false),
       confirmDenyAll: ref(false),
+      oneAccountSelectId: "",
       oneAccountSelectName: "",
       oneAccountSelectEmail: "",
       resultImplement: reactive({
@@ -23,6 +25,7 @@ export const useStoreRecruiterAccount = defineStore("storeRecruiterAccount", {
         acceptAll: false,
         denyOne: false,
         denyAll: false,
+        resetOne: false,
       }),
       columnRecruiterAccount: [
         {
@@ -277,6 +280,13 @@ export const useStoreRecruiterAccount = defineStore("storeRecruiterAccount", {
       this.oneAccountSelectEmail = email;
     },
 
+    checkResetOne(id, name, email) {
+      this.dialogResetOne = true;
+      this.oneAccountSelectId = id;
+      this.oneAccountSelectName = name;
+      this.oneAccountSelectEmail = email;
+    },
+
     checkDenyAll() {
       if (
         !this.listSelectRecruiterAccount ||
@@ -348,6 +358,71 @@ export const useStoreRecruiterAccount = defineStore("storeRecruiterAccount", {
       } finally {
         setTimeout(() => {
           if (this.resultImplement.denyAll) {
+            Loading.hide();
+            Notify.create({
+              message: "Thao tác thành công",
+              position: "bottom",
+              timeout: 2000,
+              color: "green",
+              icon: "mood",
+            });
+            setTimeout(() => {
+              return window.location.reload();
+            }, 1500);
+          } else {
+            Loading.hide();
+            Dialog.create({
+              message: "Thao tác thất bại! Vui lòng thử lại.",
+              title: "Thông báo",
+              color: "red",
+            });
+          }
+        }, 1000);
+      }
+    },
+
+    /* get all tai khoan ung tuyen vien */
+    async getAllData() {
+      const url = "api/user";
+      try {
+        await api.get(url).then((res) => {
+          if (res.data) {
+            this.listData = res.data.filter((e) => {
+              console.log(e);
+              if (e.loaitaikhoan === "recruiter") {
+                return e;
+              }
+            });
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
+      }
+    },
+
+    /* reset passwork */
+    async resetPasswork(id) {
+      Loading.show({
+        message: "Đang xử lí...",
+        boxClass: "bg-grey-2 text-grey-9",
+        spinnerColor: "primary",
+      });
+
+      const url = "api/user/forgot-password/" + id + "/reset";
+      const data = {
+        password: "123456",
+      };
+
+      try {
+        api.post(url, data).then((res) => {
+          if (res.data) {
+            this.resultImplement.resetOne = true;
+          }
+        });
+      } catch (error) {
+      } finally {
+        setTimeout(() => {
+          if (this.resultImplement.resetOne) {
             Loading.hide();
             Notify.create({
               message: "Thao tác thành công",

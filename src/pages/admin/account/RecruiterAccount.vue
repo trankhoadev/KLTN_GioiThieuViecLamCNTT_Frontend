@@ -1,40 +1,56 @@
 <script setup>
+import { onMounted, onBeforeUpdate } from 'vue';
 import { useQuasar } from 'quasar'
 import { useStoreRecruiterAccount } from 'src/stores/admin/storeRecruiterAccount.js';
 const storeRecruiterAccount = useStoreRecruiterAccount();
 const $q = useQuasar();
+
+onMounted(async () => {
+  await storeRecruiterAccount.getAllData();
+});
+
+onBeforeUpdate(() => {
+  getCount();
+});
+
+const getCount = () => {
+  storeRecruiterAccount.taiKhoanNtd = 0;
+  storeRecruiterAccount.taiKhoanNtdDangHoatDong = 0;
+  storeRecruiterAccount.taiKhoanNtdDaKhoa = 0;
+  storeRecruiterAccount.listData.map(e => {
+    e.verify === true ? storeRecruiterAccount.taiKhoanNtdDangHoatDong++ : void (0);
+    e.verify === false ? storeRecruiterAccount.taiKhoanNtdDaKhoa++ : void (0);
+  })
+}
+
 </script>
 
 <template>
   <div>
-    <q-table title="DUYỆT TÀI KHOẢN NHÀ TUYỂN DỤNG" virtual-scroll :columns="storeRecruiterAccount.columnRecruiterAccount"
-      :rows="storeRecruiterAccount.rowDataRecruiterAccount" style="height: 90vh" row-key="email"
-      :rows-per-page-options="[0]" class="q-my-lg q-mx-md" rows-per-page-label="Số dòng mỗi trang"
+    <q-table title="QUẢN LÝ TÀI KHOẢN NHÀ TUYỂN DỤNG" virtual-scroll
+      :columns="storeRecruiterAccount.columnRecruiterAccount" :rows="storeRecruiterAccount.listData" style="height: 90vh"
+      row-key="_id" :rows-per-page-options="[10]" class="q-my-lg q-mx-md" rows-per-page-label="Số dòng mỗi trang"
       v-model:selected="storeRecruiterAccount.listSelectRecruiterAccount" selection="multiple"
       :filter="storeRecruiterAccount.filter">
 
       <template v-slot:top-left>
         <div class="row">
-          <h5 class="q-py-md">DUYỆT TÀI KHOẢN NHÀ TUYỂN DỤNG</h5>
+          <h5 class="q-py-md">QUẢN LÝ TÀI KHOẢN NHÀ TUYỂN DỤNG</h5>
         </div>
 
         <div class="row">
           <div class="header-tabs flex justify-between" style="width: 90%;">
             <q-tabs align="center" class="text-teal" dense>
-              <q-tab class="text-cyan" icon="select_all"
-                :label="'Tất cả ' + '(' + storeRecruiterAccount.taiKhoanNtd + ')'"
+              <q-tab class="text-orange" icon="select_all"
+                :label="'Tất cả ' + '(' + storeRecruiterAccount.listData.length + ')'"
                 @click="storeRecruiterAccount.filter = ''" v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
-              <q-tab class="text-orange" icon="reply_all"
-                :label="'Đang chờ ' + '(' + storeRecruiterAccount.taiKhoanNtdDangCho + ')'"
-                @click="storeRecruiterAccount.filter = 'đang chờ'"
-                v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
               <q-tab class="text-teal" icon="done"
-                :label="'Đã duyệt ' + '(' + storeRecruiterAccount.taiKhoanNtdDaDuyet + ')'"
-                @click="storeRecruiterAccount.filter = 'đã duyệt'"
+                :label="'Đang hoạt động ' + '(' + storeRecruiterAccount.taiKhoanNtdDangHoatDong + ')'"
+                @click="storeRecruiterAccount.filter = 'đang hoạt động'"
                 v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
               <q-tab class="text-red" icon="close"
-                :label="'Từ chối ' + '(' + storeRecruiterAccount.taiKhoanNtdTuChoi + ')'"
-                @click="storeRecruiterAccount.filter = 'đã hủy'"
+                :label="'Đã khóa ' + '(' + storeRecruiterAccount.taiKhoanNtdDaKhoa + ')'"
+                @click="storeRecruiterAccount.filter = 'đã khóa'"
                 v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
             </q-tabs>
           </div>
@@ -50,8 +66,8 @@ const $q = useQuasar();
               <q-btn flat round color="primary" icon="search" />
             </template>
           </q-input>
-          <q-btn color="primary" icon="check" label="Duyệt tất cả" @click="storeRecruiterAccount.acceptAll" />
-          <q-btn color="red" icon="close" label="Từ chối tất cả" @click="storeRecruiterAccount.checkDenyAll" />
+          <!-- <q-btn color="primary" icon="check" label="Duyệt tất cả" @click="storeRecruiterAccount.acceptAll" />
+          <q-btn color="red" icon="close" label="Từ chối tất cả" @click="storeRecruiterAccount.checkDenyAll" /> -->
 
           <q-dialog v-model="storeRecruiterAccount.dialogDenyAll" persistent>
             <q-card>
@@ -76,28 +92,33 @@ const $q = useQuasar();
           <td class="text-left" key="stt" :props="props" style="width: 5%;">
             {{ props.rowIndex + 1 }}
           </td>
-          <td class="text-left" key="name" :props="props" style="width: 25%;">
-            <span style="white-space: pre-wrap;">{{ props.row.name }}</span>
+          <td class="text-left" key="name" :props="props">
+            <span style="white-space: pre-wrap;">{{ props.row.username }}</span>
           </td>
 
-          <td class="text-left" key="email" :props="props" style="width: 20%;">
+          <td class="text-left" key="email" :props="props">
             <span style="white-space: pre-wrap;">{{ props.row.email }}</span>
           </td>
 
           <td class="text-left" key="date" :props="props">
-            {{ props.row.date }}
+            {{ new Date(props.row.createdAt).toLocaleDateString('en-GB') }}
           </td>
 
           <td class="text-left" key="date" :props="props">
-            {{ props.row.state }}
+            {{ props.row.verify ? "đang hoạt động" : "đã khóa" }}
           </td>
 
           <td class="text-left" key="action" :props="props">
-            <div v-if="props.row.state === 'đang chờ'">
-              <q-btn color="light-green" icon="check" label="Duyệt"
+            <div v-if="props.row.verify === true">
+              <q-btn color="secondary" icon="restart_alt" label="Reset mật khẩu"
+                @click="storeRecruiterAccount.checkResetOne(props.row._id, props.row.username, props.row.email)" />
+              <q-btn class="q-ml-lg" color="pink" icon="lock" label="Vô hiệu hóa"
+                @click="storeRecruiterAccount.checkDenyOne(props.row.username, props.row.email)" />
+            </div>
+
+            <div v-else>
+              <q-btn color="light-green" icon="restore" label="Khôi phục"
                 @click="storeRecruiterAccount.acceptOne(props.row.email)" />
-              <q-btn class="q-ml-lg" color="pink" icon="cancel" label="Từ chối"
-                @click="storeRecruiterAccount.checkDenyOne(props.row.name, props.row.email)" />
             </div>
           </td>
         </tr>
@@ -108,13 +129,29 @@ const $q = useQuasar();
       <q-card>
         <q-card-section class="row items-center">
           <q-avatar icon="warning" color="primary" text-color="white" />
-          <span style="max-width: 400px;" class="q-ml-sm">Bạn có thực sự muốn từ chối người dùng "{{
-            storeRecruiterAccount.oneAccountSelectName }}" với email đăng ký là: "{{
-    storeRecruiterAccount.oneAccountSelectEmail }}" ?</span>
+          <span style="max-width: 400px;" class="q-ml-sm text-justify">Bạn có thực sự muốn vô hiệu hóa tài khoản "{{
+            storeRecruiterAccount.oneAccountSelectEmail }}" của người dùng: "{{
+    storeRecruiterAccount.oneAccountSelectName }}" ?</span>
         </q-card-section>
 
         <q-card-actions align="right">
           <q-btn flat label="Đồng ý" color="primary" v-close-popup @click="storeRecruiterAccount.denyOne" />
+          <q-btn flat label="Hủy" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
+    <q-dialog v-model="storeRecruiterAccount.dialogResetOne">
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar icon="warning" color="primary" text-color="white" />
+          <span style="max-width: 400px;" class="q-ml-sm">Bạn có chắc muốn reset mật khẩu cho tài khoản "{{
+            storeRecruiterAccount.oneAccountSelectEmail }}" này không" ?</span>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Đồng ý" color="primary" v-close-popup
+            @click="storeRecruiterAccount.resetPasswork(storeRecruiterAccount.oneAccountSelectId)" />
           <q-btn flat label="Hủy" color="primary" v-close-popup />
         </q-card-actions>
       </q-card>
