@@ -54,6 +54,7 @@ export const useStoreJob = defineStore("storeJob", {
         resultUngTuyen: false,
         resultDanhGia: false,
         resultYeuThich: false,
+        resultHuyYeuThich: false,
       }),
       /* step 3 */
       listSkill: [],
@@ -664,6 +665,31 @@ export const useStoreJob = defineStore("storeJob", {
             });
           }
         }
+      }
+    },
+
+    async huyYeuThichPost(id) {
+      const url = "api/yeuthich/" + id;
+      try {
+        api.delete(url).then((res) => {
+          if (res.data !== null) {
+            this.resultExecuted.resultHuyYeuThich = true;
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
+      } finally {
+        setTimeout(() => {
+          Loading.hide();
+          window.location.reload();
+        }, 1000);
+        Notify.create({
+          message: "Hủy yêu thích tin thành công",
+          position: "bottom",
+          timeout: 2000,
+          color: "green",
+          icon: "mood",
+        });
       }
     },
 

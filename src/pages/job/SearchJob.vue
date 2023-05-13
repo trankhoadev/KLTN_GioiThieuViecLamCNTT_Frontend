@@ -56,17 +56,28 @@ onMounted(async () => {
     storeJob.listRecruiter[i].amount = storeJob.listPostNhaTuyenDungById.length;
   }
 
+
+  // for (let i = 0; i < storeJob.listDataSearch.length; ++i) {
+  //   storeJob.listFavorite.map(e => {
+  //     console.log(e.tintuyendung._id === storeJob.listDataSearch[i]._id);
+  //     if (e.tintuyendung._id === storeJob.listDataSearch[i]._id && e.ungtuyenvien._id === storeAuthen.idUngTuyenVien) {
+  //       storeJob.listDataSearch[i].isYeuThich = true;
+  //       storeJob.listDataSearch[i].yeuThichId = e._id;
+  //     }
+  //     else {
+  //       storeJob.listDataSearch[i].isYeuThich = false;
+  //     }
+  //   })
+  // }
   /* Get favorite of every post */
-  for (let i = 0; i < storeJob.listDataSearch.length; ++i) {
-    storeJob.listFavorite.map(e => {
+  storeJob.listFavorite.filter((e) => {
+    for (let i = 0; i < storeJob.listDataSearch.length; ++i) {
       if (e.tintuyendung._id === storeJob.listDataSearch[i]._id && e.ungtuyenvien._id === storeAuthen.idUngTuyenVien) {
         storeJob.listDataSearch[i].isYeuThich = true;
+        storeJob.listDataSearch[i].yeuThichId = e._id;
       }
-      else {
-        storeJob.listDataSearch[i].isYeuThich = false;
-      }
-    })
-  }
+    }
+  })
 
   /* Hide "Ứng tuyển" button */
   await storeJob.getAllDonUngTuyen();
@@ -78,6 +89,8 @@ onMounted(async () => {
       }
     }
   });
+
+  console.log(storeJob.listFavorite);
 
 });
 
@@ -268,9 +281,11 @@ watch(() => storeJob.panigateSelected, val => {
                         <q-btn v-if="!item.isUngTuyen" class="apply-now q-mr-md" color="green-7" label="Ứng tuyển"
                           @click="storeJob.seeDetail({ _id: item._id, tieude: item.tieude })" />
                         <q-btn v-else class="apply-now q-mr-md" color="grey" label="Đã ứng tuyển" disable />
-                        <q-btn v-if="!item.isYeuThich" @click="storeJob.yeuThichPost(item._id, storeAuthen.idUngTuyenVien)"
-                          class="favorite" icon="favorite_border" />
-                        <q-btn v-else class="favorite text-green" icon="favorite" />
+                        <q-btn v-if="!item.isYeuThich"
+                          @click="storeJob.yeuThichPost(item._id, storeAuthen.idUngTuyenVien)" class="favorite"
+                          icon="favorite_border" />
+                        <q-btn v-else @click="storeJob.huyYeuThichPost(item.yeuThichId)" class="favorite text-green"
+                          icon="favorite" />
                       </div>
                     </div>
                   </div>

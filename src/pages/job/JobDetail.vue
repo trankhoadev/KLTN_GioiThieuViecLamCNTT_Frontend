@@ -1,5 +1,6 @@
 <script setup>
 import { useStoreJob } from 'src/stores/storeJob';
+import { useStoreAuthentication } from 'src/stores/storeAuthentication';
 import { useQuasar, Loading } from 'quasar';
 import { useMyStore } from 'src/stores/myStore';
 import { onMounted, watch } from 'vue';
@@ -7,6 +8,7 @@ import { useRoute } from 'vue-router';
 
 const storeJob = useStoreJob();
 const myStore = useMyStore();
+const storeAuthen = useStoreAuthentication();
 const $q = useQuasar();
 const route = useRoute();
 
@@ -20,6 +22,7 @@ onMounted(async () => {
   await storeJob.getAllNhaTuyenDung();
   await storeJob.getAllDonUngTuyen();
   await storeJob.getListDanhGia(storeJob.listDataJobDetail._id);
+  await storeJob.getListYeuThich();
 
   storeJob.listDataJobDetail.moTaCongViec = storeJob.listDataJobDetail.moTaCongViec.replace(/\n/gi, "\n - ");
   storeJob.listDataJobDetail.moTaYeuCau = storeJob.listDataJobDetail.moTaYeuCau.replace(/\n/gi, "\n - ");
@@ -31,23 +34,37 @@ onMounted(async () => {
       e.ungtuyenvien._id === localStorage.getItem("idUngTuyenVien")) {
       storeJob.listDataJobDetail.isUngTuyen = true;
     }
-    else {
-      storeJob.listDataJobDetail.isUngTuyen = false;
-    }
   });
 
 
   /* New code */
-  if (storeJob.listData.length > 9) {
-    storeJob.listData = [...storeJob.listData].slice(0, -1);
-  }
+  // if (storeJob.listData.length > 9) {
+  //   storeJob.listData = [...storeJob.listData].slice(0, -1);
+  // }
+
+  /* Get favorite of every post */
+  storeJob.listFavorite.filter((e) => {
+    for (let i = 0; i < storeJob.listData.length; ++i) {
+      if (e.tintuyendung._id === storeJob.listData[i]._id && e.ungtuyenvien._id === storeAuthen.idUngTuyenVien) {
+        storeJob.listData[i].isYeuThich = true;
+        storeJob.listData[i].yeuThichId = e._id;
+      }
+    }
+  })
+
+  /* get favorite for current post */
+  storeJob.listFavorite.filter(e => {
+    if (e.tintuyendung._id === storeJob.listDataJobDetail._id && e.ungtuyenvien._id === storeAuthen.idUngTuyenVien) {
+      storeJob.listDataJobDetail.isYeuThich = true;
+      storeJob.listDataJobDetail.yeuThichId = e._id;
+    }
+  })
 
   /* Note: Because cant get data directly from server so need using that. Have some problem like object promise before */
   /* Handle get data of tag from server */
   for (let i = 0; i < storeJob.listData.length; ++i) {
     for (let j = 0; j < storeJob.listData[i].ngonngu.length; ++j) {
       storeJob.listSkill.map((e) => {
-        // console.log(storeJob.listData[i].ngonngu[j]._id === e._id);
         if (storeJob.listData[i].ngonngu[j]._id === e._id) {
           storeJob.listData[i].ngonngu[j] = e.ngonngu;
         }
@@ -82,14 +99,16 @@ onMounted(async () => {
     storeJob.listRate = [...arr];
   }
 
-  /* pagination for comment */
-  if (storeJob.listDataSearch.length > 4) {
+  /* pagination for job */
+  if (storeJob.listData.length > 4) {
     let arr = [];
     for (let i = 0; i < 5; ++i) {
-      arr.push(storeJob.listDataSearch[i]);
+      arr.push(storeJob.listData[i]);
     }
-    storeJob.listDataSearch = [...arr];
+    storeJob.listData = [...arr];
   }
+
+  console.log(storeJob.listDataJobDetail);
 });
 
 const clickScrollTinTuyenDung = () => {
@@ -123,8 +142,6 @@ watch(() => storeJob.panigateCommentSelected, val => {
     let arr = [];
     storeJob.listRate = [];
     await storeJob.getListDanhGia(route.params.id);
-    console.log(storeJob.listRate.length);
-    console.log(storeJob.panigateCommentSelected);
 
     for (let i = (storeJob.panigateCommentSelected - 1) * 3; i < storeJob.panigateCommentSelected * 3; ++i) {
       // storeJob.listRate.push(storeJob.listRate[i]);
@@ -320,6 +337,12 @@ watch(() => storeJob.panigateCommentSelected, val => {
                   <div>
                     <q-btn v-if="!storeJob.listDataJobDetail.isUngTuyen" color="green-7" label="Ứng tuyển ngay" />
                     <q-btn v-else class="apply-now q-mr-md" color="grey" label="Đã ứng tuyển" icon="done" disable />
+
+                    <q-btn v-if="!storeJob.listDataJobDetail.isYeuThich"
+                      @click="storeJob.yeuThichPost(route.params.id, storeAuthen.idUngTuyenVien)" class="favorite"
+                      icon="favorite_border" />
+                    <q-btn v-else @click="storeJob.huyYeuThichPost(storeJob.listDataJobDetail.yeuThichId)"
+                      class="favorite text-green" icon="favorite" />
                   </div>
                 </div>
               </div>
@@ -347,6 +370,28 @@ watch(() => storeJob.panigateCommentSelected, val => {
                   </div>
                   <div class="q-mx-sm" @click="storeJob.openUrl(storeJob.defaultShareLinkedinUrl, storeJob.href)">
                     <img src="https://www.topcv.vn/v4/image/job-detail/share/linkedin.png" alt="">
+                  </div>
+                </div>
+              </div>
+
+              <div class="box-share-job">
+                <div class="skills flex column">
+                  <h6 class="text-weight-bold">Tag: </h6>
+                  <br>
+                  <div>
+                    <label class="item" v-for="tag in storeJob.listDataJobDetail.ngonngu" :key="tag">
+                      {{ tag.ngonngu }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="box-share-job">
+                <div class="skills flex column">
+                  <h6 class="text-weight-bold">Khu vực: </h6>
+                  <br>
+                  <div>
+                    {{ storeJob.listDataJobDetail.diaChi }}
                   </div>
                 </div>
               </div>
@@ -562,7 +607,8 @@ watch(() => storeJob.panigateCommentSelected, val => {
                     <div class="row q-my-md default">
                       <div class="col-md-2 col-12">
                         <div class="avatar">
-                          <img class="" style="max-width: 100px; max-height: 100px;" :src=item.anhdaidien alt="">
+                          <img class="" style="max-width: 100px; max-height: 100px;" :src=item.nhatuyendung.anhdaidien
+                            alt="">
                         </div>
                       </div>
                       <div class="col-md-7 col-12">
@@ -607,7 +653,11 @@ watch(() => storeJob.panigateCommentSelected, val => {
                             <q-btn v-if="!item.isUngTuyen" class="apply-now q-mr-md" color="green-7" label="Ứng tuyển"
                               @click="storeJob.seeDetail({ _id: item._id, tieude: item.tieude })" />
                             <q-btn v-else class="apply-now q-mr-md" color="grey" label="Đã ứng tuyển" disable />
-                            <q-btn class="favorite" icon="favorite_border" />
+                            <q-btn v-if="!item.isYeuThich"
+                              @click="storeJob.yeuThichPost(item._id, storeAuthen.idUngTuyenVien)" class="favorite"
+                              icon="favorite_border" />
+                            <q-btn v-else @click="storeJob.huyYeuThichPost(item.yeuThichId)" class="favorite text-green"
+                              icon="favorite" />
                           </div>
                         </div>
                       </div>
