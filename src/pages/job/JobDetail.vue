@@ -82,6 +82,14 @@ onMounted(async () => {
     storeJob.listRate = [...arr];
   }
 
+  /* pagination for comment */
+  if (storeJob.listDataSearch.length > 4) {
+    let arr = [];
+    for (let i = 0; i < 5; ++i) {
+      arr.push(storeJob.listDataSearch[i]);
+    }
+    storeJob.listDataSearch = [...arr];
+  }
 });
 
 const clickScrollTinTuyenDung = () => {
@@ -608,7 +616,7 @@ watch(() => storeJob.panigateCommentSelected, val => {
                   <div>
                     <div v-if="storeJob.listData.length" class="q-pa-lg flex flex-center">
                       <q-pagination color="green-7" v-model="storeJob.panigateSelected"
-                        :max="storeJob.lengthResponse / 10 + 1" :max-pages="6" direction-links />
+                        :max="storeJob.lengthResponse / 5 + 1" :max-pages="6" direction-links />
                     </div>
                   </div>
                 </div>

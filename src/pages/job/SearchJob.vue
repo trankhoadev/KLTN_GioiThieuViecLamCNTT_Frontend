@@ -20,9 +20,15 @@ onMounted(async () => {
   await storeJob.getListTag();
   await storeJob.getAllNhaTuyenDung();
   await storeJob.getAllDonUngTuyen();
+  await storeJob.getListYeuThich();
 
+  /* pagination for job */
   if (storeJob.listDataSearch.length > 9) {
-    storeJob.listDataSearch = [...storeJob.listDataSearch].slice(0, -1);
+    let arr = [];
+    for (let i = 0; i < 10; ++i) {
+      arr.push(storeJob.listDataSearch[i]);
+    }
+    storeJob.listDataSearch = [...arr];
   }
 
   /* Note: Because cant get data directly from server so need using that. Have some problem like object promise before */
@@ -50,6 +56,18 @@ onMounted(async () => {
     storeJob.listRecruiter[i].amount = storeJob.listPostNhaTuyenDungById.length;
   }
 
+  /* Get favorite of every post */
+  for (let i = 0; i < storeJob.listDataSearch.length; ++i) {
+    storeJob.listFavorite.map(e => {
+      if (e.tintuyendung._id === storeJob.listDataSearch[i]._id && e.ungtuyenvien._id === storeAuthen.idUngTuyenVien) {
+        storeJob.listDataSearch[i].isYeuThich = true;
+      }
+      else {
+        storeJob.listDataSearch[i].isYeuThich = false;
+      }
+    })
+  }
+
   /* Hide "Ứng tuyển" button */
   await storeJob.getAllDonUngTuyen();
   storeJob.listDonUngTuyen.filter((e) => {
@@ -60,6 +78,7 @@ onMounted(async () => {
       }
     }
   });
+
 });
 
 watch(() => storeJob.panigateSelected, val => {
@@ -249,7 +268,9 @@ watch(() => storeJob.panigateSelected, val => {
                         <q-btn v-if="!item.isUngTuyen" class="apply-now q-mr-md" color="green-7" label="Ứng tuyển"
                           @click="storeJob.seeDetail({ _id: item._id, tieude: item.tieude })" />
                         <q-btn v-else class="apply-now q-mr-md" color="grey" label="Đã ứng tuyển" disable />
-                        <q-btn class="favorite" icon="favorite_border" />
+                        <q-btn v-if="!item.isYeuThich" @click="storeJob.yeuThichPost(item._id, storeAuthen.idUngTuyenVien)"
+                          class="favorite" icon="favorite_border" />
+                        <q-btn v-else class="favorite text-green" icon="favorite" />
                       </div>
                     </div>
                   </div>

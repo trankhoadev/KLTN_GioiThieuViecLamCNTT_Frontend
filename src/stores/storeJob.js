@@ -14,6 +14,7 @@ export const useStoreJob = defineStore("storeJob", {
       listDataJobDetail: [],
       listLanguageName: [],
       listRate: [],
+      listFavorite: [],
       rate: ref(5),
       lengthRate: "",
       inputComment: "",
@@ -52,6 +53,7 @@ export const useStoreJob = defineStore("storeJob", {
         resultJobDetail: false,
         resultUngTuyen: false,
         resultDanhGia: false,
+        resultYeuThich: false,
       }),
       /* step 3 */
       listSkill: [],
@@ -584,6 +586,83 @@ export const useStoreJob = defineStore("storeJob", {
             color: "negative",
             icon: "mood_bad",
           });
+        }
+      }
+    },
+
+    async getListYeuThich(id) {
+      const url = "api/yeuthich/" + id;
+      try {
+        await api.get(url).then((res) => {
+          if (res.data) {
+            this.listFavorite = res.data;
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
+      }
+    },
+
+    async yeuThichPost(idPost, idUngTuyenVien) {
+      const url = "api/yeuthich";
+      const data = {
+        ungtuyenvien: idUngTuyenVien,
+
+        tintuyendung: idPost,
+      };
+      let check = true;
+
+      this.listFavorite.map((e) => {
+        if (
+          e.tintuyendung._id === idPost &&
+          e.ungtuyenvien._id === idUngTuyenVien
+        ) {
+          Notify.create({
+            message: "Bạn đã yêu thích tin này rồi!",
+            timeout: 2000,
+            position: "bottom",
+            color: "negative",
+            icon: "mood_bad",
+          });
+          check = false;
+          return;
+        }
+      });
+
+      if (check) {
+        try {
+          api.post(url, data).then((res) => {
+            if (res.data) {
+              this.resultExecuted.resultYeuThich = true;
+            }
+          });
+        } catch (err) {
+          console.log("Internal Server Error: ", err);
+        } finally {
+          if (check) {
+            setTimeout(() => {
+              Loading.hide();
+              window.location.reload();
+            }, 1000);
+            Notify.create({
+              message: "Đã thêm vào danh sách yêu thích",
+              position: "bottom",
+              timeout: 2000,
+              color: "green",
+              icon: "mood",
+            });
+          } else {
+            setTimeout(() => {
+              Loading.hide();
+            }, 1000);
+            Notify.create({
+              message: "Thêm vào danh sách yêu thích thất bại",
+              timeout: 2000,
+              position: "bottom",
+              color: "negative",
+              icon: "mood_bad",
+            });
+          }
         }
       }
     },
