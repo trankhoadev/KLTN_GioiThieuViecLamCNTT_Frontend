@@ -8,6 +8,7 @@ export const useStoreViecLamCuaToi = defineStore("storeViecLamCuaToi", {
     return {
       listData: [],
       listDataDonUngTuyen: [],
+      listFavorite: [],
       tab: ref("Tất cả"),
     };
   },
@@ -20,6 +21,19 @@ export const useStoreViecLamCuaToi = defineStore("storeViecLamCuaToi", {
         await api.get(url).then((res) => {
           if (res.data) {
             this.listDataDonUngTuyen = res.data;
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
+      }
+    },
+
+    async getListYeuThich(id) {
+      const url = "api/yeuthich/" + id;
+      try {
+        await api.get(url).then((res) => {
+          if (res.data) {
+            this.listFavorite = res.data;
           }
         });
       } catch (err) {

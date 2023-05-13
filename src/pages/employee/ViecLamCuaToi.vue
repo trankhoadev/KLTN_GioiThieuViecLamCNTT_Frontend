@@ -10,6 +10,7 @@ const storeJob = useStoreJob();
 
 onMounted(async () => {
   await storeViecLamCuaToi.getAllDonUngTuyenByUngTuyenVienId(storeAuthen.idUngTuyenVien);
+  await storeViecLamCuaToi.getListYeuThich();
 
   /* Get picture and name of recruiter */
   for (let i = 0; i < storeViecLamCuaToi.listDataDonUngTuyen.length; ++i) {
@@ -18,9 +19,14 @@ onMounted(async () => {
     storeViecLamCuaToi.listDataDonUngTuyen[i].anhdaidien = storeJob.listDataOneRecruiter.anhdaidien;
   }
 
+  for (let i = 0; i < storeViecLamCuaToi.listFavorite.length; ++i) {
+    await storeJob.getNhaTuyenDungById(storeViecLamCuaToi.listFavorite[i].tintuyendung.nhatuyendung);
+    storeViecLamCuaToi.listFavorite[i].anhdaidien = storeJob.listDataOneRecruiter.anhdaidien;
+  }
+
   /* Add data for all */
   storeViecLamCuaToi.listData = storeViecLamCuaToi.listDataDonUngTuyen;
-  console.log(storeViecLamCuaToi.listData);
+  console.log(storeViecLamCuaToi.listFavorite);
 });
 </script>
 
@@ -31,6 +37,7 @@ onMounted(async () => {
       <q-tab name="Tất cả" label="Tất cả" />
       <q-tab name="Tin đã ứng tuyển" label="Tin đã ứng tuyển" />
       <q-tab name="Tin đã từ chối" label="Tin đã từ chối" />
+      <q-tab name="Tin yêu thích" label="Tin yêu thích" />
     </q-tabs>
 
     <q-separator />
@@ -46,7 +53,7 @@ onMounted(async () => {
           <q-card-section>
             <div class="row">
               <div class="col-3">
-                <img :src=item.anhdaidien alt="" style="width: 40%;">
+                <img :src=item.anhdaidien alt="" style="width: 50%;">
               </div>
               <div class="col-7">
                 <router-link class="text-black hover-underline" :to="`/search/job/${item.tintuyendung._id}`"
@@ -94,7 +101,7 @@ onMounted(async () => {
             <q-card-section>
               <div class="row">
                 <div class="col-3">
-                  <img :src=item.anhdaidien alt="" style="width: 40%;">
+                  <img :src=item.anhdaidien alt="" style="width: 50%;">
                 </div>
                 <div class="col-7">
                   <router-link class="text-black hover-underline" :to="`/search/job/${item.tintuyendung._id}`"
@@ -159,6 +166,47 @@ onMounted(async () => {
                 <div class="col-2 flex justify-end">
                   <span class="text-weight-bold text-red" style="font-size: 1.3em;">Trạng thái: {{ item.trangthai
                   }}</span>
+                </div>
+              </div>
+            </q-card-section>
+          </div>
+        </q-card>
+      </q-tab-panel>
+
+      <q-tab-panel name="Tin yêu thích">
+        <q-card class="my-card q-mt-lg" v-for="item in storeViecLamCuaToi.listFavorite" :key=item._id>
+          <div>
+            <q-card-section class="bg-primary text-white">
+              <div class="text-h6">
+                Tin tuyển dụng
+              </div>
+            </q-card-section>
+            <q-card-section>
+              <div class="row">
+                <div class="col-3">
+                  <img :src=item.anhdaidien alt="" style="width: 40%;">
+                </div>
+                <div class="col-7">
+                  <router-link class="text-black hover-underline" :to="`/search/job/${item.tintuyendung._id}`"
+                    target="_blank">
+                    <h6 class="text-weight-bold">{{ item.tintuyendung.tieude }}</h6>
+                  </router-link>
+                  <p class="text-uppercase">Nhà tuyển dụng: {{ item.tennhatuyendung }}</p>
+                  <b>Địa chỉ: </b>{{ item.tintuyendung.diaChi }}
+                  <br>
+                  <b>Ngày ứng tuyển: </b>{{ new Date(item.createdAt).toLocaleDateString('en-GB') }}
+
+                  <div class="row">
+                    <div class="col-12">
+                      <h6 class="q-pt-md text-weight-bold">Thông tin liên hệ: </h6>
+                      <p class="q-mb-sm"><b>Tên: </b> {{ item.tintuyendung.tenNguoiLienHe }}</p>
+                      <p class="q-mb-sm"><b>Sdt: </b> {{ item.tintuyendung.soDienThoaiLienHe }}</p>
+                      <p class="q-mb-sm"><b>Email: </b> {{ item.tintuyendung.emailLienHe }}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-2 flex justify-end">
+                  <span class="text-weight-bold text-pink" style="font-size: 1.3em;">Trạng thái: yêu thích</span>
                 </div>
               </div>
             </q-card-section>
