@@ -1,8 +1,8 @@
 <script setup>
 import { useStoreJob } from 'src/stores/storeJob';
-import { useQuasar } from 'quasar';
+import { useQuasar, Loading } from 'quasar';
 import { useMyStore } from 'src/stores/myStore';
-import { onMounted } from 'vue';
+import { onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 const storeJob = useStoreJob();
@@ -19,6 +19,7 @@ onMounted(async () => {
   await storeJob.getAllPost();
   await storeJob.getAllNhaTuyenDung();
   await storeJob.getAllDonUngTuyen();
+  await storeJob.getListDanhGia(storeJob.listDataJobDetail._id);
 
   storeJob.listDataJobDetail.moTaCongViec = storeJob.listDataJobDetail.moTaCongViec.replace(/\n/gi, "\n - ");
   storeJob.listDataJobDetail.moTaYeuCau = storeJob.listDataJobDetail.moTaYeuCau.replace(/\n/gi, "\n - ");
@@ -72,6 +73,15 @@ onMounted(async () => {
     }
   });
 
+  /* pagination for comment */
+  if (storeJob.listRate.length > 2) {
+    let arr = [];
+    for (let i = 0; i < 3; ++i) {
+      arr.push(storeJob.listRate[i]);
+    }
+    storeJob.listRate = [...arr];
+  }
+
 });
 
 const clickScrollTinTuyenDung = () => {
@@ -88,6 +98,40 @@ const clickScrollViecLamLienQuan = () => {
   var id = document.getElementById('tab-job');
   id.scrollIntoView();
 }
+
+const clickScrollDanhGia = () => {
+  var id = document.getElementById('tab-rate');
+  id.scrollIntoView();
+}
+
+watch(() => storeJob.panigateCommentSelected, val => {
+  const executePanigation = async () => {
+    Loading.show({
+      message: "Vui lòng đợi trong giấy lát...",
+      boxClass: "bg-grey-2 text-grey-9",
+      spinnerColor: "primary",
+    });
+
+    let arr = [];
+    storeJob.listRate = [];
+    await storeJob.getListDanhGia(route.params.id);
+    console.log(storeJob.listRate.length);
+    console.log(storeJob.panigateCommentSelected);
+
+    for (let i = (storeJob.panigateCommentSelected - 1) * 3; i < storeJob.panigateCommentSelected * 3; ++i) {
+      // storeJob.listRate.push(storeJob.listRate[i]);
+      if (storeJob.listRate[i] !== undefined) {
+        arr.push(storeJob.listRate[i])
+      }
+    }
+
+    setTimeout(() => {
+      storeJob.listRate = [...arr];
+      Loading.hide();
+    }, 300);
+  }
+  executePanigation();
+})
 </script>
 <template>
   <q-layout>
@@ -159,6 +203,8 @@ const clickScrollViecLamLienQuan = () => {
 
               <q-tab :ripple="false" name="info" icon="alarm" label="Thông tin công ty"
                 @click="clickScrollThongTinCongTy()" />
+
+              <q-tab :ripple="false" name="relate" icon="thumb_up" label="Đánh giá" @click="clickScrollDanhGia()" />
 
 
               <q-tab :ripple="false" name="relate" icon="movie" label="Việc làm liên quan"
@@ -371,6 +417,124 @@ const clickScrollViecLamLienQuan = () => {
                             Date(storeJob.listDataOneRecruiter.ngaythanhlap).toLocaleDateString('en-GB') }}</p>
                         </span>
                       </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row bg-white full-width q-px-lg justify-evenly q-mt-md q-pb-lg q-pt-md" id="tab-rate">
+            <div class="col-12 q-my-md q-mx-lg">
+              <div class="flex justify-between">
+                <h6 class="box-title">Đánh giá</h6>
+              </div>
+              <div class="q-mt-md q-px-lg">
+                <div class="col-12">
+                  <div class="item highlight q-pa-none q">
+                    <q-form class="q-gutter-md">
+                      <div class="flex">
+                        <q-rating name="quality" v-model="storeJob.rate" min="1" max="5" size="2em" color="yellow"
+                          icon="star_border" icon-selected="star" no-dimming />
+                        <div class="q-pl-lg flex" style="align-items: center;" v-if="storeJob.rate === 5">
+                          <q-icon name="sentiment_very_satisfied" size="md" color="grey-7" />
+                          <span class="q-pl-sm text-grey-7" style="font-size: 1.2em;">Rất tốt</span>
+                        </div>
+
+                        <div class="q-pl-lg flex" style="align-items: center;" v-if="storeJob.rate === 4">
+                          <q-icon name="sentiment_very_satisfied" size="md" color="grey-7" />
+                          <span class="q-pl-sm text-grey-7" style="font-size: 1.2em;">Tốt</span>
+                        </div>
+
+                        <div class="q-pl-lg flex" style="align-items: center;" v-if="storeJob.rate === 3">
+                          <q-icon name="sentiment_satisfied" size="md" color="grey-7" />
+                          <span class="q-pl-sm text-grey-7" style="font-size: 1.2em;">Bình thường</span>
+                        </div>
+
+                        <div class="q-pl-lg flex" style="align-items: center;" v-if="storeJob.rate === 2">
+                          <q-icon name="sentiment_dissatisfied" size="md" color="grey-7" />
+                          <span class="q-pl-sm text-grey-7" style="font-size: 1.2em;">Tệ</span>
+                        </div>
+
+                        <div class="q-pl-lg flex" style="align-items: center;" v-if="storeJob.rate === 1">
+                          <q-icon name="sentiment_very_dissatisfied" size="md" color="grey-7" />
+                          <span class="q-pl-sm text-grey-7" style="font-size: 1.2em;">Rất tệ</span>
+                        </div>
+
+                      </div>
+                      <h6 class="text-weight-bold q-pb-md">Để lại bình luận của bạn bên dưới</h6>
+
+                      <q-input v-model="storeJob.inputComment" filled type="textarea"
+                        placeholder="Vui lòng điền tại đây..." counter maxlength="1000" />
+
+                      <div class="flex justify-end q-py-lg">
+                        <q-btn @click="storeJob.danhGiaPost()" color="green-7" label="Bình Luận" />
+                      </div>
+                    </q-form>
+
+                    <h6 class="text-weight-bold q-pb-lg">{{ storeJob.lengthRate }} bình luận</h6>
+
+                    <div class="row q-my-md" v-for="item in storeJob.listRate" :key="item.id">
+                      <div class="col-2 flex flex center q-py-lg">
+                        <!-- <img :src=item.ungtuyenvien.anhdaidien alt="" style="width: 80%;"> -->
+                        <img :src=item.ungtuyenvien.anhdaidien style="width: 50%; border-radius: 50%;">
+                      </div>
+                      <div class="col-8">
+                        <!-- <h6 class="text-weight-bold">{{ item.ungtuyenvien }}</h6> -->
+                        <h6 class="text-weight-bold">{{ item.ungtuyenvien.hovaten }}</h6>
+                        <div v-if="item.xeploai === '5'">
+                          <q-icon name="star" size="sm" color="yellow" />
+                          <q-icon name="star" size="sm" color="yellow" />
+                          <q-icon name="star" size="sm" color="yellow" />
+                          <q-icon name="star" size="sm" color="yellow" />
+                          <q-icon name="star" size="sm" color="yellow" />
+                        </div>
+
+                        <div v-if="item.xeploai === '4'">
+                          <q-icon name="star" size="sm" color="yellow" />
+                          <q-icon name="star" size="sm" color="yellow" />
+                          <q-icon name="star" size="sm" color="yellow" />
+                          <q-icon name="star" size="sm" color="yellow" />
+                          <q-icon name="star_border" size="sm" color="yellow" />
+                        </div>
+
+                        <div v-if="item.xeploai === '3'">
+                          <q-icon name="star" size="sm" color="yellow" />
+                          <q-icon name="star" size="sm" color="yellow" />
+                          <q-icon name="star" size="sm" color="yellow" />
+                          <q-icon name="star_border" size="sm" color="yellow" />
+                          <q-icon name="star_border" size="sm" color="yellow" />
+                        </div>
+
+                        <div v-if="item.xeploai === '2'">
+                          <q-icon name="star" size="sm" color="yellow" />
+                          <q-icon name="star" size="sm" color="yellow" />
+                          <q-icon name="star_border" size="sm" color="yellow" />
+                          <q-icon name="star_border" size="sm" color="yellow" />
+                          <q-icon name="star_border" size="sm" color="yellow" />
+                        </div>
+
+                        <div v-if="item.xeploai === '1'">
+                          <q-icon name="star" size="sm" color="yellow" />
+                          <q-icon name="star_border" size="sm" color="yellow" />
+                          <q-icon name="star_border" size="sm" color="yellow" />
+                          <q-icon name="star_border" size="sm" color="yellow" />
+                          <q-icon name="star_border" size="sm" color="yellow" />
+                        </div>
+
+                        <p class="q-pl-sm q-py-sm">{{ item.noidung }}</p>
+
+                        <span class="q-pl-sm text-grey-6">{{ new Date(item.ngay).toLocaleDateString('en-GB') }}</span>
+                      </div>
+                      <div class="col-2 flex flex-center justify-end">
+                        <b class="cursor-pointer">Reply</b>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <div v-if="storeJob.listRate.length" class="q-pa-lg flex flex-center">
+                      <q-pagination color="green-7" v-model="storeJob.panigateCommentSelected"
+                        :max="storeJob.lengthRate / 3 + 1" :max-pages="6" direction-links />
                     </div>
                   </div>
                 </div>

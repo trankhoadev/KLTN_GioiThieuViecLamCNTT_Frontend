@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { api } from "src/boot/axios";
 import { ref, reactive } from "vue";
-import { Loading, Notify } from "quasar";
+import { Loading, Notify, Dialog } from "quasar";
 import QSpinnerFacebook from "quasar/src/components/spinner/QSpinnerFacebook.js";
 import { copyToClipboard } from "quasar";
 
@@ -13,6 +13,10 @@ export const useStoreJob = defineStore("storeJob", {
       listDataSearch: [],
       listDataJobDetail: [],
       listLanguageName: [],
+      listRate: [],
+      rate: ref(5),
+      lengthRate: "",
+      inputComment: "",
       listRecruiter: [],
       listDataOneRecruiter: [],
       listPostNhaTuyenDungById: [],
@@ -21,6 +25,7 @@ export const useStoreJob = defineStore("storeJob", {
       sortRadio: ref(""),
       lengthResponse: ref(0),
       panigateSelected: ref(1),
+      panigateCommentSelected: ref(1),
       tabJobDetail: ref("news"),
       /* optional */
       href: "",
@@ -46,6 +51,7 @@ export const useStoreJob = defineStore("storeJob", {
         resultSearchJob: false,
         resultJobDetail: false,
         resultUngTuyen: false,
+        resultDanhGia: false,
       }),
       /* step 3 */
       listSkill: [],
@@ -184,45 +190,8 @@ export const useStoreJob = defineStore("storeJob", {
           picture: "https://developer.apple.com/swift/images/swift-og.png",
         },
       ],
-      // listCompany: [
-      //   {
-      //     id: "1",
-      //     name: "CÔNG TY TNHH AMARIS VIỆT NAM",
-      //     picture:
-      //       "https://cdn.topcv.vn/48/company_logos/9c7G3P3T9ax2xjTUuFrGuzERBnewqWCr_1655459515____7c02ee0971f3c131d91cb63cbdbdf588.png",
-      //     amount: "17",
-      //   },
 
-      //   {
-      //     id: "2",
-      //     name: "Công ty TNHH Công nghệ số Adamo",
-      //     picture:
-      //       "https://cdn.topcv.vn/48/company_logos/cong-ty-tnhh-cmc-global-1d94bf2be044cc832cd72d2f4f8fad66-5e72d0edadcfb.jpg",
-      //     amount: "8",
-      //   },
-      // ],
-
-      oneJobSelected: {
-        id: "1",
-        picture:
-          "https://cdn.topcv.vn/80/company_logos/cong-ty-tnhh-giai-phap-ket-noi-du-lich-viet-nam-59db4efdb678f_rs.jpg",
-        title: "Lập trình viên Frontend VueJS",
-        companyName: "Công ty TNHH giải pháp kết nối du lịch việt nam",
-        salary: "Tới 20 triệu",
-        workingType: "Toàn thời gian",
-        gender: "Không yêu cầu",
-        amount: "3", // so luong can tuyen
-        level: "nhân viên",
-        experience: "Không yêu cầu kinh nghiệm",
-        address:
-          "Hà Nội: Số 2, đường 3.5, khu đô thị Gamuda Gardens, P. Trần Phú, Q. Hoàng Mai. Ra tết sẽ chuyển qua Xã Đàn, Quận Đống Đa, TP Hà Nội",
-        moTaCongViec:
-          "Viết API Firebase cho Web và mobile app.\nLên kế hoạch, chuẩn bị giải pháp, thiết kế hệ thống phía server-side cùng các kiến trúc cơ sở dữ liệu lớn.\nTham gia viết tài liệu, mô tả hệ thống, kỹ thuật cho hệ thống phần mềm.\nỨng dụng các công nghệ, kỹ thuật mới để cải tiến hiệu năng và nâng cao chất lượng phần mềm.\nHỗ trợ các công việc liên quan cơ sở hạ tầng (Web Server, Database…).",
-        yeuCauUngVien:
-          "Ít nhất 6 tháng kinh nghiệm làm API.\nÍt nhất 6 tháng kinh nghiệm làm việc với Firebase.\nChủ động, đam mê công việc, sẵn sàng chấp nhận thách thức, luôn chú ý phát triển bản thân lên tầm cao mới.\nCó kinh nghiệm về RESTful API, API-first design.\nCó kinh nghiệm thiết kế đặc tả API và xây dựng tài liệu API.\nCó hiểu biết về các kỹ thuật tối ưu API performance.\nCó kiến thức cơ bản về Design Patterns và kiến trúc Microservice Architecture pattern.\nCó hiểu biết về phân tích, thiết kế và tối ưu database (đặc biệt là MongoDB hoặc hệ cơ sở dữ liệu NoSQL).\nCó kinh nghiệm lập trình đa luồng, lập trình thời gian thực (real-time chat/voice) và xử lý dữ liệu lớn là một lợi thế.\nCó kinh nghiệm về ReactJS là một lợi thế.",
-        quyenLoiUngVien:
-          "Mức lương cạnh tranh, xứng đáng với năng lực.\nCó cơ hội làm việc với nhiều công nghệ mới nhất trên thế giới.\nĐược tăng lương hàng năm và thưởng đặc biệt theo hiệu quả công việc. \nĐược làm việc trong một môi trường có sự chuyên môn hóa sâu về công việc. \nĐược làm việc với các đồng nghiệp thân thiện, hòa đồng và sẵn sàng giúp đỡ. \nĐược tạo điều kiện và trao cơ hội thăng tiến lên các vị trí cao hơn nếu đủ năng lực và thể hiện tốt. \nThường xuyên được đào tạo nội bộ kiến thức chuyên môn và kỹ năng mềm \nChế độ thưởng, phúc lợi theo chính sách Công ty (lế, tết, sinh nhật, hiếu hỷ, …) \nĐược hưởng chế độ bảo hiểm y tế, bảo hiểm xã hội theo quy định",
-      },
+      oneJobSelected: {},
     };
   },
   getters: {},
@@ -515,6 +484,107 @@ export const useStoreJob = defineStore("storeJob", {
         });
       } catch (err) {
         console.log("Internal Server Error: ", err);
+      }
+    },
+
+    async getListDanhGia(id) {
+      this.listRate = [];
+      const url = "api/danhgia/" + id;
+      try {
+        await api.get(url).then((res) => {
+          if (res.data) {
+            this.listRate = res.data;
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
+      } finally {
+        this.lengthRate = this.listRate.length;
+      }
+    },
+
+    async danhGiaPost() {
+      if (this.rate === 0) {
+        Dialog.create({
+          message: "Vui lòng chọn số sao đánh giá.",
+          title: "Thông báo",
+          color: "red",
+        });
+        return;
+      }
+
+      if (this.inputComment.length === 0) {
+        Dialog.create({
+          message: "Vui lòng điền bình luận trước khi submit.",
+          title: "Thông báo",
+          color: "red",
+        });
+        return;
+      }
+
+      // let dataXepLoai;
+      // if (this.rate === 5) {
+      //   dataXepLoai = "NAM_SAO";
+      // }
+
+      // if (this.rate === 4) {
+      //   dataXepLoai = "BON_SAO";
+      // }
+
+      // if (this.rate === 3) {
+      //   dataXepLoai = "BA_SAO";
+      // }
+
+      // if (this.rate === 2) {
+      //   dataXepLoai = "HAI_SAO";
+      // }
+
+      // if (this.rate === 1) {
+      //   dataXepLoai = "MOT_SAO";
+      // }
+
+      const url = "api/danhgia";
+      const data = {
+        noidung: this.inputComment,
+        ngay: new Date(),
+        xeploai: this.rate,
+        tintuyendung: this.listDataJobDetail._id,
+        ungtuyenvien: localStorage.getItem("idUngTuyenVien"),
+      };
+
+      try {
+        await api.post(url, data).then((res) => {
+          if (res.data) {
+            this.resultExecuted.resultDanhGia = true;
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
+      } finally {
+        if (this.resultExecuted.resultDanhGia) {
+          setTimeout(() => {
+            Loading.hide();
+            window.location.reload();
+          }, 1000);
+          Notify.create({
+            message: "Bình luận thành công",
+            position: "bottom",
+            timeout: 2000,
+            color: "green",
+            icon: "mood",
+          });
+        } else {
+          setTimeout(() => {
+            Loading.hide();
+          }, 1000);
+          Notify.create({
+            message: "Bình luận thất bại",
+            timeout: 2000,
+            position: "bottom",
+            color: "negative",
+            icon: "mood_bad",
+          });
+        }
       }
     },
 

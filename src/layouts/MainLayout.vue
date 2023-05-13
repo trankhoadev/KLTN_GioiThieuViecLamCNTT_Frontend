@@ -72,7 +72,7 @@ const clickToTop = () => {
     <!-- Back to Top End-->
 
     <q-header elevated class="text-white header" ref="header" height-hint="98">
-      <div class="row header-row flex-center" id="header">
+      <div class="row header-row flex-center" id="header" style="min-height: 10vh;">
 
         <div class="col-6 col-md-6">
           <div class="row">
@@ -80,18 +80,11 @@ const clickToTop = () => {
             <div class="col-6 col-md-4">
               <div class="header-logo">
                 <a href="/">
-                  <img src="src/assets/authentication/logo.png" alt="">
+                  <!-- <img src="src/assets/authentication/logo.png" alt=""> -->
+                  <h6 class="title">TimViecNhanh247</h6>
                 </a>
               </div>
             </div>
-
-            <!-- <div class="sm-none col-md-4">
-              <a href="#">Cách hoạt động</a>
-            </div>
-
-            <div class="sm-none col-md-4">
-              <a href="#">Tìm công việc</a>
-            </div> -->
 
           </div>
         </div>
@@ -298,6 +291,15 @@ const clickToTop = () => {
   @media screen and (max-width: 1080px) {
     @content;
   }
+}
+
+.title {
+  font-family: 'Sawarabi Gothic', sans-serif;
+  font-size: 40px;
+  color: #4b7cb6;
+  font-style: oblique;
+
+  filter: drop-shadow(4px 4px 0 #8BeCf6);
 }
 
 /* Dark mode custom Css */
