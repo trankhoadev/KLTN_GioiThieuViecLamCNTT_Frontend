@@ -27,6 +27,7 @@ export const useStoreRecruiterAccount = defineStore("storeRecruiterAccount", {
         denyAll: false,
         resetOne: false,
         blockOne: false,
+        unblockOne: false,
       }),
       columnRecruiterAccount: [
         {
@@ -40,10 +41,10 @@ export const useStoreRecruiterAccount = defineStore("storeRecruiterAccount", {
         },
 
         {
-          name: "name",
+          name: "username",
           required: true,
           label: "Tên nhà tuyển dụng",
-          field: "name",
+          field: "username",
           align: "left",
           sortable: true,
           headerStyle: "font-size: 1.1em; font-weight: bold",
@@ -60,20 +61,20 @@ export const useStoreRecruiterAccount = defineStore("storeRecruiterAccount", {
         },
 
         {
-          name: "date",
+          name: "createdAt",
           required: true,
           label: "Ngày đăng ký",
-          field: "date",
+          field: "createdAt",
           align: "left",
           sortable: true,
           headerStyle: "font-size: 1.1em; font-weight: bold",
         },
 
         {
-          name: "state",
+          name: "statusOnline",
           required: true,
           label: "Trạng thái",
-          field: "state",
+          field: "statusOnline",
           align: "left",
           sortable: true,
           headerStyle: "font-size: 1.1em; font-weight: bold",
@@ -468,6 +469,51 @@ export const useStoreRecruiterAccount = defineStore("storeRecruiterAccount", {
       } finally {
         setTimeout(() => {
           if (this.resultImplement.blockOne) {
+            Loading.hide();
+            Notify.create({
+              message: "Thao tác thành công",
+              position: "bottom",
+              timeout: 2000,
+              color: "green",
+              icon: "mood",
+            });
+            setTimeout(() => {
+              return window.location.reload();
+            }, 1500);
+          } else {
+            Loading.hide();
+            Dialog.create({
+              message: "Thao tác thất bại! Vui lòng thử lại.",
+              title: "Thông báo",
+              color: "red",
+            });
+          }
+        }, 1000);
+      }
+    },
+
+    /* reset passwork */
+    async khoiPhucTaiKhoan(id) {
+      Loading.show({
+        message: "Đang xử lí...",
+        boxClass: "bg-grey-2 text-grey-9",
+        spinnerColor: "primary",
+      });
+
+      const url = "api/user/unblockuser/" + id;
+      console.log(url);
+      console.log(id);
+
+      try {
+        api.put(url).then((res) => {
+          if (res.data) {
+            this.resultImplement.unblockOne = true;
+          }
+        });
+      } catch (error) {
+      } finally {
+        setTimeout(() => {
+          if (this.resultImplement.unblockOne) {
             Loading.hide();
             Notify.create({
               message: "Thao tác thành công",

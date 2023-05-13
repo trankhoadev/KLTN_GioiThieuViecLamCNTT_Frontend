@@ -46,11 +46,11 @@ const getCount = () => {
                 @click="storeRecruiterAccount.filter = ''" v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
               <q-tab class="text-teal" icon="done"
                 :label="'Đang hoạt động ' + '(' + storeRecruiterAccount.taiKhoanNtdDangHoatDong + ')'"
-                @click="storeRecruiterAccount.filter = 'đang hoạt động'"
+                @click="storeRecruiterAccount.filter = 'true'"
                 v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
               <q-tab class="text-red" icon="close"
                 :label="'Đã khóa ' + '(' + storeRecruiterAccount.taiKhoanNtdDaKhoa + ')'"
-                @click="storeRecruiterAccount.filter = 'đã khóa'"
+                @click="storeRecruiterAccount.filter = 'false'"
                 v-bind:class="{ 'q-px-sm': $q.screen.sm || $q.screen.xs }" />
             </q-tabs>
           </div>
@@ -92,7 +92,7 @@ const getCount = () => {
           <td class="text-left" key="stt" :props="props" style="width: 5%;">
             {{ props.rowIndex + 1 }}
           </td>
-          <td class="text-left" key="name" :props="props">
+          <td class="text-left" key="username" :props="props">
             <span style="white-space: pre-wrap;">{{ props.row.username }}</span>
           </td>
 
@@ -100,11 +100,11 @@ const getCount = () => {
             <span style="white-space: pre-wrap;">{{ props.row.email }}</span>
           </td>
 
-          <td class="text-left" key="date" :props="props">
+          <td class="text-left" key="createdAt" :props="props">
             {{ new Date(props.row.createdAt).toLocaleDateString('en-GB') }}
           </td>
 
-          <td class="text-left" key="date" :props="props">
+          <td class="text-left" key="statusOnline" :props="props">
             {{ props.row.statusOnline ? "đang hoạt động" : "đã khóa" }}
           </td>
 
@@ -118,7 +118,7 @@ const getCount = () => {
 
             <div v-else>
               <q-btn color="light-green" icon="restore" label="Khôi phục"
-                @click="storeRecruiterAccount.acceptOne(props.row.email)" />
+                @click="storeRecruiterAccount.khoiPhucTaiKhoan(props.row._id)" />
             </div>
           </td>
         </tr>
