@@ -25,12 +25,27 @@ console.log(storeAddStuff.listData);
       </template>
     </q-input>
 
-    <q-input v-for="item in storeAddStuff.listData" :key="item._id" outlined bottom-slots
-      v-model="item.tennganhnghe" filled>
+    <q-input v-for="item in storeAddStuff.listData" :key="item._id" outlined bottom-slots v-model="item.tennganhnghe"
+      filled>
       <template v-slot:append>
-        <q-btn round flat icon="delete" />
+        <q-btn @click="storeAddStuff.checkRemoveJob(item._id)" round flat icon="delete" />
       </template>
     </q-input>
+
+    <q-dialog v-model="storeAddStuff.dialogRemoveJob">
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar icon="warning" color="primary" text-color="white" />
+          <span style="max-width: 400px;" class="q-ml-sm">Bạn có chắc chắn muốn xóa ngành nghề này không ?</span>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Đồng ý" color="primary" v-close-popup
+            @click="storeAddStuff.removeJob(storeAddStuff.oneJobSelectId)" />
+          <q-btn flat label="Hủy" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 

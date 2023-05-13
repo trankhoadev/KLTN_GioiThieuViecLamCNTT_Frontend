@@ -12,18 +12,18 @@ export const useStoreAddStuff = defineStore("storeAddStuff", {
         add: false,
         remove: false,
       }),
+      dialogRemoveJob: ref(false),
+      oneJobSelectId: "",
       inputData: "",
     };
   },
   getters: {},
   actions: {
     _init() {},
-    // checkDenyOne(id, name, email) {
-    //   this.dialogDenyOne = true;
-    //   this.oneAccountSelectId = id;
-    //   this.oneAccountSelectName = name;
-    //   this.oneAccountSelectEmail = email;
-    // },
+    checkRemoveJob(id) {
+      this.dialogRemoveJob = true;
+      this.oneJobSelectId = id;
+    },
 
     /* get all tai khoan ung tuyen vien */
     async getAllData() {
@@ -85,6 +85,48 @@ export const useStoreAddStuff = defineStore("storeAddStuff", {
             Loading.hide();
             Dialog.create({
               message: "Thêm thất bại! Vui lòng thử lại.",
+              title: "Thông báo",
+              color: "red",
+            });
+          }
+        }, 1000);
+      }
+    },
+
+    async removeJob(id) {
+      Loading.show({
+        message: "Đang xử lí...",
+        boxClass: "bg-grey-2 text-grey-9",
+        spinnerColor: "primary",
+      });
+
+      const url = "api/nganhnghe/" + id;
+
+      try {
+        api.delete(url).then((res) => {
+          if (res.data) {
+            this.resultImplement.remove = true;
+          }
+        });
+      } catch (error) {
+      } finally {
+        setTimeout(() => {
+          if (this.resultImplement.remove) {
+            Loading.hide();
+            Notify.create({
+              message: "Xóa thành công",
+              position: "bottom",
+              timeout: 2000,
+              color: "green",
+              icon: "mood",
+            });
+            setTimeout(() => {
+              return window.location.reload();
+            }, 1500);
+          } else {
+            Loading.hide();
+            Dialog.create({
+              message: "Xóa thất bại! Vui lòng thử lại.",
               title: "Thông báo",
               color: "red",
             });
