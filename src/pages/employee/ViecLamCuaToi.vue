@@ -157,7 +157,7 @@ onMounted(async () => {
                   </div>
                 </div>
                 <div class="col-2 flex justify-end">
-                  <span class="text-weight-bold text-green-7" style="font-size: 1.3em;">Trạng thái: {{ item.trangthai
+                  <span class="text-weight-bold text-red" style="font-size: 1.3em;">Trạng thái: {{ item.trangthai
                   }}</span>
                 </div>
               </div>

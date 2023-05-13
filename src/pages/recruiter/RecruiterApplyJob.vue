@@ -123,6 +123,7 @@ const getCount = () => {
 
           <td class="text-left" key="trangthai" :props="props">
             {{ props.row.trangthai }}
+
           </td>
 
           <td class="text-left" key="action" :props="props">
@@ -130,7 +131,7 @@ const getCount = () => {
               <q-btn color="light-green" icon="check" label="Duyệt"
                 @click="storeRecruiterApplyJob.duyetDonTuyenDung(props.row._id)" />
               <q-btn class="q-ml-lg" color="pink" icon="cancel" label="Từ chối"
-                @click="storeRecruiterApplyJob.tuChoiDonUngTuyen(props.row._id)" />
+                @click="storeRecruiterApplyJob.tuChoiDonUngTuyen(props.row._id, props.row.ungtuyenvien.email, props.row.tieude)" />
             </div>
           </td>
         </tr>

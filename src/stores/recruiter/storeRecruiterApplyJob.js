@@ -150,7 +150,7 @@ export const useStoreRecruiterApplyJob = defineStore("storeRecruiterApplyJob", {
     },
 
     /* For recruiter User */
-    async tuChoiDonUngTuyen(id) {
+    async tuChoiDonUngTuyen(id, email, title) {
       Dialog.create({
         dark: true,
         title: "Cảnh báo",
@@ -161,7 +161,27 @@ export const useStoreRecruiterApplyJob = defineStore("storeRecruiterApplyJob", {
         },
         cancel: true,
       })
-        .onOk((reason) => {
+        .onOk(async (reason) => {
+          const urlSendEmail = "api/tintuyendung/emailfeedback";
+          const dataSendEmail = {
+            email: email,
+            content:
+              'Chúng tôi xin thông báo về đơn xin ứng tuyển công việc "' +
+              title +
+              '"của bạn đã không được duyệt vì lí do ' +
+              reason +
+              ". Xin chia buồn và chúc bạn may mắn trong việc tìm kiếm những công việc khác!",
+          };
+
+          try {
+            await api.post(urlSendEmail, dataSendEmail).then((res) => {
+              if (res.data) {
+              }
+            });
+          } catch (err) {
+            console.log("Send email error: ", err);
+          }
+
           Loading.show({
             message: "Đang xử lí...",
             boxClass: "bg-grey-2 text-grey-9",
