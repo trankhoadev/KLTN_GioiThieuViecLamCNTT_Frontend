@@ -143,8 +143,8 @@ const clickExpandPrize = () => {
                 </li>
               </ul>
 
-              <router-link :to="`/preview-cv/${storeAuthen.idUngTuyenVien}`" target='_blank'> <q-btn color="red" class="q-mt-lg q-ml-md"
-                  label="Xem và Tải CV" /></router-link>
+              <router-link :to="`/preview-cv/${storeAuthen.idUngTuyenVien}`" target='_blank'> <q-btn color="red"
+                  class="q-mt-lg q-ml-md" label="Xem và Tải CV" /></router-link>
             </div>
 
             <div class="col-md-9 col-sm-12">
@@ -189,12 +189,14 @@ const clickExpandPrize = () => {
                             </template>
                           </q-input>
                           <div class="row flex justify-between">
-                            <div class="col-md-6 col-12" v-bind:style="$q.screen.lt.md ? { 'padding-right': '0' } : { 'padding-right': '0.5em' }">
+                            <div class="col-md-6 col-12"
+                              v-bind:style="$q.screen.lt.md ? { 'padding-right': '0' } : { 'padding-right': '0.5em' }">
                               <q-input filled square class="q-mb-md" v-model="storeHoSoCv.listData.sdt" type="number"
                                 label="Số điện thoại" />
                             </div>
 
-                            <div class="col-md-6 col-12" v-bind:style="$q.screen.lt.md ? { 'padding-left': '0' } : { 'padding-left': '0.5em' }">
+                            <div class="col-md-6 col-12"
+                              v-bind:style="$q.screen.lt.md ? { 'padding-left': '0' } : { 'padding-left': '0.5em' }">
                               <q-input filled square class="q-mb-md" v-model="storeHoSoCv.listData.email" type="text"
                                 label="Địa chỉ email" disable />
                             </div>
