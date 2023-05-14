@@ -1,9 +1,11 @@
 <script setup>
 import { useQuasar } from 'quasar'
 import { useStoreEmployeeAccount } from 'src/stores/admin/storeEmployeeAccount.js';
+import { useStoreAuthentication } from 'src/stores/storeAuthentication';
 import { onMounted } from 'vue';
 import { onBeforeUpdate } from 'vue';
 const storeEmployeeAccount = useStoreEmployeeAccount();
+const storeAuthen = useStoreAuthentication();
 const $q = useQuasar();
 
 onMounted(() => {
@@ -58,6 +60,7 @@ const getCount = () => {
       </template>
 
       <template v-slot:top-right>
+        <q-icon @click="storeAuthen.reload()" class="q-mr-md cursor-pointer text-teal" name="cached" size="md" />
         <div class="q-gutter-lg">
           <q-input rounded outlined dense debounce="1000" v-model="storeEmployeeAccount.filter" placeholder="Search"
             v-bind:style="$q.screen.lt.md ? { 'width': '80vw' } : { 'width': '20vw' }"
@@ -117,7 +120,7 @@ const getCount = () => {
             </div>
 
             <div v-else>
-              <q-btn color="light-green" icon="restore" label="Khôi phục"
+              <q-btn color="light-green" icon="lock_reset" label="Khôi phục"
                 @click="storeEmployeeAccount.khoiPhucTaiKhoan(props.row._id)" />
             </div>
           </td>

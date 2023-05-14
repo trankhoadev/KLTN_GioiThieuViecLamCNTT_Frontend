@@ -74,6 +74,7 @@ const getCount = () => {
       </template>
 
       <template v-slot:top-right>
+        <q-icon @click="storeAuthen.reload()" class="q-mr-md cursor-pointer text-teal" name="cached" size="md" />
         <div class="q-gutter-lg">
           <q-input rounded outlined dense debounce="1000" style="width: 20vw;" v-model="storeRecruiterPost.filter"
             placeholder="Search" v-bind:style="$q.screen.lt.md ? { 'width': '80vw' } : { 'width': '20vw' }"

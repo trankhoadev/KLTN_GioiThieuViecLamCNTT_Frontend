@@ -7,6 +7,7 @@ import LienHe from "pages/about/LienHe.vue";
 import IndexPage from "pages/IndexPage.vue";
 import SignIn from "pages/SignIn.vue";
 import SignUp from "pages/SignUp.vue";
+import ChangePassword from "src/pages/ChangePassword.vue";
 import SearchJob from "pages/job/SearchJob.vue";
 import JobDetail from "pages/job/JobDetail.vue";
 import HoSoCV from "pages/employee/HoSoCV.vue";
@@ -52,6 +53,10 @@ const router = [
       {
         path: "/dang-ky",
         component: SignUp,
+      },
+      {
+        path: "/doi-mat-khau",
+        component: ChangePassword,
       },
       {
         path: "/search/:id",

@@ -136,14 +136,14 @@ onMounted(() => {
             </q-list>
           </q-expansion-item> -->
 
-          <q-item to="/admin" active-class="q-item-no-link-highlighting">
+          <!-- <q-item to="/admin" active-class="q-item-no-link-highlighting">
             <q-item-section avatar>
               <q-icon name="settings" />
             </q-item-section>
             <q-item-section>
               <q-item-label>Cài đặt</q-item-label>
             </q-item-section>
-          </q-item>
+          </q-item> -->
           <q-item to="/admin" @click="storeAuthen.logOutUnique()" active-class="q-item-no-link-highlighting">
             <q-item-section avatar>
               <q-icon name="logout" />

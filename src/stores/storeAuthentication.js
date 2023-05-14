@@ -26,6 +26,9 @@ export const useStoreAuthentication = defineStore("storeAuthentication", {
       dialogOtp: ref(false),
       count: 0,
       otp: "",
+      oldPassword: "",
+      newPassword: "",
+      reNewPassword: "",
       listRole: [
         { label: "Ứng tuyển viên", value: "user" },
         { label: "Nhà tuyển dụng", value: "recruiter" },
@@ -143,6 +146,10 @@ export const useStoreAuthentication = defineStore("storeAuthentication", {
         });
         if (err) throw err;
       }
+    },
+
+    reload() {
+      window.location.reload();
     },
 
     logOut() {
