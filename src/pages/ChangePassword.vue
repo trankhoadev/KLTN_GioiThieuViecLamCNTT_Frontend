@@ -35,7 +35,7 @@ onMounted(() => {
           </div>
         </q-card-section>
         <q-card-section>
-          <q-form class="q-gutter-md" @submit="() => {}">
+          <q-form class="q-gutter-md" @submit="storeAuthen.changePassword(storeAuthen.email, storeAuthen.newPassword)">
 
             <q-input filled label="Mật khẩu cũ" :type="isPwd ? 'password' : 'text'" v-model="storeAuthen.oldPassword" :rules="[
               val => !!val || 'Mật khẩu không được rỗng',

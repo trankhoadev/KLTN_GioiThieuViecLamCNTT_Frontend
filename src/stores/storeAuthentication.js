@@ -35,6 +35,7 @@ export const useStoreAuthentication = defineStore("storeAuthentication", {
       ],
       result: reactive({
         resultAutoCreateId: false,
+        resultChangePassword: false,
       }),
       roleSelected: "",
     };
@@ -148,8 +149,20 @@ export const useStoreAuthentication = defineStore("storeAuthentication", {
       }
     },
 
-    reload() {
-      window.location.reload();
+    async loginCheck(email, pass) {
+      try {
+        this.isLoadingLogin = true;
+        await api
+          .post("api/user/login", { email: email, password: pass })
+          .then((res) => {
+            if (res.status == 200) {
+              return true;
+            }
+            return false;
+          });
+      } catch (err) {
+        if (err) throw err;
+      }
     },
 
     logOut() {
@@ -196,25 +209,6 @@ export const useStoreAuthentication = defineStore("storeAuthentication", {
           boxClass: "bg-grey-2 text-grey-9",
           spinnerColor: "primary",
         });
-        // try {
-        //   const data = {
-        //     username: this.userName,
-        //     email: this.email,
-        //     password: this.password,
-        //     loaitaikhoan: this.roleSelected.value,
-        //   };
-        //   api.post("api/user/", data).then((res) => {
-        //     if (res) {
-        //       this.idUser = res.data._id;
-        //       setTimeout(() => {
-        //         Loading.hide();
-        //         this.dialogOtp = true;
-        //       }, 1500);
-        //     }
-        //   });
-        // } catch (error) {
-        //   console.log("Internal server error: ", error);
-        // }
         setTimeout(() => {
           Loading.hide();
           this.dialogOtp = true;
@@ -301,6 +295,64 @@ export const useStoreAuthentication = defineStore("storeAuthentication", {
           message: "Tạo tài khoản thất bại.",
         });
         console.log("Internal server error: ", error);
+      }
+    },
+
+    reload() {
+      window.location.reload();
+    },
+
+    async changePassword(email, password) {
+      try {
+        console.log(await this.loginCheck(email, this.oldPassword));
+      } catch (err) {
+        Dialog.create({
+          title: "Thông báo",
+          message: "Mật khẩu cũ không đúng. Vui lòng kiểm tra lại!",
+          persistent: true,
+        });
+        return;
+      }
+
+      const url = "api/user/update";
+      const data = {
+        email: email,
+        password: password,
+      };
+
+      try {
+        await api.put(url, data).then((res) => {
+          if (res.data) {
+            this.result.resultChangePassword = true;
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
+      } finally {
+        if (this.result.resultChangePassword) {
+          setTimeout(() => {
+            Loading.hide();
+            window.location.reload();
+          }, 1000);
+          Notify.create({
+            message: "Đổi mật khẩu thành công!",
+            position: "bottom",
+            timeout: 2000,
+            color: "green",
+            icon: "mood",
+          });
+        } else {
+          setTimeout(() => {
+            Loading.hide();
+          }, 1000);
+          Notify.create({
+            message: "Đổi mật khẩu thất bại",
+            timeout: 2000,
+            position: "bottom",
+            color: "negative",
+            icon: "mood_bad",
+          });
+        }
       }
     },
 
