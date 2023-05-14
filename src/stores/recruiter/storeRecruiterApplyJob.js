@@ -85,7 +85,7 @@ export const useStoreRecruiterApplyJob = defineStore("storeRecruiterApplyJob", {
     },
 
     async getAllDonUngTuyen() {
-      const url = "api/donungtuyen/nhatuyendung/";
+      const url = "api/donungtuyen/";
       try {
         await api.get(url).then((res) => {
           if (res.data) {

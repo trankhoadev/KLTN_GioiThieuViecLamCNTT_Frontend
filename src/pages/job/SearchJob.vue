@@ -90,7 +90,7 @@ onMounted(async () => {
     }
   });
 
-  console.log(storeJob.listFavorite);
+  // console.log(storeJob.listFavorite);
 
 });
 
@@ -201,8 +201,8 @@ watch(() => storeJob.panigateSelected, val => {
                   Ưu tiên hiển thị:
                 </span>
 
-                <q-radio v-model="storeJob.sortRadio" val="new" label="Tin mới nhất" />
-                <q-radio v-model="storeJob.sortRadio" val="salary" label="Lương cao nhất" />
+                <q-radio @click="storeJob.sortPostDate(route.params.id)" v-model="storeJob.sortRadio" val="new" label="Tin mới nhất" />
+                <q-radio @click="storeJob.sortPostSalary(route.params.id)" v-model="storeJob.sortRadio" val="salary" label="Lương cao nhất" />
               </div>
             </div>
 

@@ -21,6 +21,7 @@ onMounted(async () => {
 
   for (let i = 0; i < storeViecLamCuaToi.listFavorite.length; ++i) {
     await storeJob.getNhaTuyenDungById(storeViecLamCuaToi.listFavorite[i].tintuyendung.nhatuyendung);
+    storeViecLamCuaToi.listFavorite[i].tennhatuyendung = storeJob.listDataOneRecruiter.tencongty;
     storeViecLamCuaToi.listFavorite[i].anhdaidien = storeJob.listDataOneRecruiter.anhdaidien;
   }
 
@@ -93,7 +94,7 @@ onMounted(async () => {
       <q-tab-panel name="Tin đã ứng tuyển">
         <q-card class="my-card q-mt-lg" v-for="item in storeViecLamCuaToi.listData" :key=item._id>
           <div v-if="item.trangthai === 'đã ứng tuyển'">
-            <q-card-section class="bg-primary text-white">
+            <q-card-section class="bg-green text-white">
               <div class="text-h6">
                 Tin tuyển dụng
               </div>
@@ -134,7 +135,7 @@ onMounted(async () => {
       <q-tab-panel name="Tin đã từ chối">
         <q-card class="my-card q-mt-lg" v-for="item in storeViecLamCuaToi.listData" :key=item._id>
           <div v-if="item.trangthai === 'đã từ chối'">
-            <q-card-section class="bg-primary text-white">
+            <q-card-section class="bg-red text-white">
               <div class="text-h6">
                 Tin tuyển dụng
               </div>
@@ -176,7 +177,7 @@ onMounted(async () => {
       <q-tab-panel name="Tin yêu thích">
         <q-card class="my-card q-mt-lg" v-for="item in storeViecLamCuaToi.listFavorite" :key=item._id>
           <div>
-            <q-card-section class="bg-primary text-white">
+            <q-card-section class="bg-pink text-white">
               <div class="text-h6">
                 Tin tuyển dụng
               </div>

@@ -11,6 +11,7 @@ export const useStoreJob = defineStore("storeJob", {
       test: "",
       listData: [],
       listDataSearch: [],
+      arr: [],
       listDataJobDetail: [],
       listLanguageName: [],
       listRate: [],
@@ -84,6 +85,18 @@ export const useStoreJob = defineStore("storeJob", {
         "10",
         "11",
         "12",
+      ],
+      listSalary: [
+        "trên 30 triệu",
+        "25 - 30 triệu",
+        "20 - 25 triệu",
+        "15 - 20 triệu",
+        "12 - 15 triệu",
+        "10 - 12 triệu",
+        "7 - 10 triệu",
+        "5 - 7 triệu",
+        "3 - 5 triệu",
+        "Dưới 3 triệu",
       ],
       selectMonth: "",
       listYear: [],
@@ -690,6 +703,102 @@ export const useStoreJob = defineStore("storeJob", {
           color: "green",
           icon: "mood",
         });
+      }
+    },
+
+    /* sort new date */
+    async sortPostDate(data) {
+      Loading.show({
+        spinner: QSpinnerFacebook,
+        spinnerColor: "purple-13",
+        spinnerSize: 140,
+        backgroundColor: "grey-7",
+        message: "Vui lòng đợi trong giây lát...",
+        messageColor: "white",
+      });
+      const url = "api/tintuyendung/search/" + data;
+      try {
+        await api.get(url).then((res) => {
+          if (res.data.length !== 0) {
+            this.listDataSearch.filter((e) => {
+              if (e.trangthai === "đang tuyển") {
+                this.arr.push(
+                  new Date().getTime() / (1000 * 60 * 60 * 24).toFixed(0) -
+                    new Date(e.createdAt).getTime() /
+                      (1000 * 60 * 60 * 24).toFixed(0)
+                );
+              }
+            });
+            this.lengthResponse = this.listDataSearch.length;
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
+      } finally {
+        let arrTemp = [];
+        this.arr.sort(function (a, b) {
+          return a - b;
+        });
+
+        for (let i = 0; i < this.arr.length; ++i) {
+          this.listDataSearch.filter((e) => {
+            if (
+              new Date().getTime() / (1000 * 60 * 60 * 24).toFixed(0) -
+                new Date(e.createdAt).getTime() /
+                  (1000 * 60 * 60 * 24).toFixed(0) ===
+              this.arr[i]
+            ) {
+              arrTemp.push(e);
+            }
+          });
+        }
+
+        this.listDataSearch = [...arrTemp];
+
+        setTimeout(() => {
+          Loading.hide();
+        }, 500);
+      }
+    },
+
+    /* sort salary */
+    async sortPostSalary(data) {
+      Loading.show({
+        spinner: QSpinnerFacebook,
+        spinnerColor: "purple-13",
+        spinnerSize: 140,
+        backgroundColor: "grey-7",
+        message: "Vui lòng đợi trong giây lát...",
+        messageColor: "white",
+      });
+      const url = "api/tintuyendung/search/" + data;
+      try {
+        await api.get(url).then((res) => {
+          if (res.data.length !== 0) {
+            this.listDataSearch.filter((e) => {
+              if (e.trangthai === "đang tuyển") {
+                return e;
+              }
+            });
+            this.lengthResponse = this.listDataSearch.length;
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
+      } finally {
+        let arrTemp = [];
+        for (let i = 0; i < this.listSalary.length; ++i) {
+          this.listDataSearch.filter((e) => {
+            if (e.mucluong === this.listSalary[i]) {
+              arrTemp.push(e);
+            }
+          });
+        }
+
+        this.listDataSearch = [...arrTemp];
+        setTimeout(() => {
+          Loading.hide();
+        }, 500);
       }
     },
 
