@@ -15,6 +15,20 @@ watch(() => $q.dark.isActive, val => {
 onMounted(async () => {
   await storeJob.getAllPost();
   await storeAuthen.checkCreateUngTuyenVien();
+  await storeJob.getListTag();
+
+  /* Note: Because cant get data directly from server so need using that. Have some problem like object promise before */
+  /* Handle get data of tag from server */
+  for (let i = 0; i < storeJob.listData.length; ++i) {
+    for (let j = 0; j < storeJob.listData[i].ngonngu.length; ++j) {
+      storeJob.listSkill.map((e) => {
+        if (storeJob.listData[i].ngonngu[j] === e._id) {
+          storeJob.listData[i].ngonngu[j] = e.ngonngu;
+        }
+      });
+    }
+  }
+  console.log(storeJob.listData);
 });
 
 </script>
@@ -112,7 +126,7 @@ onMounted(async () => {
                           item.tieude }}</router-link>
                       </p>
                       <span style="color: #333;">
-                        {{ item.companyName }}
+                        {{ item.nhatuyendung.tencongty }}
                       </span>
                       <div class="q-py-sm">
                         <div class="row flex justify-between">
@@ -129,8 +143,10 @@ onMounted(async () => {
                       <div class="row salary-date">
                         <div class="col-8 col-lg-8 col-md-12 col-sm-8">
                           <div class="flex justify-start">
-                            <div v-for="(itemTag) in item.tag" :key="itemTag">
-                              <span class="tag">{{ itemTag }}</span>
+                            <div class="skills">
+                              <label class="item" v-for="tag in item.ngonngu" :key="tag">
+                                {{ tag.ngonngu }}
+                              </label>
                             </div>
                           </div>
                         </div>
@@ -148,7 +164,8 @@ onMounted(async () => {
         </div>
 
         <div class="q-gutter-sm q-px-lg q-pt-lg" style="padding: 2em 0;">
-          <div class="flex justify-start la-align-center no-wrap q-px-lg q-pt-lg hotjob-title" style="align-items: center;">
+          <div class="flex justify-start la-align-center no-wrap q-px-lg q-pt-lg hotjob-title"
+            style="align-items: center;">
             <q-icon name="star" size="lg" />
             <h6 class="text-bold text-uppercase">Các ngôn ngữ lập trình đang có cơ hội làm việc hot</h6>
           </div>
@@ -269,6 +286,25 @@ body {
 .hover-underline {
   &:hover {
     text-decoration: underline;
+  }
+}
+
+.skills {
+  margin-bottom: 12px;
+  margin-top: 0;
+  display: flex;
+
+  label.item {
+    background: #e5f7ed;
+    border-radius: 20px;
+    color: #00b14f;
+    font-weight: 400;
+    padding: 4px 8px;
+    // border: 1px solid #00b14f;
+    &:hover {
+    border: 1px solid #00b04e;
+    transition: all ease .3s;
+  }
   }
 }
 
@@ -576,7 +612,7 @@ body {
 
     &:hover {
       box-shadow: none;
-      border: 1px solid #646d79;
+      border: 1px solid #c2c3c5;
     }
   }
 }

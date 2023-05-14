@@ -81,7 +81,7 @@ const clickToTop = () => {
               <div class="header-logo">
                 <a href="/">
                   <!-- <img src="src/assets/authentication/logo.png" alt=""> -->
-                  <h6>TimViecNhanh247</h6>
+                  <h6 class="text-weight-bold text-italic">TimViecNhanh247</h6>
                 </a>
               </div>
             </div>

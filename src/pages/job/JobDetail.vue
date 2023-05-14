@@ -534,7 +534,7 @@ watch(() => storeJob.panigateCommentSelected, val => {
                       <h6 class="text-weight-bold q-pb-md">Để lại bình luận của bạn bên dưới</h6>
 
                       <q-input v-model="storeJob.inputComment" filled type="textarea"
-                        placeholder="Vui lòng điền tại đây..." counter maxlength="1000" />
+                        placeholder="Vui lòng điền tại đây..." counter maxlength="500" />
 
                       <div class="flex justify-end q-py-lg">
                         <q-btn @click="storeJob.danhGiaPost()" color="green-7" label="Bình Luận" />
