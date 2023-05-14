@@ -59,7 +59,6 @@ export const useStoreAuthentication = defineStore("storeAuthentication", {
           .post("api/user/login", { email: email, password: pass })
           .then((res) => {
             if (res.status == 200) {
-              console.log(res.data);
               if (!res.data.statusOnline) {
                 Dialog.create({
                   message:
