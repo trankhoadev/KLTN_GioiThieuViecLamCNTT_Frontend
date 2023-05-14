@@ -113,7 +113,7 @@ const clickToTop = () => {
                     <q-item clickable class="flex flex-center justify-center">
                       <q-icon size="sm" name="settings" />
                       &nbsp;
-                      <q-item-section>Cài đặt</q-item-section>
+                      <q-item-section>Đổi mật khẩu</q-item-section>
                     </q-item>
                     <q-item clickable class="flex flex-center justify-center">
                       <q-icon size="sm" name="power_settings_new" />
@@ -146,8 +146,9 @@ const clickToTop = () => {
       <div class="header-tabs flex justify-between">
         <q-tabs align="left">
           <q-route-tab to="/" label="Tìm Việc" class="text-white" />
-          <q-route-tab to="/" label="Tuyển Dụng" class="text-white" />
-          <q-route-tab to="/" label="About" class="text-white" />
+          <q-route-tab to="/ho-so-cv" label="Hồ sơ và CV" class="text-white" />
+          <q-route-tab to="/chinh-sach-bao-mat" label="Chính sách bảo mật" class="text-white" />
+          <q-route-tab to="/lien-he" label="Liên hệ" class="text-white" />
         </q-tabs>
 
         <q-tabs align="right">

@@ -335,9 +335,10 @@ watch(() => storeJob.panigateCommentSelected, val => {
 
                 <div v-if="storeAuthen.loaiTaiKhoan === 'user'" class="post-item">
                   <h3>Cách thức ứng tuyển</h3>
-
                   <div>
-                    <q-btn v-if="!storeJob.listDataJobDetail.isUngTuyen" color="green-7" label="Ứng tuyển ngay" />
+                    <q-btn v-if="!storeJob.listDataJobDetail.isUngTuyen"
+                      @click="storeJob.seeDetail({ _id: storeJob.listDataJobDetail._id, tieude: storeJob.listDataJobDetail.tieude })"
+                      color="green-7" label="Ứng tuyển ngay" />
                     <q-btn v-else class="apply-now q-mr-md" color="grey" label="Đã ứng tuyển" icon="done" disable />
 
                     <q-btn v-if="!storeJob.listDataJobDetail.isYeuThich"
@@ -349,6 +350,22 @@ watch(() => storeJob.panigateCommentSelected, val => {
                 </div>
               </div>
             </div>
+
+            <q-dialog v-model="storeJob.isSeeDetail">
+              <q-card>
+                <q-card-section class="row items-center">
+                  Bạn có chắc chắn muốn ứng tuyển tin "{{ storeJob.ungTuyenSelectedData.tieude }}" không ?
+                </q-card-section>
+
+                <q-card-actions align="right">
+                  <q-btn flat label="Đồng ý" color="primary" v-close-popup
+                    @click="storeJob.ungTuyenTinTuyenDung(storeJob.ungTuyenSelectedData._id)" />
+                  <q-btn flat label="Hủy" color="primary" v-close-popup />
+                </q-card-actions>
+              </q-card>
+            </q-dialog>
+
+
             <div class="col-md-4 col-12 q-mt-lg">
               <div class="box-share-job">
                 <h3>Chia sẻ tin tuyển dụng</h3>
