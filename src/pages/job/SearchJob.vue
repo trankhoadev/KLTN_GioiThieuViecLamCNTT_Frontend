@@ -56,19 +56,6 @@ onMounted(async () => {
     storeJob.listRecruiter[i].amount = storeJob.listPostNhaTuyenDungById.length;
   }
 
-
-  // for (let i = 0; i < storeJob.listDataSearch.length; ++i) {
-  //   storeJob.listFavorite.map(e => {
-  //     console.log(e.tintuyendung._id === storeJob.listDataSearch[i]._id);
-  //     if (e.tintuyendung._id === storeJob.listDataSearch[i]._id && e.ungtuyenvien._id === storeAuthen.idUngTuyenVien) {
-  //       storeJob.listDataSearch[i].isYeuThich = true;
-  //       storeJob.listDataSearch[i].yeuThichId = e._id;
-  //     }
-  //     else {
-  //       storeJob.listDataSearch[i].isYeuThich = false;
-  //     }
-  //   })
-  // }
   /* Get favorite of every post */
   storeJob.listFavorite.filter((e) => {
     for (let i = 0; i < storeJob.listDataSearch.length; ++i) {
@@ -89,9 +76,6 @@ onMounted(async () => {
       }
     }
   });
-
-  // console.log(storeJob.listFavorite);
-
 });
 
 watch(() => storeJob.panigateSelected, val => {
@@ -181,7 +165,8 @@ watch(() => storeJob.panigateSelected, val => {
               </q-select>
             </div>
             <div class="col-md-2 flex flex-center">
-              <q-btn color="light-green-10" icon="search" label="Tìm kiếm" @click="storeJob.searchJob()" />
+              <q-btn v-if="storeJob.selectLevel || storeJob.selectSalary || storeJob.selectSkill" color="light-green-10" icon="search" label="Tìm kiếm" @click="storeJob.searchAdvanced(route.params.id)" />
+              <q-btn v-else color="light-green-10" icon="search" label="Tìm kiếm" @click="storeJob.searchJob()" />
             </div>
 
             <div class="col-12 q-pa-md">
@@ -201,8 +186,10 @@ watch(() => storeJob.panigateSelected, val => {
                   Ưu tiên hiển thị:
                 </span>
 
-                <q-radio @click="storeJob.sortPostDate(route.params.id)" v-model="storeJob.sortRadio" val="new" label="Tin mới nhất" />
-                <q-radio @click="storeJob.sortPostSalary(route.params.id)" v-model="storeJob.sortRadio" val="salary" label="Lương cao nhất" />
+                <q-radio @click="storeJob.sortPostDate(route.params.id)" v-model="storeJob.sortRadio" val="new"
+                  label="Tin mới nhất" />
+                <q-radio @click="storeJob.sortPostSalary(route.params.id)" v-model="storeJob.sortRadio" val="salary"
+                  label="Lương cao nhất" />
               </div>
             </div>
 

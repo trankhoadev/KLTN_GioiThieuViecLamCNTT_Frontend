@@ -165,7 +165,7 @@ watch(() => storeJob.panigateCommentSelected, val => {
         <div class="row justify-evenly q-py-md container" style="margin: 0 auto;"
           v-bind:style="$q.screen.lt.md ? { 'width': '95%' } : { 'width': '70%' }">
           <div class="row justify-evenly bg-white q-pa-md full-width">
-            <div class="col-md-3 col-12 q-my-md">
+            <div class="col-md-4 col-12 q-my-md">
               <q-form @submit="storeJob.searchJob()">
                 <q-input type="text" placeholder="Tên công việc, vị trí muốn ứng tuyển..." outlined
                   v-model="storeJob.searchInput">
@@ -175,7 +175,7 @@ watch(() => storeJob.panigateCommentSelected, val => {
                 </q-input>
               </q-form>
             </div>
-            <div class="col-md-2 col-12 q-my-md">
+            <!-- <div class="col-md-2 col-12 q-my-md">
               <q-select color="grey-3" outlined label-color="light-green-10" v-model="storeJob.selectSkill"
                 :options="storeJob.listSkill" label="Lĩnh vực" option-value="_id" option-label="ngonngu">
                 <template v-slot:append>
@@ -198,8 +198,9 @@ watch(() => storeJob.panigateCommentSelected, val => {
                   <q-icon name="monetization_on" color="light-green-10" />
                 </template>
               </q-select>
-            </div>
-            <div class="col-md-2 flex flex-center">
+            </div> -->
+            <div class="col-md-8 col-12 flex flex-start q-pl-md" style="align-items: center;"
+              v-bind:class="{ 'flex-center': $q.screen.md || $q.screen.sm || $q.screen.xs }">
               <q-btn color="light-green-10" icon="search" label="Tìm kiếm" @click="storeJob.searchJob()" />
             </div>
           </div>

@@ -9,9 +9,10 @@ export const useStoreJob = defineStore("storeJob", {
   state: () => {
     return {
       test: "",
+      arr: [],
       listData: [],
       listDataSearch: [],
-      arr: [],
+      listDataTemp: [],
       listDataJobDetail: [],
       listLanguageName: [],
       listRate: [],
@@ -111,6 +112,7 @@ export const useStoreJob = defineStore("storeJob", {
       expandCertification: false,
       expandPrize: false,
       searchInput: "",
+      selectSkill: ref(null),
       selectLevel: ref(null),
       selectSalary: ref(null),
       selectExperiment: ref(null),
@@ -150,63 +152,6 @@ export const useStoreJob = defineStore("storeJob", {
         },
       ],
 
-      listLanguage: [
-        {
-          id: "1",
-          name: "Javascript",
-          picture:
-            "https://techvccloud.mediacdn.vn/2018/11/23/js-15429579443112042672363-crop-1542957949936317424252.png",
-        },
-
-        {
-          id: "2",
-          name: "Python",
-          picture:
-            "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1200px-Python-logo-notext.svg.png",
-        },
-
-        {
-          id: "3",
-          name: "Java",
-          picture:
-            "https://nhienthai.tech/wp-content/uploads/2023/03/java-coffee-cup-logo-v1.png",
-        },
-
-        {
-          id: "4",
-          name: "Go",
-          picture:
-            "https://blog.vietnamlab.vn/content/images/15nbR1DnN8fHxFD-VtmWBRnXYMU6_wnBk.png",
-        },
-
-        {
-          id: "5",
-          name: "Kotlin",
-          picture:
-            "https://developer.android.com/images/cluster-illustrations/kotlin-hero.svg",
-        },
-
-        {
-          id: "6",
-          name: "PHP",
-          picture:
-            "https://cafedev.vn/wp-content/uploads/2020/08/cafedev_tuhoc_php.png",
-        },
-
-        {
-          id: "7",
-          name: "C#",
-          picture:
-            "https://plpsoft.vn/ckfinder/connector?command=Proxy&lang=vi&type=Files&currentFolder=%2FBaivietIT%2FCS_CB%2F&hash=c245c263ce0eced480effe66bbede6b4d46c15ae&fileName=3.png",
-        },
-
-        {
-          id: "8",
-          name: "Swift",
-          picture: "https://developer.apple.com/swift/images/swift-og.png",
-        },
-      ],
-
       oneJobSelected: {},
     };
   },
@@ -242,6 +187,14 @@ export const useStoreJob = defineStore("storeJob", {
     getDataFromNhaTuyenDungId() {},
 
     async searchJob() {
+      if (this.searchInput.length === 0) {
+        Dialog.create({
+          message: "Vui lòng nhập từ khóa để tìm kiếm.",
+          title: "Thông báo",
+          color: "red",
+        });
+        return;
+      }
       Loading.show({
         spinner: QSpinnerFacebook,
         spinnerColor: "purple-13",
@@ -282,6 +235,8 @@ export const useStoreJob = defineStore("storeJob", {
         });
       } catch (err) {
         console.log("Internal Server Error: ", err);
+      } finally {
+        this.listDataTemp = [...this.listDataSearch];
       }
     },
 
@@ -300,6 +255,8 @@ export const useStoreJob = defineStore("storeJob", {
         });
       } catch (err) {
         console.log("Internal Server Error: ", err);
+      } finally {
+        this.listDataTemp = [...this.listDataSearch];
       }
     },
 
@@ -794,6 +751,88 @@ export const useStoreJob = defineStore("storeJob", {
             }
           });
         }
+
+        this.listDataSearch = [...arrTemp];
+        setTimeout(() => {
+          Loading.hide();
+        }, 500);
+      }
+    },
+
+    /* search with tag, level and salary */
+    async searchAdvanced(data) {
+      Loading.show({
+        spinner: QSpinnerFacebook,
+        spinnerColor: "purple-13",
+        spinnerSize: 140,
+        backgroundColor: "grey-7",
+        message: "Vui lòng đợi trong giây lát...",
+        messageColor: "white",
+      });
+      const url = "api/tintuyendung/search/" + data;
+      try {
+        await api.get(url).then((res) => {
+          if (res.data.length !== 0) {
+            this.listDataSearch.filter((e) => {
+              if (e.trangthai === "đang tuyển") {
+                return e;
+              }
+            });
+            this.lengthResponse = this.listDataSearch.length;
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
+      } finally {
+        this.listDataSearch = [...this.listDataTemp];
+        this.lengthResponse = 0;
+        let arrTemp = [];
+        /* get name language by search in list language */
+        var name;
+        this.listSkill.filter((e) => {
+          if (this.selectSkill?._id === e._id) {
+            name = e.ngonngu;
+          }
+        });
+
+        this.listDataSearch.filter(async (e) => {
+          let a = false,
+            b = false,
+            c = false;
+
+          e.ngonngu.map((e2) => {
+            if (e2 === name) {
+              a = true;
+            }
+          });
+
+          if (this.selectLevel?.label === e.vitri) {
+            b = true;
+          }
+
+          if (this.selectSalary?.label === e.mucluong) {
+            c = true;
+          }
+
+          /* return true if user dont choose */
+          if (this.selectSkill === null) {
+            a = true;
+          }
+
+          if (this.selectLevel === null) {
+            b = true;
+          }
+
+          if (this.selectSalary === null) {
+            c = true;
+          }
+
+          /* if pass condition will accept add data */
+          if (a && b && c) {
+            arrTemp.push(e);
+            this.lengthResponse++;
+          }
+        });
 
         this.listDataSearch = [...arrTemp];
         setTimeout(() => {
