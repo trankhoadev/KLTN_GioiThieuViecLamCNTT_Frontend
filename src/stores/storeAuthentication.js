@@ -59,6 +59,18 @@ export const useStoreAuthentication = defineStore("storeAuthentication", {
           .post("api/user/login", { email: email, password: pass })
           .then((res) => {
             if (res.status == 200) {
+              console.log(res.data);
+              if (!res.data.statusOnline) {
+                Dialog.create({
+                  message:
+                    "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ với chúng tôi để được giải quyết!",
+                  title: "Thông báo",
+                  color: "red",
+                });
+                Loading.hide();
+                return;
+              }
+
               api.defaults.headers["Bearer"] = res.data.token; //set Bearer cho headers
               localStorage.setItem("id", res.data._id);
               localStorage.setItem("userName", res.data.username);
@@ -75,6 +87,7 @@ export const useStoreAuthentication = defineStore("storeAuthentication", {
                 color: "green",
                 icon: "mood",
               });
+
               if (res.data.loaitaikhoan === "user") {
                 setTimeout(() => {
                   Loading.show({

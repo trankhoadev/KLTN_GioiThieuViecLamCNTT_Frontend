@@ -115,9 +115,8 @@ onMounted(() => {
             </q-list>
           </q-expansion-item>
 
-          <q-expansion-item icon="analytics" label="Thống kê">
+          <!-- <q-expansion-item icon="analytics" label="Thống kê">
             <q-list class="q-pl-lg">
-              <!-- <router-link to=""></router-link> -->
               <q-item to="/analysis/post" active-class="q-item-no-link-highlighting">
                 <q-item-section avatar>
                   <q-icon name="unsubscribe" />
@@ -135,7 +134,7 @@ onMounted(() => {
                 </q-item-section>
               </q-item>
             </q-list>
-          </q-expansion-item>
+          </q-expansion-item> -->
 
           <q-item to="/admin" active-class="q-item-no-link-highlighting">
             <q-item-section avatar>

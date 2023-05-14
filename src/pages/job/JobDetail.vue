@@ -333,8 +333,9 @@ watch(() => storeJob.panigateCommentSelected, val => {
                   </div>
                 </div>
 
-                <div class="post-item">
+                <div v-if="storeAuthen.loaiTaiKhoan === 'user'" class="post-item">
                   <h3>Cách thức ứng tuyển</h3>
+
                   <div>
                     <q-btn v-if="!storeJob.listDataJobDetail.isUngTuyen" color="green-7" label="Ứng tuyển ngay" />
                     <q-btn v-else class="apply-now q-mr-md" color="grey" label="Đã ứng tuyển" icon="done" disable />
@@ -393,6 +394,20 @@ watch(() => storeJob.panigateCommentSelected, val => {
                   <br>
                   <div>
                     {{ storeJob.listDataJobDetail.diaChi }}
+                  </div>
+                </div>
+              </div>
+
+              <div class="box-share-job">
+                <div class="skills flex column">
+                  <h6 class="text-weight-bold">Thông tin liên hệ: </h6>
+                  <br>
+                  <div>
+                    <b>Tên người liên hệ: </b> <span>{{ storeJob.listDataJobDetail.tenNguoiLienHe }}</span>
+                    <br>
+                    <b class="q-py-md">Sdt: </b> <span>{{ storeJob.listDataJobDetail.soDienThoaiLienHe }}</span>
+                    <br>
+                    <b>Email: </b> <span>{{ storeJob.listDataJobDetail.emailLienHe }}</span>
                   </div>
                 </div>
               </div>
@@ -486,7 +501,7 @@ watch(() => storeJob.panigateCommentSelected, val => {
               <div class="q-mt-md q-px-lg">
                 <div class="col-12">
                   <div class="item highlight q-pa-none q">
-                    <q-form class="q-gutter-md">
+                    <q-form v-if="storeAuthen.loaiTaiKhoan === 'user'" class="q-gutter-md">
                       <div class="flex">
                         <q-rating name="quality" v-model="storeJob.rate" min="1" max="5" size="2em" color="yellow"
                           icon="star_border" icon-selected="star" no-dimming />
@@ -650,7 +665,8 @@ watch(() => storeJob.panigateCommentSelected, val => {
                               {{ item.mucluong }}
                             </span>
                           </div>
-                          <div class="function flex text-right flex-right justify-end">
+                          <div v-if="storeAuthen.loaiTaiKhoan === 'user'"
+                            class="function flex text-right flex-right justify-end">
                             <q-btn v-if="!item.isUngTuyen" class="apply-now q-mr-md" color="green-7" label="Ứng tuyển"
                               @click="storeJob.seeDetail({ _id: item._id, tieude: item.tieude })" />
                             <q-btn v-else class="apply-now q-mr-md" color="grey" label="Đã ứng tuyển" disable />
