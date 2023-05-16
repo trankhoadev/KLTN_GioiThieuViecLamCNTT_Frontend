@@ -8,6 +8,8 @@ import IndexPage from "pages/IndexPage.vue";
 import SignIn from "pages/SignIn.vue";
 import SignUp from "pages/SignUp.vue";
 import ChangePassword from "src/pages/ChangePassword.vue";
+import ForgotPassword from "src/pages/ForgotPassword.vue";
+import ForgotPasswordStep2 from "src/pages/ForgotPasswordStep2.vue";
 import SearchJob from "pages/job/SearchJob.vue";
 import JobDetail from "pages/job/JobDetail.vue";
 import HoSoCV from "pages/employee/HoSoCV.vue";
@@ -57,6 +59,14 @@ const router = [
       {
         path: "/doi-mat-khau",
         component: ChangePassword,
+      },
+      {
+        path: "/quen-mat-khau",
+        component: ForgotPassword,
+      },
+      {
+        path: "/reset-password/:id",
+        component: ForgotPasswordStep2,
       },
       {
         path: "/search/:id",

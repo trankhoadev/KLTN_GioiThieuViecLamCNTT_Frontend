@@ -30,7 +30,7 @@ onMounted(() => {
         <q-card-section>
           <div class="q-pt-lg">
             <div class="col text-h6 ellipsis flex justify-center">
-              <h4 class="q-my-none text-weight-regular">Change Your Password</h4>
+              <h5 class="q-my-none text-weight-regular">Change Your Password</h5>
             </div>
           </div>
         </q-card-section>

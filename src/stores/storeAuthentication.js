@@ -314,7 +314,7 @@ export const useStoreAuthentication = defineStore("storeAuthentication", {
         return;
       }
 
-      const url = "api/user/update";
+      const url = "api/user/update/password";
       const data = {
         email: email,
         password: password,
@@ -333,7 +333,98 @@ export const useStoreAuthentication = defineStore("storeAuthentication", {
           setTimeout(() => {
             Loading.hide();
             window.location.reload();
+          }, 1500);
+          Notify.create({
+            message: "Đổi mật khẩu thành công!",
+            position: "bottom",
+            timeout: 2000,
+            color: "green",
+            icon: "mood",
+          });
+        } else {
+          setTimeout(() => {
+            Loading.hide();
           }, 1000);
+          Notify.create({
+            message: "Đổi mật khẩu thất bại",
+            timeout: 2000,
+            position: "bottom",
+            color: "negative",
+            icon: "mood_bad",
+          });
+        }
+      }
+    },
+
+    async getEmailForgotPassword(email) {
+      Loading.show({
+        message: "Đang xử lí...",
+        boxClass: "bg-grey-2 text-grey-9",
+        spinnerColor: "primary",
+      });
+      var id = "";
+      const url = "api/user/forgot-password/email";
+      const data = {
+        email: email,
+      };
+
+      try {
+        await api.post(url, data).then((res) => {
+          if (res.data.userId) {
+            this.result.resultChangePassword = true;
+            id = res.data.userId;
+          } else {
+            Dialog.create({
+              message: "Không tìm thấy email!",
+              title: "Thông báo",
+              color: "red",
+            });
+            return;
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
+      } finally {
+        if (this.result.resultChangePassword) {
+          Dialog.create({
+            message: "Vui lòng kiểm tra hòm thư của bạn!",
+            title: "Thông báo",
+            color: "red",
+          });
+          Loading.hide();
+        } else {
+          setTimeout(() => {
+            Loading.hide();
+          }, 1000);
+        }
+      }
+    },
+
+    async forgotPassword(id, password) {
+      const url = "api/user/forgot-password/" + id + "/reset";
+      const data = {
+        password: password,
+      };
+
+      try {
+        await api.post(url, data).then((res) => {
+          if (res.data) {
+            this.result.resultChangePassword = true;
+          }
+        });
+      } catch (err) {
+        console.log("Internal Server Error: ", err);
+      } finally {
+        if (this.result.resultChangePassword) {
+          Loading.show({
+            message: "Đang xử lí...",
+            boxClass: "bg-grey-2 text-grey-9",
+            spinnerColor: "primary",
+          });
+          setTimeout(() => {
+            Loading.hide();
+            this.router.push("/dang-nhap");
+          }, 1500);
           Notify.create({
             message: "Đổi mật khẩu thành công!",
             position: "bottom",
@@ -415,6 +506,7 @@ export const useStoreAuthentication = defineStore("storeAuthentication", {
               ngaysinh: "",
               diachi: "",
               email: localStorage.getItem("email"),
+              emailInput: "",
               chucvu: "",
               tencty: "",
               tungayKinhNghiemLV: "",

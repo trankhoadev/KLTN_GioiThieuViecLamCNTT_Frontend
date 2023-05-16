@@ -79,8 +79,8 @@ const clickToTop = () => {
 
             <div class="col-6 col-md-4">
               <div class="header-logo">
-                <a href="/">
-                  <!-- <img src="src/assets/authentication/logo.png" alt=""> -->
+                <a class="flex flex-center" href="/">
+                  <!-- <img src="/src/assets/authentication/logo.png" alt=""> -->
                   <h6 class="text-weight-bold text-italic">TimViecNhanh247</h6>
                 </a>
               </div>
@@ -168,7 +168,7 @@ const clickToTop = () => {
       <div class="row footer-row flex-center q-pa-lg">
 
         <div class="col-md-3 col-12 col-footer footer-center" height="100vh">
-          <img src="src/assets/authentication/image-white.png" alt="">
+          <img src="/src/assets/authentication/image-white.png" alt="">
           <div class="flex-row">
             <q-btn class="icon-help" icon="help" />
             <a href="#">
