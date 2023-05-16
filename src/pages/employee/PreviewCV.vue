@@ -4,10 +4,13 @@ import { useStoreAuthentication } from "src/stores/storeAuthentication";
 import { useStoreHoSoCv } from "src/stores/storeHoSoCv";
 import { useRoute, useRouter } from 'vue-router';
 import { Dialog } from 'quasar';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 const storeAuthen = useStoreAuthentication();
 const storeHoSoCv = useStoreHoSoCv();
 const route = useRoute();
+var pdfGenerated = true;
 onMounted(async () => {
   await storeHoSoCv.getDataOfUserById(route.params.id);
   if (storeHoSoCv.listData._id === undefined) {
@@ -18,10 +21,30 @@ onMounted(async () => {
     })
   }
 });
+
+const exportPdf = () => {
+  const generateBtn = document.querySelector('q-btn');
+  if (generateBtn) {
+    generateBtn.parentNode.removeChild(generateBtn);
+  }
+
+  const element = document.documentElement;
+
+  html2canvas(element).then(canvas => {
+    const pdf = new jsPDF('p', 'px', [canvas.width, canvas.height]);
+
+    const imageData = canvas.toDataURL('image/jpeg', 1.0);
+
+    pdf.addImage(imageData, 'JPEG', -250, 50, canvas.width, canvas.height);
+
+    pdf.save('sample.pdf');
+  })
+}
 </script>
 
 <template>
   <q-layout>
+    <q-btn v-if="pdfGenerated" color="red" icon="picture_as_pdf" label="Xuất PDF" @click="exportPdf()" />
     <q-page-container style="height: 100vh;" class="flex flex-center">
       <q-page class="q-px-lg" v-bind:style="$q.screen.lt.lg ? { 'width': '100vw' } : { 'width': '50vw' }"
         style="border: 1px solid #f0f0f0;">
@@ -50,10 +73,6 @@ onMounted(async () => {
                   <div class="flex q-pt-sm" style="align-items: center;"><q-icon name="email" color="teal-14" size="md" />
                     <span class="q-pl-md" style="max-width: 90%;">Email: {{ storeHoSoCv.listData.email }}</span>
                   </div>
-
-                  <!-- <div class="flex q-pt-sm" style="align-items: center;"><q-icon name="cake" color="teal-14" size="md" />
-                    <span class="q-pl-md" style="max-width: 90%;">Ngày sinh: {{ storeHoSoCv.listData. }}</span>
-                  </div> -->
                 </div>
                 <div class="col-12 col-md-6 flex" style="justify-content: right; align-items: flex-start;">
                   <img :src=storeHoSoCv.listData.anhdaidien style="max-width: 40%;" alt="">
