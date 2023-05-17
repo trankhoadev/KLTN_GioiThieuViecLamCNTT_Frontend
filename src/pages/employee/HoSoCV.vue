@@ -164,12 +164,18 @@ const clickExpandPrize = () => {
 
                           <div class="flex flex-center justify-between q-pb-md">
                             <div class="flex flex-center justify-between">
-                              <q-btn class="q-mr-sm" color="primary" icon="add_a_photo" label="Sửa" />
+                              <q-file standout v-model="storeHoSoCv.files" style="width: 100%;" label="Chọn file...">
+                                <template v-slot:append>
+                                  <q-avatar>
+                                    <q-icon name="add_a_photo" size="md" />
+                                  </q-avatar>
+                                </template>
+                              </q-file>
                             </div>
 
-                            <div class="flex flex-center justify-around">
-                              <q-btn class="q-mf-sm" color="red-14" icon="delete" label="Xóa" />
-                            </div>
+                            <!-- <div class="flex flex-center justify-around">
+                              <q-btn class="q-mf-sm q-mt-md" color="red-14" icon="delete" label="Cập nhật" />
+                            </div> -->
                           </div>
                         </div>
                         <div class="col-md-9 col-sm-12 q-px-lg">

@@ -5,9 +5,9 @@
         <div class="content">
           <h3 class="text-red">Chính Sách Bảo Mật</h3>
           <hr>
-          ITviec được đăng ký tại 60 Nguyễn Văn Thủ, Quận 1, Thành phố Hồ Chí Minh, Việt Nam. (“ITviec”, “chúng tôi,
+          TimViecNhanh247 được đăng ký tại 60 Nguyễn Văn Thủ, Quận 1, Thành phố Hồ Chí Minh, Việt Nam. (“TimViecNhanh247”, “chúng tôi,
           của chúng tôi”) là đơn vị dẫn đầu trong thị trường cung cấp quảng cáo và tuyển dụng trực tuyến cho chuyên
-          ngành IT. ITviec đóng vai trò là bộ điều khiển dữ liệu thông tin cá nhân thu được từ các khách hàng của mình
+          ngành IT. TimViecNhanh247 đóng vai trò là bộ điều khiển dữ liệu thông tin cá nhân thu được từ các khách hàng của mình
           với nhu cầu về dịch vụ tuyển dụng và thông tin cá nhân do ứng viên nộp hồ sơ đăng tuyển.
           <br>
           <br>
@@ -44,7 +44,7 @@
           <ul>
             <li>Có bất kỳ yêu cầu nào về thông tin của bạn mà chúng tôi đang có;</li>
             <li>Mong muốn xác nhận những thay đổi về thông tin của bạn hoặc chỉnh sửa những thông tin mà chúng tôi đang có về bạn;</li>
-            <li>Có bất kỳ yêu cầu nào về quá trình xử lý thông tin cá nhân của bạn tại ITviec;</li>
+            <li>Có bất kỳ yêu cầu nào về quá trình xử lý thông tin cá nhân của bạn tại TimViecNhanh247;</li>
             <li>Quyết định bất cứ lúc nào rằng bạn không muốn nhận những email quảng cáo từ chúng tôi hoặc các công ty trong nhóm chúng tôi. Trong trường hợp đó, bạn vui lòng nhấp vào link huỷ đăng ký ở phía cuối mỗi email quảng cáo của chúng tôi hoặc gửi email yêu cầu huỷ đăng ký đến itviec+unsub@itviec.com;</li>
           </ul>
 

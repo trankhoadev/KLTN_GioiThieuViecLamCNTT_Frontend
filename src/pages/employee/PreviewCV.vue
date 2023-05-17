@@ -35,9 +35,9 @@ const exportPdf = () => {
 
     const imageData = canvas.toDataURL('image/jpeg', 1.0);
 
-    pdf.addImage(imageData, 'JPEG', -250, 50, canvas.width, canvas.height);
+    pdf.addImage(imageData, 'JPEG', -420, 50, canvas.width, canvas.height);
 
-    pdf.save('sample.pdf');
+    pdf.save('HoSoCV.pdf');
   })
 }
 </script>

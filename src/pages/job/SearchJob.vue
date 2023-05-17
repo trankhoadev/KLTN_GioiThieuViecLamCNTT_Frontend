@@ -99,6 +99,24 @@ watch(() => storeJob.panigateSelected, val => {
       storeJob.listDataSearch = [...storeJob.listData];
       Loading.hide();
     }, 300);
+
+    /* Handle get data of tag from server */
+    for (let i = 0; i < storeJob.listDataSearch.length; ++i) {
+      for (let j = 0; j < storeJob.listDataSearch[i].ngonngu.length; ++j) {
+        storeJob.listSkill.map((e) => {
+          if (storeJob.listDataSearch[i].ngonngu[j] === e._id) {
+            storeJob.listDataSearch[i].ngonngu[j] = e.ngonngu;
+          }
+        });
+      }
+    }
+
+    /* Get picture and name of recruiter */
+    for (let i = 0; i < storeJob.listData.length; ++i) {
+      await storeJob.getNhaTuyenDungById(storeJob.listData[i].nhatuyendung);
+      storeJob.listData[i].tennhatuyendung = storeJob.listDataOneRecruiter.tencongty;
+      storeJob.listData[i].anhdaidien = storeJob.listDataOneRecruiter.anhdaidien;
+    }
   }
   executePanigation();
 })
@@ -165,7 +183,8 @@ watch(() => storeJob.panigateSelected, val => {
               </q-select>
             </div>
             <div class="col-md-2 flex flex-center">
-              <q-btn v-if="storeJob.selectLevel || storeJob.selectSalary || storeJob.selectSkill" color="light-green-10" icon="search" label="Tìm kiếm" @click="storeJob.searchAdvanced(route.params.id)" />
+              <q-btn v-if="storeJob.selectLevel || storeJob.selectSalary || storeJob.selectSkill" color="light-green-10"
+                icon="search" label="Tìm kiếm" @click="storeJob.searchAdvanced(route.params.id)" />
               <q-btn v-else color="light-green-10" icon="search" label="Tìm kiếm" @click="storeJob.searchJob()" />
             </div>
 

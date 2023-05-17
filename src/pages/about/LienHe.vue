@@ -18,7 +18,7 @@
 
           <h4>Dành cho ứng viên</h4>
           <ul>
-            <li>Đặt câu hỏi trên Facebook ITviec</li>
+            <li>Đặt câu hỏi trên Facebook TimViecNhanh247</li>
             <li>Đọc các bài blog của chúng tôi về bí quyết viết CV và kỹ năng phỏng vấn</li>
             <li>Gọi chúng tôi theo số +84 28 6681 1397</li>
           </ul>

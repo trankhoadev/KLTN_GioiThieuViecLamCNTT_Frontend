@@ -2,12 +2,24 @@ import { defineStore } from "pinia";
 import { api } from "src/boot/axios";
 import { ref, reactive } from "vue";
 import { Loading, Notify, Dialog } from "quasar";
+// import cloudinary from "cloudinary";
 
 export const useStoreHoSoCv = defineStore("storeHoSoCv", {
   state: () => {
     return {
       /* step 1 */
       listData: [],
+      files: ref(null),
+      uploadedImageURL: "",
+      cloudinaryInstance: null,
+      apiKey: "168634531574637",
+      apiSecret: "jCjHTckWMPi4YBuk2JXXsvqt0jU",
+      cloudName: "dc1tar6rl",
+      cloudinary: {
+        cloudName: "dc1tar6rl",
+        apiKey: "168634531574637",
+        apiSecret: "jCjHTckWMPi4YBuk2JXXsvqt0jU",
+      },
       ngaySinh: ref(""),
       phone: "",
       address: "",
@@ -132,13 +144,22 @@ export const useStoreHoSoCv = defineStore("storeHoSoCv", {
         boxClass: "bg-grey-2 text-grey-9",
         spinnerColor: "primary",
       });
+
+      if (this.files) {
+        let data = {
+          file: this.files,
+        };
+      }
+
       const url = "api/ungtuyenvien/updateThongTinUngTuyenVien";
       const data = {
         ungTuyenVienId: localStorage.getItem("idUngTuyenVien"),
 
         hovaten: this.listData.hovaten,
 
-        anhdaidien: this.listData.anhdaidien,
+        anhdaidien: this.files
+          ? this.uploadedImageURL
+          : this.listData.anhdaidien,
 
         sdt: this.listData.sdt,
 

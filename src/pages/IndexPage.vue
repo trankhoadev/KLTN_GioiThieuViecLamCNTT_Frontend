@@ -80,6 +80,9 @@ onMounted(async () => {
               <ul class="search-results-suggestions">
                 <li class="search-results-suggestion search-results-suggestion-heading">Suggested:</li>
                 <li class="search-results-suggestion">
+                  <a href="/search/n">Tất cả</a>
+                </li>
+                <li class="search-results-suggestion">
                   <a href="/search/java">Java</a>
                 </li>
                 <li class="search-results-suggestion">
@@ -116,7 +119,7 @@ onMounted(async () => {
                   <div class="row">
                     <div class="col-4 col-md-3 col-lg-3">
                       <img class="" style="max-width: 100px; max-height: 100px;"
-                        src="https://www.nicepng.com/png/detail/202-2024922_markoja-company-profile-icon-png-company-profile-icon.png"
+                        :src=item.nhatuyendung.anhdaidien
                         alt="">
                     </div>
 
