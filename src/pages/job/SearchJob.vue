@@ -121,6 +121,13 @@ watch(() => storeJob.panigateSelected, val => {
   executePanigation();
 })
 
+
+const reloadData = () => {
+  storeJob.selectSkill = '';
+  storeJob.selectLevel = '';
+  storeJob.selectSalary = '';
+}
+
 </script>
 <template>
   <q-layout>
@@ -183,9 +190,11 @@ watch(() => storeJob.panigateSelected, val => {
               </q-select>
             </div>
             <div class="col-md-2 flex flex-center">
+
               <q-btn v-if="storeJob.selectLevel || storeJob.selectSalary || storeJob.selectSkill" color="light-green-10"
                 icon="search" label="Tìm kiếm" @click="storeJob.searchAdvanced(route.params.id)" />
               <q-btn v-else color="light-green-10" icon="search" label="Tìm kiếm" @click="storeJob.searchJob()" />
+              <q-icon @click="reloadData" class="q-ml-md cursor-pointer text-teal" name="cached" size="md" />
             </div>
 
             <div class="col-12 q-pa-md">
