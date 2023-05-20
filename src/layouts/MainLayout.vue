@@ -112,9 +112,9 @@ const clickToTop = () => {
                     </q-item>
                     <q-item clickable>
                       <router-link to="/doi-mat-khau" class="flex flex-center justify-center">
-                      <q-icon size="sm" name="settings" />
-                      &nbsp;
-                      <q-item-section>Đổi mật khẩu</q-item-section>
+                        <q-icon size="sm" name="settings" />
+                        &nbsp;
+                        <q-item-section>Đổi mật khẩu</q-item-section>
                       </router-link>
                     </q-item>
                     <q-item clickable class="flex flex-center justify-center">

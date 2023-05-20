@@ -70,6 +70,39 @@ export const useStoreRecruiterAddPost = defineStore("storeRecruiterAddPost", {
   getters: {},
   actions: {
     _init() {},
+    handlePayment() {
+      const payment = {
+        intent: "sale",
+        payer: {
+          payment_method: "paypal",
+        },
+        redirect_urls: {
+          return_url: "http://localhost:9000/recruiter/add-post",
+          cancel_url: "http://localhost:9000/recruiter/welcome",
+        },
+        transactions: [
+          {
+            amount: {
+              total: "1",
+              currency: "USD",
+            },
+          },
+        ],
+      };
+
+      api
+        .post("api/tintuyendung/create-payment", payment)
+        .then((response) => {
+          const approvalUrl = response.data.links.find(
+            (link) => link.rel === "approval_url"
+          ).href;
+          window.location.href = approvalUrl;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    },
+
     getListDistrict() {
       this.listDistrict = [];
       for (let i = 0; i < app.listDistrict.length; ++i) {
@@ -101,12 +134,6 @@ export const useStoreRecruiterAddPost = defineStore("storeRecruiterAddPost", {
     },
 
     confirmForm() {
-      // const dateExpiredConvert = (this.formattedDateExpired = [
-      //   date.getMonth() + 1,
-      //   date.getDate(),
-      //   date.getFullYear(),
-      // ].join("/"));
-
       let userId = localStorage.getItem("idNhaTuyenDung");
 
       try {

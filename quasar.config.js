@@ -14,10 +14,6 @@ const path = require("path");
 module.exports = configure(function (/* ctx */) {
   return {
     eslint: {
-      // fix: true,
-      // include = [],
-      // exclude = [],
-      // rawOptions = {},
       warnings: true,
       errors: true,
     },
@@ -91,6 +87,12 @@ module.exports = configure(function (/* ctx */) {
     devServer: {
       // https: true
       open: true, // opens browser window automatically
+      proxy: {
+        "/create-payment": {
+          target: "https://api.sandbox.paypal.com", // Thay bằng URL API PayPal thích hợp
+          changeOrigin: true,
+        },
+      },
     },
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework

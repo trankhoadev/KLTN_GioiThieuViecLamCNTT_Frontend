@@ -302,6 +302,10 @@ export const useStoreAuthentication = defineStore("storeAuthentication", {
       window.location.reload();
     },
 
+    navigatePage(data) {
+      this.router.push(data);
+    },
+
     async changePassword(email, password) {
       try {
         console.log(await this.loginCheck(email, this.oldPassword));

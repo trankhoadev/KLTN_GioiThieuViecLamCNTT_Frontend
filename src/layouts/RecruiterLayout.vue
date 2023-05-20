@@ -2,11 +2,13 @@
 // import EssentialLink from 'layouts/EssentialLink.vue';
 import Messages from "./MessageComponent.vue";
 import { useStoreAuthentication } from "src/stores/storeAuthentication";
+import { useStoreRecruiterAddPost } from "stores/recruiter/storeRecruiterAddPost";
 import { ref } from 'vue'
 import { useQuasar } from "quasar";
 
 /* Remember Delete it */
 localStorage.setItem('role', 2);
+const storeRecruiterAddPost = useStoreRecruiterAddPost();
 const leftDrawerOpen = ref(false)
 const storeAuthen = useStoreAuthentication();
 const imgUrl = localStorage.getItem('picture');
@@ -59,7 +61,7 @@ function toggleLeftDrawer() {
           </q-item>
           <q-expansion-item icon="feed" label="Tin tuyển dụng">
             <q-list class="q-pl-lg">
-              <q-item to="/recruiter/add-post" active-class="q-item-no-link-highlighting">
+              <q-item @click="storeRecruiterAddPost.handlePayment()" to="/recruiter/add-post" active-class="q-item-no-link-highlighting">
                 <q-item-section avatar>
                   <q-icon name="add" />
                 </q-item-section>
