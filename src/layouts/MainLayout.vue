@@ -168,10 +168,10 @@ const clickToTop = () => {
       <div class="row footer-row flex-center q-pa-lg">
 
         <div class="col-md-3 col-12 col-footer footer-center" height="100vh">
-          <img src="/src/assets/authentication/image-white.png" alt="">
+          <img src="~assets/authentication/image-white.png" alt="">
           <div class="flex-row">
             <q-btn class="icon-help" icon="help" />
-            <a href="#">
+            <a>
               <span>Giúp đỡ & Hỗ trợ</span>
             </a>
           </div>
@@ -189,19 +189,19 @@ const clickToTop = () => {
             </li>
 
             <li>
-              <a href="#">
+              <a>
                 <span>Công việc</span>
               </a>
             </li>
 
             <li>
-              <a href="#">
+              <a>
                 <span>Bảo mật<table></table></span>
               </a>
             </li>
 
             <li>
-              <a href="#">
+              <a>
                 <span>Nhà đầu tư</span>
               </a>
             </li>
@@ -221,19 +221,19 @@ const clickToTop = () => {
             </li>
 
             <li>
-              <a href="#">
+              <a>
                 <span>Điều khoản và điều kiện</span>
               </a>
             </li>
 
             <li>
-              <a href="#">
+              <a>
                 <span>Chính sách bản quyền</span>
               </a>
             </li>
 
             <li>
-              <a href="#">
+              <a>
                 <span>Quy tắc ứng xử<table></table></span>
               </a>
             </li>
@@ -243,13 +243,13 @@ const clickToTop = () => {
           <h4>Kết nối</h4>
           <ul>
             <li>
-              <a href="#">
+              <a>
                 <span>Email:</span> <a href="mailto:company@gmail.com">company@gmail.com</a>
               </a>
             </li>
 
             <li>
-              <a href="#">
+              <a>
                 <span>Phone Number: </span> <a href="tel:+84111222333">+84111222333</a>
               </a>
             </li>

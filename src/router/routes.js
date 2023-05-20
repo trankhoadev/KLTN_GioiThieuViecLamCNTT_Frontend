@@ -49,7 +49,7 @@ const router = [
         component: IndexPage,
       },
       {
-        path: "/dang-nhap",
+        path: "/dang-nhap/",
         component: SignIn,
       },
       {

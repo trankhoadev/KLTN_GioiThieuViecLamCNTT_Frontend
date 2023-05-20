@@ -230,7 +230,7 @@ watch(() => storeJob.panigateCommentSelected, val => {
               <q-tab :ripple="false" name="info" icon="alarm" label="Thông tin công ty"
                 @click="clickScrollThongTinCongTy()" />
 
-              <q-tab :ripple="false" name="relate" icon="thumb_up" label="Đánh giá" @click="clickScrollDanhGia()" />
+              <q-tab :ripple="false" name="comment" icon="thumb_up" label="Đánh giá" @click="clickScrollDanhGia()" />
 
 
               <q-tab :ripple="false" name="relate" icon="movie" label="Việc làm liên quan"

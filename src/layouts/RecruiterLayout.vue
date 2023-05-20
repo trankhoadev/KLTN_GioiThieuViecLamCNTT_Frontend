@@ -51,7 +51,7 @@ function toggleLeftDrawer() {
 
       <q-drawer v-model="leftDrawerOpen" show-if-above bordered class="bg-deep-purple text-white">
         <q-list>
-          <q-item @click="window.location.reload()" to="/recruiter/welcome" active-class="q-item-no-link-highlighting">
+          <q-item @click="storeAuthen.reload()" to="/recruiter/welcome" active-class="q-item-no-link-highlighting">
             <q-item-section avatar>
               <q-icon name="dashboard" />
             </q-item-section>

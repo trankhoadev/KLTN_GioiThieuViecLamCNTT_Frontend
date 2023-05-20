@@ -77,8 +77,8 @@ export const useStoreRecruiterAddPost = defineStore("storeRecruiterAddPost", {
           payment_method: "paypal",
         },
         redirect_urls: {
-          return_url: "http://localhost:9000/recruiter/add-post",
-          cancel_url: "http://localhost:9000/recruiter/welcome",
+          return_url: "http://103.45.233.133/#/recruiter/add-post",
+          cancel_url: "http://103.45.233.133/#/recruiter/welcome",
         },
         transactions: [
           {

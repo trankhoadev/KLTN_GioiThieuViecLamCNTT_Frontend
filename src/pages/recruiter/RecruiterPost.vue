@@ -107,8 +107,8 @@ const getCount = () => {
             <span>Ngày dừng tuyển: {{ new Date(props.row.ngayHetHan).toLocaleDateString('en-GB') }}</span>
             <br>
             <br>
-            <a href="#" class="text-blue-5" @click="storeRecruiterPost.seeDetail(props.row._id)">Xem nhanh tin tuyển
-              dụng</a>
+            <span class="text-blue-5 cursor-pointer" @click="storeRecruiterPost.seeDetail(props.row._id)">Xem nhanh tin tuyển
+              dụng</span>
           </td>
 
           <td class="text-left cursor-pointer" key="link" :props="props" style="width: 25%;">
