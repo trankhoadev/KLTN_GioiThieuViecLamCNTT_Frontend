@@ -3,6 +3,9 @@ import { onMounted, onBeforeUpdate } from 'vue';
 import { useQuasar } from 'quasar'
 import { useStoreRecruiterAccount } from 'src/stores/admin/storeRecruiterAccount.js';
 import { useStoreAuthentication } from "src/stores/storeAuthentication";
+import { useMyStore } from 'src/stores/myStore';
+
+const storeMyStore = useMyStore();
 
 const storeAuthen = useStoreAuthentication();
 const storeRecruiterAccount = useStoreRecruiterAccount();
@@ -61,6 +64,7 @@ const getCount = () => {
       </template>
 
       <template v-slot:top-right>
+        <q-btn color="primary" class="q-mr-md" icon-right="archive" label="XUẤT FILE CSV" no-caps @click="storeMyStore.exportTable(storeRecruiterAccount.columnRecruiterAccount, storeRecruiterAccount.listData)" />
         <q-icon @click="storeAuthen.reload()" class="q-mr-md cursor-pointer text-teal" name="cached" size="md" />
         <div class="q-gutter-lg">
           <q-input rounded outlined dense debounce="1000" style="width: 20vw;" v-model="storeRecruiterAccount.filter"
@@ -70,6 +74,7 @@ const getCount = () => {
               <q-btn flat round color="primary" icon="search" />
             </template>
           </q-input>
+
           <!-- <q-btn color="primary" icon="check" label="Duyệt tất cả" @click="storeRecruiterAccount.acceptAll" />
           <q-btn color="red" icon="close" label="Từ chối tất cả" @click="storeRecruiterAccount.checkDenyAll" /> -->
 

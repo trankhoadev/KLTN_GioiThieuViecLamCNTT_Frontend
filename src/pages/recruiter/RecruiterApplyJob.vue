@@ -3,7 +3,9 @@ import { onMounted, onUpdated } from 'vue';
 import { useQuasar } from 'quasar'
 import { useStoreRecruiterApplyJob } from 'src/stores/recruiter/storeRecruiterApplyJob';
 import { useStoreAuthentication } from 'src/stores/storeAuthentication';
+import { useMyStore } from 'src/stores/myStore';
 
+const storeMyStore = useMyStore();
 const storeRecruiterApplyJob = useStoreRecruiterApplyJob();
 const storeAuthen = useStoreAuthentication();
 const $q = useQuasar();
@@ -71,6 +73,7 @@ const getCount = () => {
       </template>
 
       <template v-slot:top-right>
+        <q-btn color="primary" class="q-mr-md" icon-right="archive" label="XUẤT FILE CSV" no-caps @click="storeMyStore.exportTable(storeRecruiterApplyJob.columnRecruiterAccount, storeRecruiterApplyJob.listData)" />
         <q-icon @click="storeAuthen.reload()" class="q-mr-md cursor-pointer text-teal" name="cached" size="md" />
         <div class="q-gutter-lg">
           <q-input rounded outlined dense debounce="1000" style="width: 20vw;" v-model="storeRecruiterApplyJob.filter"

@@ -3,9 +3,12 @@ import { useQuasar } from 'quasar'
 import { useStoreManagePost } from 'src/stores/admin/storeManagePost.js';
 import { useStoreRecruiterPost } from 'src/stores/recruiter/storeRecruiterPost';
 import { onMounted, onUpdated, onBeforeUpdate } from 'vue';
+import { useMyStore } from 'src/stores/myStore';
 
+const storeMyStore = useMyStore();
 const storeManagePost = useStoreManagePost();
 const storeRecruiterPost = useStoreRecruiterPost();
+
 
 onMounted(async () => {
   await storeManagePost.getAllPost();
@@ -32,7 +35,6 @@ const getCount = () => {
     e.trangthai === 'đã xóa' ? storeManagePost.tinDaXoa++ : void (0);
   })
 }
-console.log(storeManagePost.listData);
 </script>
 
 <template>
@@ -76,6 +78,7 @@ console.log(storeManagePost.listData);
               <q-btn flat round color="primary" icon="search" />
             </template>
           </q-input>
+          <q-btn color="primary" icon-right="archive" label="XUẤT FILE CSV" no-caps @click="storeMyStore.exportTable(storeManagePost.columnManagePost, storeManagePost.listData)" />
           <q-btn color="primary" icon="check" label="Duyệt tất cả" @click="storeManagePost.acceptAll" />
           <q-btn color="red" icon="close" label="Từ chối tất cả" @click="storeManagePost.checkDenyAll" />
 
@@ -150,7 +153,8 @@ console.log(storeManagePost.listData);
             </div>
 
             <div v-if="props.row.trangthai === 'đã hủy'">
-              <q-btn color="light-green" icon="check" label="Khôi phục" @click="storeManagePost.acceptOne(props.row._id)" />
+              <q-btn color="light-green" icon="check" label="Khôi phục"
+                @click="storeManagePost.acceptOne(props.row._id)" />
             </div>
 
             <div v-if="props.row.trangthai === 'đang tuyển'">
