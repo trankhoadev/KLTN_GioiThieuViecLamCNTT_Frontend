@@ -95,6 +95,24 @@ export const useStoreCompanyInfo = defineStore("storeCompanyInfo", {
         boxClass: "bg-grey-2 text-grey-9",
         spinnerColor: "primary",
       });
+
+      let day = new Date(this.listData.ngaythamgia).getDate();
+      let month = new Date(this.listData.ngaythamgia).getMonth() + 1;
+      let year = new Date(this.listData.ngaythamgia).getFullYear() + 2;
+
+      let dayCurrent = new Date().getDate();
+      let monthCurrent = new Date().getMonth() + 1;
+      let yearCurrent = new Date().getFullYear();
+
+      if (
+        day === dayCurrent &&
+        month === monthCurrent &&
+        year === yearCurrent
+      ) {
+        this.listData.loainhatuyendung = "lâu năm";
+      }
+      // let finalDate = new Date(month + "/" + day + "/" + year);
+
       const url = "api/nhatuyendung/update";
       const data = {
         nhatuyendungId: localStorage.getItem("idNhaTuyenDung"),

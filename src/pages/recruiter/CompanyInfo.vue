@@ -93,6 +93,11 @@ onMounted(async () => {
                   <div style="font-size: 1.2em;">{{ new
                     Date(storeCompanyInfo.listData.ngaythamgia).toLocaleDateString('en-GB') }}</div>
                 </div>
+
+                <div class="col-12 flex justify-end q-pt-lg">
+                  <b class="q-pr-sm" style="font-size: 1.2em;">Loại nhà tuyển dụng: </b>
+                  <div style="font-size: 1.2em;">{{ storeCompanyInfo.listData.loainhatuyendung }}</div>
+                </div>
               </div>
             </div>
           </div>
