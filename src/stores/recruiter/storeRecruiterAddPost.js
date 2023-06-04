@@ -71,6 +71,15 @@ export const useStoreRecruiterAddPost = defineStore("storeRecruiterAddPost", {
   actions: {
     _init() {},
     handlePayment() {
+      Loading.show({
+        message: "Đang chuyển đến trang thanh toán...",
+        boxClass: "bg-grey-2 text-grey-9",
+        spinnerColor: "primary",
+      });
+      setTimeout(() => {
+        Loading.hide();
+      }, 1500);
+
       const payment = {
         intent: "sale",
         payer: {

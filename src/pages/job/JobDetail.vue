@@ -333,6 +333,15 @@ watch(() => storeJob.panigateCommentSelected, val => {
                   </div>
                 </div>
 
+                <div class="post-item">
+                  <h3>Hạn chót nộp hồ sơ</h3>
+                  <div>
+                    <p class="q-px-md" style="white-space: pre-wrap; line-height: 35px;"> <b>Ngày: </b> {{
+                      new
+                        Date(storeJob.listDataJobDetail.ngayHetHan).toLocaleDateString('en-GB') }}</p>
+                  </div>
+                </div>
+
                 <div v-if="storeAuthen.loaiTaiKhoan === 'user'" class="post-item">
                   <h3>Cách thức ứng tuyển</h3>
                   <div>

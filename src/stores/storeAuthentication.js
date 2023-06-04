@@ -225,6 +225,7 @@ export const useStoreAuthentication = defineStore("storeAuthentication", {
           loaitaikhoan: this.roleSelected.value,
         };
         api.post("api/user/", data).then((res) => {
+          console.log(res.data);
           if (res) {
             this.idUser = res.data.userId;
             Notify.create({

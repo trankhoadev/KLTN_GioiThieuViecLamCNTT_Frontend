@@ -743,16 +743,17 @@ export const useStoreJob = defineStore("storeJob", {
                 );
               }
             });
-            this.lengthResponse = this.listDataSearch.length;
           }
         });
       } catch (err) {
         console.log("Internal Server Error: ", err);
       } finally {
+        console.log(this.listDataSearch);
         let arrTemp = [];
         this.arr.sort(function (a, b) {
           return a - b;
         });
+        console.log(this.arr);
 
         for (let i = 0; i < this.arr.length; ++i) {
           this.listDataSearch.filter((e) => {
@@ -766,6 +767,8 @@ export const useStoreJob = defineStore("storeJob", {
             }
           });
         }
+
+        // this.lengthResponse = this.listDataSearch.length;
 
         this.listDataSearch = [...arrTemp];
 
@@ -794,7 +797,6 @@ export const useStoreJob = defineStore("storeJob", {
                 return e;
               }
             });
-            this.lengthResponse = this.listDataSearch.length;
           }
         });
       } catch (err) {
@@ -808,6 +810,8 @@ export const useStoreJob = defineStore("storeJob", {
             }
           });
         }
+
+        // this.lengthResponse = this.listDataSearch.length;
 
         this.listDataSearch = [...arrTemp];
         setTimeout(() => {

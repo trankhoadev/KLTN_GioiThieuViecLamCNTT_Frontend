@@ -80,7 +80,6 @@ const clickToTop = () => {
             <div class="col-6 col-md-4">
               <div class="header-logo">
                 <a class="flex flex-center" href="/">
-                  <!-- <img src="/src/assets/authentication/logo.png" alt=""> -->
                   <h6 class="text-weight-bold text-italic">TimViecNhanh247</h6>
                 </a>
               </div>
@@ -148,7 +147,7 @@ const clickToTop = () => {
       <div class="header-tabs flex justify-between">
         <q-tabs align="left">
           <q-route-tab to="/" label="Tìm Việc" class="text-white" />
-          <q-route-tab to="/ho-so-cv" label="Hồ sơ và CV" class="text-white" />
+          <q-route-tab v-if="storeAuthen.loaiTaiKhoan === 'user'" to="/ho-so-cv" label="Hồ sơ và CV" class="text-white" />
           <q-route-tab to="/chinh-sach-bao-mat" label="Chính sách bảo mật" class="text-white" />
           <q-route-tab to="/lien-he" label="Liên hệ" class="text-white" />
         </q-tabs>

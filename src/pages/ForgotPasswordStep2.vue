@@ -16,17 +16,17 @@ onMounted(() => {
 
 
 <template>
-  <img src="/src/assets/wave.png" class="wave" alt="login-wave">
+  <img src="~assets/wave.png" class="wave" alt="login-wave">
   <div class="row" style="height: 90vh">
     <div class="col-0 col-md-6 flex justify-center content-center">
-      <img src="/src/assets/login.svg" class="responsive" alt="login-image">
+      <img src="~assets/login.svg" class="responsive" alt="login-image">
     </div>
     <div v-bind:class="{ 'justify-center': $q.screen.md || $q.screen.sm || $q.screen.xs }"
       class="col-12 col-md-6 flex content-center">
       <q-card v-bind:style="$q.screen.lt.sm ? { 'width': '80%' } : { 'width': '50%' }">
         <q-card-section>
           <q-avatar size="103px" class="absolute-center shadow-10">
-            <img src="/src/assets/avatar.svg" alt="avatar">
+            <img src="~assets/avatar.svg" alt="avatar">
           </q-avatar>
         </q-card-section>
         <q-card-section>

@@ -80,25 +80,25 @@ onMounted(async () => {
               <ul class="search-results-suggestions">
                 <li class="search-results-suggestion search-results-suggestion-heading">Suggested:</li>
                 <li class="search-results-suggestion">
-                  <a href="/search/n">Tất cả</a>
+                  <a href="#/search/n">Tất cả</a>
                 </li>
                 <li class="search-results-suggestion">
-                  <a href="/search/java">Java</a>
+                  <a href="#/search/java">Java</a>
                 </li>
                 <li class="search-results-suggestion">
-                  <a href="/search/reactjs">ReactJS</a>
+                  <a href="#/search/reactjs">ReactJS</a>
                 </li>
                 <li class="search-results-suggestion">
-                  <a href="/search/vuejs">VueJS</a>
+                  <a href="#/search/vuejs">VueJS</a>
                 </li>
                 <li class="search-results-suggestion">
-                  <a href="/search/php">PHP</a>
+                  <a href="#/search/php">PHP</a>
                 </li>
                 <li class="search-results-suggestion">
-                  <a href="/search/nodejs">NodeJS</a>
+                  <a href="#/search/nodejs">NodeJS</a>
                 </li>
                 <li class="search-results-suggestion">
-                  <a href="/search/javacript">JavaScript</a>
+                  <a href="#/search/javacript">JavaScript</a>
                 </li>
               </ul>
             </div>
